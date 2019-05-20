@@ -58,7 +58,6 @@ let Harpoon = class {
             for (let iTile = 0; iTile < self.currentPage.orderedTileList.length; iTile++) {
                 const tile = self.currentPage.orderedTileList[iTile];
                 if (collidePointInRect(tile.rect, clickPosTile)) {
-                    console.log(tile);
                     if (tile.events.hasOwnProperty("click")) {
                         tile.events.click(tile);
                     }
@@ -118,10 +117,6 @@ let Harpoon = class {
         self.sendWebEvent("start_game", {game_id: self._gameId, room_id: self._roomId});
     }
 
-    get assets() {
-        return this._assetManager;
-    }
-
     get canvas() {
         return this._canvas;
     }
@@ -156,6 +151,10 @@ let Harpoon = class {
 
         // Forcing the renderer to resize on loading:
         this.renderer.resize();
+    }
+
+    get assets() {
+        return this._assetManager;
     }
 
     get canvasSizePx() {
@@ -248,7 +247,6 @@ let Harpoon = class {
 
     onWebEvent(event, callback) {
         const eventName = this._gameId + "." + event;
-        console.log(eventName);
         this._socket.on(eventName, callback);
     }
 
@@ -257,7 +255,6 @@ let Harpoon = class {
     //
 
     startAudio(audioObj) {
-        console.log(audioObj);
         audioObj.currentTime = 0;
         audioObj.play();
     }

@@ -79,8 +79,9 @@ if __name__ == "__main__":
             room = whale_room_manager.add_game()
             return flask.render_template("whale.html", game_id=WhaleGameId, room_id=room.id)
 
-        @app.route("/js/<sub_path>")
+        @app.route("/js/<path:sub_path>")
         def js(sub_path):
+            print(sub_path)
             return flask.send_from_directory("js/", sub_path)
 
         @app.route("/css/<sub_path>")
@@ -98,6 +99,10 @@ if __name__ == "__main__":
             else:
                 # Default to 2x resolution.
                 return flask.send_from_directory("img/x2", f"{name}.png")
+
+        @app.route("/font/<path:sub_path>")
+        def font(sub_path):
+            return flask.send_from_directory("font", sub_path)
 
         @app.route("/audio/<sub_path>")
         def audio(sub_path):
@@ -122,6 +127,15 @@ if __name__ == "__main__":
 
     main()
 
+
+# TODO:
+#  - Add the speech bubble and text (extract the dialogue icon using InkScape)
+#  - Get events (animations) working
+#  - Write tickets for what needs to be done.
+#  - Build a local timer and interpolate with the server.
+#  - Select the right fonts
+#  - FACTOR HARPOON INTO MULTIPLE MANAGERS. PLEASE. PLEASE PLEASE PLEASE.
+#  - Round out server code based on what Chris has done.
 
 # TODO: Figure out an event system (animation, input)
 # TODO: Write a simple asset server.

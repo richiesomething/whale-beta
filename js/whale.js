@@ -53,6 +53,16 @@ let WhalePage = class extends Page {
         const mascotDrawing = new hp.FrameDrawing(document.getElementById("mascot"), 1.0);
         this.mascotTile = new Tile("mascot", {x: 19, y: 18, w: 4, h: 5}, mascotDrawing);
 
+        const speechBubbleDrawing = new hp.FrameDrawing(document.getElementById("speech-bubble"), 1.0);
+        this.speechBubbleTile = new Tile("speechBubble", {x: 15, y: 15, w: 7, h: 5}, speechBubbleDrawing);
+
+        const speechTextL1Drawing = new hp.TextDrawing("Which stock do you think did better",
+                                                       "#2e3192", "ObjectSans-Regular", 1, 1.0);
+        const speechTextL2Drawing = new hp.TextDrawing("today?", "#2e3192", "ObjectSans-Regular",
+                                                       1, 1.0);
+        this.speechTextL1Tile = new Tile("speechBubble.text.l1", {x: 15, y: 16, w: 7, h: 1}, speechTextL1Drawing);
+        this.speechTextL2Tile = new Tile("speechBubble.text.l2", {x: 15, y: 17, w: 7, h: 1}, speechTextL2Drawing);
+
         // Creating the water:
         const waterWavesDrawing = new hp.MarqueeDrawing(document.getElementById("water.waves"), 1.0);
         this.waterWavesTile = new Tile("water.waves", {x: 0, y: 17, w: 24, h: 1}, waterWavesDrawing);
@@ -63,7 +73,7 @@ let WhalePage = class extends Page {
         // Creating the logo in the top-left corner:
         const logoColor = "#3fa9f5";
         const logoHlColor = "#6fc9ff";
-        const logoDrawing = new hp.TextDrawing("whale", logoColor, "Times New Roman", 3, 1.0);
+        const logoDrawing = new hp.TextDrawing("whale", logoColor, "ObjectSans-Regular", 3, 1.0);
         this.logoTile = new Tile(
             "whale", {x: 1, y: 1, w: 3, h: 2}, logoDrawing, {
                 hover_on:  function (tile) { tile.drawing.color = logoHlColor; },
@@ -72,29 +82,29 @@ let WhalePage = class extends Page {
             }
         );
 
-        // Creating the choice 1 button::
+        // Creating the choice buttons:
         const choice1BtnDrawing = new hp.CircleDrawing("#00000000", "#fafafa");
         this.choice1BtnTile = new Tile(
             "choice1.btn", {x: 5, y: 5, w: 6, h: 10}, choice1BtnDrawing, {click: clickChoice1}
         );
-        const choice1TitleDrawing = new hp.TextDrawing("CNK", "#3fa9f5", "Times New Roman", 4, 1.0);
+        const choice1TitleDrawing = new hp.TextDrawing("CNK", "#3fa9f5", "ObjectSans-Regular", 4, 1.0);
         this.choice1TitleTile = new Tile("choice1.text", {x: 5, y: 7, w: 6, h: 6}, choice1TitleDrawing);
-        const choice1SubtitleDrawing = new hp.TextDrawing("Cinemark", "#2e3192", "Times New Roman", 2, 1.0);
+        const choice1SubtitleDrawing = new hp.TextDrawing("Cinemark", "#2e3192", "ObjectSans-Regular", 2, 1.0);
         this.choice1SubtitleTile = new Tile("choice2.subtitle", {x: 5, y: 11, w: 6, h: 1}, choice1SubtitleDrawing);
 
         const choice2BtnDrawing = new hp.CircleDrawing("#00000000", "#b8dff640");
         this.choice2BtnTile = new Tile(
             "choice2.btn", {x: 14, y: 5, w: 6, h: 10}, choice2BtnDrawing, {click: clickChoice2}
         );
-        const choice2TitleDrawing = new hp.TextDrawing("NFLX", "#3fa9f5", "Times New Roman", 4, 1.0);
+        const choice2TitleDrawing = new hp.TextDrawing("NFLX", "#3fa9f5", "ObjectSans-Regular", 4, 1.0);
         this.choice2TitleTile = new Tile("choice2.title", {x: 14, y: 7, w: 6, h: 6}, choice2TitleDrawing);
-        const choice2SubtitleDrawing = new hp.TextDrawing("Netflix", "#2e3192", "Times New Roman", 2, 1.0);
+        const choice2SubtitleDrawing = new hp.TextDrawing("Netflix", "#2e3192", "ObjectSans-Regular", 2, 1.0);
         this.choice2SubtitleTile = new Tile("choice2.subtitle", {x: 14, y: 11, w: 6, h: 1}, choice2SubtitleDrawing);
 
-        const timerDrawing = new hp.TextDrawing("60", "#3fa9f5", "Times New Roman", 4, 1.0);
+        const timerDrawing = new hp.TextDrawing("60", "#3fa9f5", "ObjectSans-Regular", 4, 1.0);
         this.timerTile = new Tile("timer", {x: 11, y: 1, w: 2, h: 2}, timerDrawing);
-        const secLeftDrawing = new hp.TextDrawing("seconds left", "#b8dff6", "Times New Roman", 2, 1.0);
-        this.secLeftTile = new Tile("secLeft", {x: 11, y: 3, w: 2, h: 1}, secLeftDrawing);
+        const secLeftDrawing = new hp.TextDrawing("seconds left", "#b8dff6", "ObjectSans-Regular", 2, 1.0);
+        this.secLeftTile = new Tile("secLeft", {x: 10, y: 3, w: 4, h: 1}, secLeftDrawing);
 
         // Adding event handlers:
         hp.onWebEvent(
@@ -115,6 +125,10 @@ let WhalePage = class extends Page {
         this.addTopTile(this.waterWavesTile);
         this.addTopTile(this.waterBodyTile);
         this.addTopTile(this.mascotTile);
+        this.addTopTile(this.speechBubbleTile);
+        this.addTopTile(this.speechTextL1Tile);
+        this.addTopTile(this.speechTextL2Tile);
+
         this.addTopTile(this.logoTile);
 
         this.addTopTile(this.choice1BtnTile);

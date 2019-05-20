@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="147.64mm"
+   height="51.400002mm"
+   viewBox="0 0 147.64 51.400002"
+   version="1.1"
+   id="svg33"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="speech-bubble.svg">
+  <defs
+     id="defs27" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="400"
+     inkscape:cy="560"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1235"
+     inkscape:window-height="1008"
+     inkscape:window-x="676"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:pagecheckerboard="true"
+     showborder="true" />
+  <metadata
+     id="metadata30">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-245.6)">
+    <path
+       id="Path_24"
+       data-name="Path 24"
+       d="M 10.847916,245.60416 H 136.7896 a 10.847917,10.847917 0 0 1 10.84789,10.84792 v 16.40416 a 10.847917,10.847917 0 0 1 -10.84789,10.84792 h -8.46668 c 0,0 -4.16533,-0.43842 -5.23585,2.88555 -1.07048,3.32396 0.95409,10.41029 0.95409,10.41029 0,0 -3.55414,-7.08633 -6.99797,-10.41029 -3.44379,-3.32397 -6.77677,-2.88555 -6.77677,-2.88555 H 10.847916 A 10.847917,10.847917 0 0 1 0,272.85624 v -16.40416 a 10.847917,10.847917 0 0 1 10.847916,-10.84792 z"
+       inkscape:connector-curvature="0"
+       style="opacity:0.8;fill:#d8eefd;stroke-width:0.26458332" />
+  </g>
+</svg>

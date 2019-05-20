@@ -21,3 +21,12 @@ img.asset {
 #errorMsg {
     font-size: 2em;
 }
+
+/* Fonts */
+
+@font-face {
+    font-family: "ObjectSans-Regular";
+    src: url("/font/ObjectSans-Regular.otf");
+    font-weight: normal;
+    font-style: normal;
+}
