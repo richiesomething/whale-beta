@@ -99,6 +99,10 @@ if __name__ == "__main__":
                 # Default to 2x resolution.
                 return flask.send_from_directory("img/x2", f"{name}.png")
 
+        @app.route("/audio/<sub_path>")
+        def audio(sub_path):
+            return flask.send_from_directory("audio/", sub_path)
+
         #
         # Game (can be moved to a different server for load-balancing!
         #

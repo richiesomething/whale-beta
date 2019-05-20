@@ -35,6 +35,7 @@ let Harpoon = class {
         self._gameId = gameId;
         this._roomId = roomId;
 
+        self._assetManager  = new HpAssetManager();
         self._canvas        = getCanvas(_canvasId);
         self._renderer      = getRenderer(self.canvas);
         self._stop          = false;
@@ -117,6 +118,10 @@ let Harpoon = class {
         self.sendWebEvent("start_game", {game_id: self._gameId, room_id: self._roomId});
     }
 
+    get assets() {
+        return this._assetManager;
+    }
+
     get canvas() {
         return this._canvas;
     }
@@ -141,12 +146,12 @@ let Harpoon = class {
         // Unloading the previous page if necessary:
         if (this.currentPage !== null) {
             this.disableListeners();
-            this.currentPage.unload();
+            this.currentPage.unload(this);
         }
 
         // Loading the new page:
         this._currentPage = page;
-        this.currentPage.load();
+        this.currentPage.load(this);
         this.enableListeners();
 
         // Forcing the renderer to resize on loading:
@@ -232,6 +237,10 @@ let Harpoon = class {
         drawFrame(lastFrameTime);
     }
 
+    //
+    // Web events:
+    //
+
     sendWebEvent(event, data) {
         const eventName = this._gameId + "." + event;
         this._socket.emit(eventName, {game_id: this._gameId, room_id: this._roomId, data: data})
@@ -241,6 +250,29 @@ let Harpoon = class {
         const eventName = this._gameId + "." + event;
         console.log(eventName);
         this._socket.on(eventName, callback);
+    }
+
+    //
+    // Audio:
+    //
+
+    startAudio(audioObj) {
+        console.log(audioObj);
+        audioObj.currentTime = 0;
+        audioObj.play();
+    }
+
+    startLoopedAudio(audioObj) {
+        this.startAudio(audioObj);
+        audioObj.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        }, false);
+    }
+
+    stopAudio(audioObj) {
+        audioObj.pause();
+        audioObj.currentTime = 0;
     }
 };
 
@@ -284,9 +316,9 @@ let Page = class {
         return this._gridSize;
     }
 
-    load() {}
+    load(harpoon) {}
 
-    unload() {}
+    unload(harpoon) {}
 
     addTopTile(tile) {
         this._tiles.push(tile);
@@ -299,6 +331,10 @@ let Page = class {
                 break;
             }
         }
+    }
+
+    remAllTiles() {
+        this._tiles = [];
     }
 };
 
