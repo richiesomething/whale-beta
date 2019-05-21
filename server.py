@@ -129,12 +129,10 @@ if __name__ == "__main__":
 
 
 # TODO:
-#  - Add the speech bubble and text (extract the dialogue icon using InkScape)
+#  - Build a local timer and interpolate with the server.
 #  - Get events (animations) working
 #  - Write tickets for what needs to be done.
-#  - Build a local timer and interpolate with the server.
-#  - Select the right fonts
-#  - FACTOR HARPOON INTO MULTIPLE MANAGERS. PLEASE. PLEASE PLEASE PLEASE.
+#  - FACTOR HARPOON INTO MULTIPLE MANAGERS. PLEASE. PLEASE PLEASE PLEASE.*
 #  - Round out server code based on what Chris has done.
 
 # TODO: Figure out an event system (animation, input)

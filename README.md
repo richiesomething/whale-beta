@@ -42,7 +42,7 @@ It needs:
 ## Tips
 - Remember to clear cache and reload when testing client pages out. 'Ctrl+Shift+R' reloads and clears cache on Chrome.  
 - You can enable a grid-view in rendered output for the C2d renderer by initializing "_dbgView" to true in the 
-  C2dRenderer constructor in "render.2d.js." This makes it much easier to adjust where tiles are placed.
+  C2dRenderer constructor in "render.js." This makes it much easier to adjust where tiles are placed.
 - Remember to allow audio to be played in your browser's settings. **Some kind of alert for the user would be very 
   helpful.**
 - I sincerely apologize for the messy state of "Harpoon"; it was written "fast and loose" and will be cleaned up shortly 

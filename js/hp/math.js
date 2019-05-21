@@ -1,4 +1,10 @@
-let scaleRectToFitRect = function (innerRect, outerRect) {
+if (typeof Hp === "undefined") {
+    Hp = {};
+}
+
+Hp.math = {};
+
+Hp.math.scaleRectToFitRect = function (innerRect, outerRect) {
     const innerRectAr = innerRect.w / innerRect.h;
     const outerRectAr = outerRect.w / outerRect.h;
 
@@ -18,14 +24,14 @@ let scaleRectToFitRect = function (innerRect, outerRect) {
     return outRect;
 };
 
-let collidePointInRect = function (rect, pt) {
+Hp.math.collidePointInRect = function (rect, pt) {
     return (pt.x >= rect.x) && (pt.y >= rect.y) &&
            (pt.x - rect.x <= rect.w) && (pt.y - rect.y <= rect.h);
 };
 
-let collideRectInRect = function (a, b) {
+Hp.math.collideRectInRect = function (a, b) {
     return (
-        collidePointInRect(a, {x: b.x + b.w, y: b.y + b.h}) ||
-        collidePointInRect(b, {x: a.x + a.w, y: a.y + a.h})
+        Hp.math.collidePointInRect(a, {x: b.x + b.w, y: b.y + b.h}) ||
+        Hp.math.collidePointInRect(b, {x: a.x + a.w, y: a.y + a.h})
     );
 };

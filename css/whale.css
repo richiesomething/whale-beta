@@ -10,14 +10,6 @@ div#whale-canvas-container {
     background: #2e3192;
 }
 
-img.asset {
-
-}
-
-.offscreen {
-    display: none;
-}
-
 #errorMsg {
     font-size: 2em;
 }
