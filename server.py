@@ -1,6 +1,4 @@
-import uuid
 import flask
-from enum import Enum, auto
 
 import hp
 import whale
@@ -10,7 +8,7 @@ if __name__ == "__main__":
     def main():
         app = flask.Flask(__name__)
         hp_server = hp.Server()
-        whale_game = whale.Game()
+        whale_game = hp.Game("whale", whale.Room)
         assert hp_server.add_game(app, whale_game)
 
         #
@@ -60,6 +58,11 @@ if __name__ == "__main__":
 
     main()
 
+
+# TODO:
+#  - Write the server-side simulation code.
+#  - Interface with the front-end.
+#  - Fix font block rendering.
 
 # TODO:
 #  - Build a local timer and interpolate with the server.

@@ -1,10 +1,30 @@
 Whale = {};
 
+const clearColor = "#00000000";
+const darkGray = "#aaa";
+const darkBlue = "#2e3192";
+const lowBlue = "#2e3192";
+const midBlue = "#3fa9f5";
+const highBlue = "#6fc9ff";
+const skyBlue = "#bddff6";
+const faintBlue = "#d0eeff";
+const warmPeach = "#fafafa";
+const white = "#fff";
+const black = "#000";
+
 Whale.start = function () {
     try {
         Hp.init(document.getElementById("whale-canvas"));
-        Hp.currentPage(new Whale.GamePage());
-        Hp.start(60.0);
+        Hp.net.send(
+            "start", {},
+            function (success, response) {
+                if (!success) {
+                    throw new Hp.Error("Failed to contact the server. Is your internet connection faulty?");
+                }
+                Hp.currentPage(new Whale.GamePage(response["game_duration_sec"], response["choices"]));
+                Hp.start();
+            }
+        );
     } catch (ex) {
         if (ex !== {}) {
             alert("Something went wrong with the 'Harpoon' game engine:\n" + ex.toString());
@@ -22,23 +42,34 @@ Whale.StartPage = class extends Hp.page.Page {
         super("Whale.StartPage", "#ffffff", {x: 4, y: 12});
         const self = this;
 
-        const welcomeDrawing = new Hp.render.TextDrawing("Welcome to Whale!", "#2e3192", "ObjectSans-Regular", 2, 1.0);
+        const welcomeDrawing = new Hp.render.TextDrawing("Welcome to Whale!", {color: darkBlue, fontSize: 4});
         self.welcomeTile = new Hp.page.Tile("welcome", {x: 1, y: 1, w: 2, h: 1}, welcomeDrawing);
 
-        const para1 = "\tWhale is a game about shares. When companies need to raise money, they may sell portions of " +
-                      "themselves, or 'shares', to the public. These 'shareholders' are entitled to a share of the " +
-                      "company's future earnings and a say in its important decisions. They are also entitled to " +
-                      "sell their shares to others.";
-        const para2 = "\tHealthy companies' shares generate more money, so they are in higher demand, and thus " +
-                      "command a higher price in the market. Shareholders around the world place careful bets every " +
-                      "day, speculating about the prices of shares by tracking the news.";
-        const para3 = "\tWhale keeps you on the pulse of these companies' shares in a fun and engaging way. Ready?";
-        const textLine1 = new Hp.render.TextDrawing()
+        const text = "Whale is a game about shares. When companies need to raise money, they may sell portions of " +
+                     "themselves, or 'shares', to the public. These 'shareholders' are entitled to a share of the " +
+                     "company's future earnings and a say in its important decisions. They are also entitled to " +
+                     "sell their shares to others.\n" +
+                     "Healthy companies' shares generate more money, so they are in higher demand, and thus " +
+                     "command a higher price in the market. Shareholders around the world place careful bets every " +
+                     "day, speculating about the prices of shares by tracking the news.\n" +
+                     "Whale keeps you on the pulse of these companies' shares in a fun and engaging way.\n" +
+                     "Ready?";
+        const textDrawing = new Hp.render.TextBlockDrawing(text, {color: black, fontSize: 1.25, fontName: "Times New Roman", lineHeight: 40});
+        self.textTile = new Hp.page.Tile("text", {x: 1, y: 3, w: 2, h: 6}, textDrawing);
+
+        const startTextDrawing = new Hp.render.TextDrawing("Loading...", {color: white, fontSize: 2});
+        const startBtnDrawing = new Hp.render.BoxDrawing({fillColor: darkGray});
+        self.startTextTile = new Hp.page.Tile("start.text", {x: 1, y: 9, w: 2, h: 2}, startTextDrawing);
+        self.startBtnTile = new Hp.page.Tile("start.btn", {x: 1, y: 9, w: 2, h: 2}, startBtnDrawing);
     }
 
     load() {
-        super.unload();
+        super.load();
         this.addTopTile(this.welcomeTile);
+        this.addTopTile(this.textTile);
+
+        this.addTopTile(this.startBtnTile);
+        this.addTopTile(this.startTextTile);
     }
 
     unload() {
@@ -48,9 +79,12 @@ Whale.StartPage = class extends Hp.page.Page {
 };
 
 Whale.GamePage = class extends Hp.page.Page {
-    constructor() {
+    constructor(gameDurationSec, choices) {
         super("Whale.GamePage", "#ffffff", {x: 24, y: 24});
         const self = this;
+
+        self.gameDuration = gameDurationSec;
+        self.choices = choices;
 
         let x = 0;
         function helpClickChoice(choiceID) {
@@ -70,15 +104,6 @@ Whale.GamePage = class extends Hp.page.Page {
         function clickChoice1() { helpClickChoice(1); }
         function clickChoice2() { helpClickChoice(2); }
 
-        const clearColor = "#00000000";
-        const darkBlue = "#2e3192";
-        const lowBlue = "#2e3192";
-        const midBlue = "#3fa9f5";
-        const highBlue = "#6fc9ff";
-        const skyBlue = "#bddff6";
-        const faintBlue = "#d0eeff";
-        const warmPeach = "#fafafa";
-
         // Drawing the mascot:  TODO: Improve asset loading! Currently, all assets are just embedded in the HTML file.
         const mascotImg = Hp.assets.image("mascot");
         const mascotDrawing = new Hp.render.FrameDrawing(mascotImg);
@@ -88,7 +113,10 @@ Whale.GamePage = class extends Hp.page.Page {
         const speechBubbleDrawing = new Hp.render.FrameDrawing(speechBubbleImg);
         this.speechBubbleTile = new Hp.page.Tile("speechBubble", {x: 15, y: 15, w: 7, h: 5}, speechBubbleDrawing);
 
-        const speechTextL1Drawing = new Hp.render.TextDrawing("Which stock do you think did better?", {color: darkBlue, fontSize: 2});
+        const speechTextL1Drawing = new Hp.render.TextBlockDrawing(
+            "Which stock do you think did better?",
+            {color: darkBlue, fontSize: 1.2, lineHeight: 30, vPadding: 24, hPadding: 30}
+        );
         this.speechTextL1Tile = new Hp.page.Tile("speechBubble.text.l1", {x: 15, y: 16, w: 7, h: 2}, speechTextL1Drawing);
 
         // Creating the water:
@@ -119,7 +147,7 @@ Whale.GamePage = class extends Hp.page.Page {
         this.choice2SubtitleTile = new Hp.page.Tile("choice2.subtitle", {x: 14, y: 11, w: 6, h: 1}, choice2SubtitleDrawing);
 
         // Adding the timer:
-        const timerDrawing = new Hp.render.TextDrawing("60", {color: midBlue, fontSize: 4});
+        const timerDrawing = new Hp.render.TextDrawing(gameDurationSec.toString(), {color: midBlue, fontSize: 4});
         this.timerTile = new Hp.page.Tile("timer", {x: 11, y: 1, w: 2, h: 2}, timerDrawing);
         const secLeftDrawing = new Hp.render.TextDrawing("seconds left", {color: skyBlue, fontSize: 2});
         this.secLeftTile = new Hp.page.Tile("secLeft", {x: 10, y: 3, w: 4, h: 1}, secLeftDrawing);

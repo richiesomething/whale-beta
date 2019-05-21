@@ -41,7 +41,7 @@ Hp.currentPage = function (optPage) {
 
 Hp.start = function () {
     let accumDeltaTimeMs = 0;
-    let lastFrameTimeMs = performance.now();
+    let lastFrameTimeMs = window.performance.now();
     let frameRequest = null;
 
     let drawFrame = function (thisFrameTimeMs) {

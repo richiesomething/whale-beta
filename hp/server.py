@@ -22,7 +22,14 @@ class Server(object):
         def game_view_func():
             if flask.request.method == "POST":
                 data = json.loads(flask.request.data.decode("utf-8"))
-                return game.handle_event(data["event"], data["data"])
+                print(data)
+                return game.handle_event(
+                    data["room_id"],
+                    int(data["player_id"]),
+                    data["event"],
+                    float(data["client_mono_time_sec"]),
+                    data.get("data", None)
+                )
             else:
                 return result({"reason": f"Invalid request HTTP method: '{flask.request.method}'"}, ok=False)
 

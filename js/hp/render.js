@@ -40,7 +40,7 @@ Hp.render.BaseDrawing = class {
 
         // Drawing a label:
         c2d.fillStyle = boxColor;
-        c2d.font = "1em Consolas";
+        c2d.font = "1em monospace";
         c2d.fillText(tile.name, pixRect.x + 6 + c2d.measureText(tile.name).width / 2, pixRect.y + 16);
     }
 
@@ -241,25 +241,76 @@ Hp.render.TextDrawing = class extends Hp.render.BaseDrawing {
 };
 
 Hp.render.TextBlockDrawing = class extends Hp.render.BaseDrawing {
-    constructor(text, textBlockStyle) {
+    constructor(text, optStyle) {
         super();
         this.text = text;
-
-        // textBlockStyle = {color, fontName, fontSize, alpha, lineHeightDiPx, hPaddingDiPx, vPaddingDiPx}
-
+        if (typeof optStyle === "undefined") {
+            this.style = {};
+        } else {
+            this.style = optStyle;
+        }
     }
+
+    get color()        { return Hp.render._getStyleProperty(this.style, "color", "#000"); }
+    get alpha()        { return Hp.render._getStyleProperty(this.style, "alpha", 1.0); }
+    get fontName()     { return Hp.render._getStyleProperty(this.style, "fontName", "ObjectSans-Regular"); }
+    get fontSize()     { return Hp.render._getStyleProperty(this.style, "fontSize", 1.0); }
+    get lineHeight()   { return Hp.render._getStyleProperty(this.style, "lineHeight", 15.36); }  // DiPx value for 1em
+    get hPadding()     { return Hp.render._getStyleProperty(this.style, "hPadding", 5.0); }      // DiPx
+    get vPadding()     { return Hp.render._getStyleProperty(this.style, "vPadding", 5.0); }      // DiPx
+
+    set alpha(value)      { return this.style.alpha      = (value < 0 ? 0 : (value > 1 ? 1 : value)); }
+    set color(value)      { return this.style.color      = value; }
+    set fontName(value)   { return this.style.fontName   = value; }
+    set fontSize(value)   { return this.style.fontSize   = value; }
+    set lineHeight(value) { return this.style.lineHeight = value; }  // DiPx value for 1em
+    set hPadding(value)   { return this.style.hPadding   = value; }      // DiPx
+    set vPadding(value)   { return this.style.vPadding   = value; }      // DiPx
 
     _draw(pixRect) {
         super._draw(pixRect);
 
+        const c2d = Hp.render.c2d;
+
+        // Setting up the draw properties:
+        c2d.globalAlpha = this.alpha;
+        c2d.fillStyle = this.color;
+        c2d.textAlign = "left";
+        c2d.textBaseline = "top";
+        c2d.font = this.fontSize.toString() + "em " + this.fontName;
+
         let lines = this.text.split("\n");
+        let drawY = this.vPadding;
+        let drawLineMaxW = pixRect.w - 2*this.hPadding;
+
         for (let iLine = 0; iLine < lines.length; iLine++) {
             const line = lines[iLine];
             const words = line.split(" ");
 
-            for (let iWord = 0; iWord < lines.length; iLine++) {
-
+            let drawLine = words[0];
+            for (let iWord = 1; iWord < words.length;) {
+                if (drawY > drawLineMaxW) {
+                    break;
+                }
+                const word = words[iWord];
+                const testDrawLine = drawLine + " " + word;
+                const testDrawLineWidth = c2d.measureText(testDrawLine).width;
+                if (testDrawLineWidth > drawLineMaxW) {
+                    // Draw 'drawLine' without 'word':
+                    c2d.fillText(drawLine, pixRect.x + this.hPadding, pixRect.y + drawY);
+                    drawY += this.lineHeight;
+                    drawLine = "";
+                } else {
+                    drawLine = testDrawLine;
+                    iWord++;
+                }
             }
+            if (drawLine !== "") {
+                c2d.fillText(drawLine, pixRect.x + this.hPadding, pixRect.y + drawY);
+                drawY += this.lineHeight;
+                drawLine = "";
+            }
+            drawY += this.lineHeight;
         }
     }
 };
