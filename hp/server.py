@@ -22,7 +22,6 @@ class Server(object):
         def game_view_func():
             if flask.request.method == "POST":
                 data = json.loads(flask.request.data.decode("utf-8"))
-                print(data)
                 return game.handle_event(
                     data["room_id"],
                     int(data["player_id"]),

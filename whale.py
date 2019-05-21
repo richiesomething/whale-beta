@@ -13,11 +13,14 @@ class Stock(object):
         self.open_cents = open_cents
         self.close_cents = close_cents
 
+    def get_d_cents_pc(self):
+        return (self.close_cents - self.open_cents) / self.open_cents if self.open_cents != 0 else 0
+
     def json(self):
         return {
             "ticker": self.ticker,
             "name": self.name,
-            "d_cents_pc": (self.close_cents - self.open_cents) / self.open_cents if self.open_cents != 0 else 0
+            "d_cents_pc": self.get_d_cents_pc()
         }
 
 
@@ -94,20 +97,44 @@ class Player(hp.Player):
         self.start_server_mono_time_sec = None
         self.game_duration_sec = None
         self.generated_choices = None
+        self.score = 0
+
+        self.latency_epsilon_sec = 1.0  # The amount of extra time to wait after a game ends for packets.
 
     def start(self, client_mono_time_sec):
         if self.state != State.NotYetStarted:
             return hp.result({"reason": "The game has already been started."}, ok=False)
 
+        self.state = State.Started
+
         self.start_client_mono_time_sec = client_mono_time_sec
         self.start_server_mono_time_sec = time.monotonic()
-        self.game_duration_sec = 100.0
+        self.game_duration_sec = 30.0
         self.generated_choices = gen_stock_data_for_player()
 
         return hp.result({"game_duration_sec": self.game_duration_sec, "choices": self.generated_choices})
 
     def choice(self, client_mono_time_sec, event_data):
-        pass
+        if self.state != State.Started:
+            return hp.result({"reason": "The game has not yet been started."}, ok=False)
+
+        if client_mono_time_sec - self.start_client_mono_time_sec >= self.game_duration_sec + self.latency_epsilon_sec:
+            self.state = State.Finished
+            return hp.result({"reason": "This game has expired"}, ok=False)
+
+        choice_index = int(event_data["choice_index"])
+        if choice_index + 1 == len(self.generated_choices):
+            self.state = State.Finished
+
+        selected_choice_index = int(event_data["selected_choice"])
+        choices = self.generated_choices[choice_index]
+        if choices[selected_choice_index]["d_cents_pc"] > choices[(selected_choice_index + 1) % 2]["d_cents_pc"]:
+            score_reward = 100
+        else:
+            score_reward = 0
+
+        self.score += score_reward
+        return hp.result({"score_reward": score_reward})
 
 
 # class Room(object):

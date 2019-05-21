@@ -28,15 +28,17 @@ Hp.net.send = function (event, optData, optCallback) {
     xhr.send(dataStr);
 
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            const response = JSON.parse(xhr.responseText);
-            if (response.ok) {
-                optCallback(true, response.data);
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.ok) {
+                    optCallback(true, response.data);
+                } else {
+                    optCallback(false, response.data);
+                }
             } else {
-                optCallback(false, response.data);
+                optCallback(false, {"reason": "Connection failed."});
             }
-        } else {
-            optCallback(false, {"reason": "Connection failed."});
         }
     }
 };
