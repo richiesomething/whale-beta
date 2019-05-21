@@ -2,9 +2,6 @@ Whale = {};
 
 Whale.start = function () {
     try {
-        Hp.gameId = document.getElementById("game-id").innerHTML.trim();
-        Hp.roomId = document.getElementById("room-id").innerHTML.trim();
-
         Hp.init(document.getElementById("whale-canvas"));
         Hp.currentPage(new Whale.GamePage());
         Hp.start(60.0);

@@ -14,6 +14,16 @@
         <script src="/js/hp/render.js" type="text/javascript"></script>
         <script src="/js/hp/page.js" type="text/javascript"></script>
         <script src="/js/hp/hp.js" type="text/javascript"></script>
+        <script>
+            // Setting critical instance properties in the server when starting the game:
+            Hp.gameId = "{{game_id}}";
+            Hp.roomId = "{{room_id}}";
+            Hp.playerId = "{{player_id}}";
+
+            console.log(Hp.gameId);
+            console.log(Hp.roomId);
+            console.log(Hp.playerId);
+        </script>
 
         <!-- Whale -->
         <link href="/css/whale.css" type="text/css" rel="stylesheet"/>
@@ -36,8 +46,5 @@
              alt="An image of a speech bubble used in the game."/>
 
         <a class="offscreen" id="whale-link" href="http://getwhaled.com/"></a>
-
-        <p id="game-id" class="offscreen">{{game_id}}</p>
-        <p id="room-id" class="offscreen">{{room_id}}</p>
     </body>
 </html>
