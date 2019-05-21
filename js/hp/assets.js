@@ -21,12 +21,10 @@ Hp.assets.image = function (imageName) {
     if (Hp.assets._imageCache.hasOwnProperty(imageKey)) {
         return Hp.assets._imageCache[imageKey];
     } else {
-        const image = Hp.assets._imageCache[imageKey] = document.createElement("img");
-        image.id = "asset-" + imageName;
-        image.alt = "An image file named '" + imageName + "' used in the game.";
-        image.src = "img/" + imageKey + ".png";
-        image.classList.add("asset");
-        image.classList.add("offscreen");
+        const image = Hp.assets._imageCache[imageKey] = new Image();
+        image.src = "img/" + imageKey;
+        console.log(image.src);
+        return image;
     }
 };
 

@@ -41,7 +41,7 @@ if __name__ == "__main__":
             elif res == "x1":
                 return flask.send_from_directory("img/x1", f"{name}.png")
             else:
-                # Default to 2x resolution.
+                # Default to 2x resolution as a compromise for unknown 'res' strings:
                 return flask.send_from_directory("img/x2", f"{name}.png")
 
         @app.route("/font/<path:sub_path>")

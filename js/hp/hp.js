@@ -39,22 +39,17 @@ Hp.currentPage = function (optPage) {
     }
 };
 
-Hp.start = function (updateRate) {
-    const updateFrameTimeInMs = 1000.0 / updateRate;
-    let accumDeltaTime = 0;
-    let lastFrameTime = performance.now();
+Hp.start = function () {
+    let accumDeltaTimeMs = 0;
+    let lastFrameTimeMs = performance.now();
     let frameRequest = null;
 
-    let drawFrame = function (thisFrameTime) {
-        let delta = thisFrameTime - lastFrameTime;
-        lastFrameTime = thisFrameTime;
-        accumDeltaTime += delta;
-        while (accumDeltaTime >= updateFrameTimeInMs) {
-            Hp.currentPage().update(updateFrameTimeInMs);
-            accumDeltaTime -= updateFrameTimeInMs;
-        }
+    let drawFrame = function (thisFrameTimeMs) {
+        let deltaMs = thisFrameTimeMs - lastFrameTimeMs;
+        lastFrameTimeMs = thisFrameTimeMs;
+        accumDeltaTimeMs += deltaMs;
 
-        Hp.render._draw(Hp.currentPage());
+        Hp.render._draw(Hp.currentPage(), deltaMs / 1000.0);
 
         if (Hp.stop) {
             window.cancelAnimationFrame(frameRequest);
@@ -63,7 +58,7 @@ Hp.start = function (updateRate) {
         }
     };
 
-    drawFrame(lastFrameTime);
+    drawFrame(lastFrameTimeMs);
 };
 
 Hp._currentPageTileSizeDiPx = function () {
