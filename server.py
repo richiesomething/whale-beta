@@ -17,6 +17,10 @@ if __name__ == "__main__":
 
         @app.route("/")
         def index():
+            return flask.render_template("index.html")
+
+        @app.route("/whale")
+        def whale_page():
             game_id = whale_game.id
             room_id = whale_game.add_room()
             player_id = whale_game.add_player(room_id)

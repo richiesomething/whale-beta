@@ -22,3 +22,32 @@ div#whale-canvas-container {
     font-weight: normal;
     font-style: normal;
 }
+
+div.content-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+div.content {
+    display: inline-block;
+    width: 67%;
+}
+
+h1 {
+    font-family: "ObjectSans-Regular";
+    color: #2e3192;
+    font-size: 3.5em;
+    padding: 10% 4% 4% 4%;
+    text-align: center;
+}
+
+p {
+    font-family: "Times New Roman";
+    font-size: 1.4em;
+    line-height: 2em;
+    text-align: left;
+}
+
+a.content {
+    font-weight: bolder;
+}
