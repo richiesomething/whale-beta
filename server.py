@@ -54,7 +54,7 @@ if __name__ == "__main__":
         # Game (can be moved to a different server for load-balancing!
         #
 
-        app.run(debug=True)
+        app.run(debug=False)
 
     main()
 
