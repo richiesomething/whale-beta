@@ -138,54 +138,159 @@ Whale.GamePage = class extends Hp.page.Page {
         // Drawing the mascot:
         const mascotImg = Hp.assets.image("mascot");
         const mascotDrawing = new Hp.render.FrameDrawing(mascotImg);
-        this.mascotTile = new Hp.page.Tile("mascot", {x: 19, y: 18, w: 4, h: 5}, mascotDrawing);
+        this.mascotTile = new Hp.page.Tile(
+            "mascot", 
+            {
+                desktop:{x: 19, y: 18, w: 4, h: 5},
+                mobile:{x: 6, y: 18, w: 12, h: 6},
+            }, 
+            mascotDrawing
+            );
 
         const speechBubbleImg = Hp.assets.image("speech-bubble");
         const speechBubbleDrawing = new Hp.render.FrameDrawing(speechBubbleImg);
-        this.speechBubbleTile = new Hp.page.Tile("speechBubble", {x: 15, y: 15, w: 7, h: 5}, speechBubbleDrawing);
+        this.speechBubbleTile = new Hp.page.Tile(
+            "speechBubble", 
+            {
+                mobile: {x: 24, y: 24, w: 7, h: 5}, 
+                desktop: {x: 15, y: 15, w: 7, h: 5}, 
+            },
+            speechBubbleDrawing
+        );
 
         const speechTextDrawing = new Hp.render.TextBlockDrawing(
             "Which stock do you think did better yesterday?",
             {color: darkBlue, fontSize: 1, lineHeight: 30, vPadding: 3, hPadding: 20}
         );
-        this.speechTextTile = new Hp.page.Tile("speechBubble.text.l1", {x: 15, y: 16, w: 7, h: 2}, speechTextDrawing);
+        this.speechTextTile = new Hp.page.Tile(
+            "speechBubble.text.l1", 
+            {
+                mobile: {x: 24, y: 24, w: 7, h: 2}, 
+                desktop: {x: 15, y: 16, w: 7, h: 2}, 
+            },
+            speechTextDrawing
+        );
 
         // Creating the water:
         const waterWavesImg = Hp.assets.image("water.waves");
         const waterWavesDrawing = new Hp.render.MarqueeDrawing(waterWavesImg, {speed: 15});
-        this.waterWavesTile = new Hp.page.Tile("water.waves", {x: 0, y: 17, w: 24, h: 1}, waterWavesDrawing);
+        this.waterWavesTile = new Hp.page.Tile(
+            "water.waves", 
+            {
+                mobile: {x: 0, y: 20, w: 24, h: 1}, 
+                desktop: {x: 0, y: 17, w: 24, h: 1}, 
+            },
+            waterWavesDrawing
+        );
 
         const waterBodyDrawing = new Hp.render.BoxDrawing({lineColor: skyBlue, fillColor: skyBlue, lineWidth: 5});
-        this.waterBodyTile = new Hp.page.Tile("water.body", {x: 0, y: 18, w: 24, h: 6}, waterBodyDrawing);
+        this.waterBodyTile = new Hp.page.Tile(
+            "water.body", 
+            {
+                mobile: {x: 0, y: 21, w: 24, h: 6}, 
+                desktop: {x: 0, y: 18, w: 24, h: 6}, 
+            },            
+            waterBodyDrawing
+        );
 
         // Creating the logo in the top-left corner:
         const logoDrawing = new Hp.render.TextDrawing("whale", {color: midBlue, fontSize: 3});
-        this.logoTile = new Hp.page.Tile("whale", {x: 1, y: 1, w: 3, h: 2}, logoDrawing);
+        this.logoTile = new Hp.page.Tile(
+            "whale", 
+            {
+                mobile: {x:1, y:1, w:10, h:2},
+                desktop: {x: 1, y: 1, w: 3, h: 2},
+            },
+            logoDrawing
+        );
 
         // Creating the choice buttons:
         const choice1BtnDrawing = new Hp.render.CircleDrawing({lineColor: clearColor, fillColor: warmPeach});
         const choice1TitleDrawing = new Hp.render.TextDrawing("CNK", {color: midBlue, fontSize: 2});
         const choice1SubtitleDrawing = new Hp.render.TextDrawing("Cinemark", {color: lowBlue, fontSize: 1});
-        this.choice1BtnTile = new Hp.page.Tile("choice1.btn", {x: 5, y: 5, w: 6, h: 10}, choice1BtnDrawing);
-        this.choice1TitleTile = new Hp.page.Tile("choice1.text", {x: 5, y: 7, w: 6, h: 6}, choice1TitleDrawing);
-        this.choice1SubtitleTile = new Hp.page.Tile("choice2.subtitle", {x: 5, y: 11, w: 6, h: 1}, choice1SubtitleDrawing);
+        this.choice1BtnTile = new Hp.page.Tile(
+            "choice1.btn", 
+            {
+                mobile: {x: 1, y: 9, w: 10, h: 6}, 
+                desktop:{x: 5, y: 5, w: 6, h: 10}, 
+            },
+            choice1BtnDrawing
+        );
+        this.choice1TitleTile = new Hp.page.Tile(
+            "choice1.text", 
+            {
+                mobile: {x: 1, y: 11, w: 10, h: 2}, 
+                desktop:{x: 5, y: 7, w: 6, h: 6}, 
+            },
+            choice1TitleDrawing
+        );
+        this.choice1SubtitleTile = new Hp.page.Tile(
+            "choice2.subtitle", 
+            {
+                mobile: {x: 1, y: 15, w: 10, h: 1}, 
+                desktop:{x: 5, y: 11, w: 6, h: 1}, 
+            },
+            choice1SubtitleDrawing
+        );
 
         const choice2BtnDrawing = new Hp.render.CircleDrawing({lineColor: clearColor, fillColor: faintBlue});
         const choice2TitleDrawing = new Hp.render.TextDrawing("NFLX", {color: midBlue, fontSize: 2});
         const choice2SubtitleDrawing = new Hp.render.TextDrawing("Netflix", {color: darkBlue, fontSize: 1});
-        this.choice2BtnTile = new Hp.page.Tile("choice2.btn", {x: 14, y: 5, w: 6, h: 10}, choice2BtnDrawing);
-        this.choice2TitleTile = new Hp.page.Tile("choice2.title", {x: 14, y: 7, w: 6, h: 6}, choice2TitleDrawing);
-        this.choice2SubtitleTile = new Hp.page.Tile("choice2.subtitle", {x: 14, y: 11, w: 6, h: 1}, choice2SubtitleDrawing);
+        this.choice2BtnTile = new Hp.page.Tile(
+            "choice2.btn", 
+            {
+                mobile: {x: 13, y: 9, w: 10, h: 6}, 
+                desktop: {x: 14, y: 5, w: 6, h: 10}, 
+            },
+            choice2BtnDrawing
+        );
+        this.choice2TitleTile = new Hp.page.Tile(
+            "choice2.title", 
+            {
+                mobile: {x: 13, y: 11, w: 10, h: 2}, 
+                desktop: {x: 14, y: 7, w: 6, h: 6}, 
+            },
+            choice2TitleDrawing
+        );
+        this.choice2SubtitleTile = new Hp.page.Tile(
+            "choice2.subtitle", 
+            {
+                mobile: {x: 13, y: 15, w: 10, h: 1}, 
+                desktop: {x: 14, y: 11, w: 6, h: 1}, 
+            },
+            choice2SubtitleDrawing
+        );
 
         // Adding the timer:
         const timerDrawing = new Hp.render.TextDrawing(self.timeRemainingSec.toString(), {color: midBlue, fontSize: 4});
-        this.timerTile = new Hp.page.Tile("timer", {x: 11, y: 1, w: 2, h: 2}, timerDrawing);
+        this.timerTile = new Hp.page.Tile(
+            "timer", 
+            {
+                mobile: {x: 11, y: 3, w: 2, h: 2}, 
+                desktop: {x: 11, y: 1, w: 2, h: 2}, 
+            },
+            timerDrawing
+        );
         const secLeftDrawing = new Hp.render.TextDrawing("seconds left", {color: skyBlue, fontSize: 2});
-        this.secLeftTile = new Hp.page.Tile("secLeft", {x: 10, y: 3, w: 4, h: 1}, secLeftDrawing);
+        this.secLeftTile = new Hp.page.Tile(
+            "secLeft", 
+            {
+                mobile:{x: 10, y: 5, w: 4, h: 1}, 
+                desktop: {x: 10, y: 3, w: 4, h: 1}, 
+            },
+            secLeftDrawing
+        );
 
         // Adding a scoreboard:
         const scoreboardDrawing = new Hp.render.TextDrawing("Score: 0", {color: darkBlue, fontSize: 2});
-        this.scoreTile = new Hp.page.Tile("score", {x: 20, y: 1, w: 3, h: 2}, scoreboardDrawing);
+        this.scoreTile = new Hp.page.Tile(
+            "score", 
+            {
+                mobile: {x: 13, y: 1, w: 10, h: 2}, 
+                desktop: {x: 20, y: 1, w: 3, h: 2}, 
+            },
+            scoreboardDrawing
+        );
 
         // Adding event handlers:
         self.logoTile.events.click     = function () { document.getElementById("whale-link").click(); };

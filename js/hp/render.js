@@ -5,12 +5,40 @@ if (typeof Hp === "undefined") {
 Hp.render = {
     c2d: null,
     dbgView: false,
-    dbgGridColor: "#555555"
+    dbgGridColor: "#555555",
+    mobileBreakpoint: 750,
+    isMobile: false,
 };
+
+function deviceSizeInfo() {
+    var ratio = window.devicePixelRatio || 1;
+    var is_touch_device = 'ontouchstart' in document.documentElement;
+    var touch_status = (is_touch_device) ? 'touch' : 'no-touch';
+    touch_status = ' ts:' + touch_status;
+    var width_height = 'wh:' + screen.width + 'x' + screen.height;
+    var client_width_height = ' cwh:' + document.documentElement.clientWidth + 'x' + document.documentElement.clientHeight;
+    var rw = screen.width * ratio;
+    var rh = screen.height * ratio;
+    var ratio_width_height = ' r:' + ratio + ' rwh:' + rw + 'x' + rh;
+    var data_string = width_height + client_width_height + ratio_width_height + touch_status;
+
+    return data_string;
+}
 
 Hp.render.resize = function () {
     const pixRatio = window.devicePixelRatio || 1;
     const rect = Hp.canvas.getBoundingClientRect();    // Getting size in CSS pixels
+
+    // Hp.render.isMobile = rect.width <= mobileBreakpoint
+    if (rect.width <= Hp.render.mobileBreakpoint) {
+        if(!Hp.render.isMobile) console.log('mobile view enabled.')
+        Hp.render.isMobile = true;
+    } else {
+        if(Hp.render.isMobile) console.log('mobile view disabled.')
+        Hp.render.isMobile = false;
+    }
+    // console.log(rect.width+"x"+rect.height);
+
     Hp.canvas.width = rect.width * pixRatio;
     Hp.canvas.height = rect.height * pixRatio;
 
