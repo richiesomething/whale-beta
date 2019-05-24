@@ -43,12 +43,22 @@ Hp.page.Page = class {
 Hp.page.Tile = class {
     constructor(name, rect, drawing) {
         this.name    = name;
-        this.rect    = rect;
+        this._rect    = rect;
         this.drawing = drawing;  // Can be null if unwanted.
+        
         this.events = {
             click: function () {},
             hover_on: function () {},
             hover_off: function () {}
+        }
+    }
+    get rect() {
+        if(this._rect.mobile !== undefined && Hp.render.isMobile) {
+            return this._rect.mobile
+        } else if(this._rect.desktop !== undefined) {
+            return this._rect.desktop
+        } else {
+            return this._rect
         }
     }
 };
