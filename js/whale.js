@@ -89,8 +89,11 @@ Whale.GamePage = class extends Hp.page.Page {
         self.iChoice = 0;
 
         self.ended = false;
-        self.score = 0;
-        self.awardPerCorrect = 100;
+        self.score = 0;             // TODO: Read this value from the start message response
+        self.awardPerCorrect = 100; // TODO: Read this value from the start message response
+
+        self.btnNoHoverColor = warmPeach;
+        self.btnHoverColor = faintBlue;
 
         self.iDialogue = 0;
         self.correctDialogueChoices = [
@@ -111,7 +114,6 @@ Whale.GamePage = class extends Hp.page.Page {
 
             // Checking if the choice was correct, and updating the score accordingly:
             self.iDialogue++;
-            console.log(self.choices);
             const choicePair = self.choices[self.iChoice];
             const otherChoiceIndex = (selectedChoiceIndex + 1) % 2;
             if (choicePair[selectedChoiceIndex]["d_cents_pc"] > choicePair[otherChoiceIndex]["d_cents_pc"]) {
@@ -163,14 +165,14 @@ Whale.GamePage = class extends Hp.page.Page {
         this.logoTile = new Hp.page.Tile("whale", {x: 1, y: 1, w: 3, h: 2}, logoDrawing);
 
         // Creating the choice buttons:
-        const choice1BtnDrawing = new Hp.render.CircleDrawing({lineColor: clearColor, fillColor: warmPeach});
+        const choice1BtnDrawing = new Hp.render.CircleDrawing({lineColor: clearColor, fillColor: this.btnNoHoverColor});
         const choice1TitleDrawing = new Hp.render.TextDrawing("CNK", {color: midBlue, fontSize: 2});
         const choice1SubtitleDrawing = new Hp.render.TextDrawing("Cinemark", {color: lowBlue, fontSize: 1});
         this.choice1BtnTile = new Hp.page.Tile("choice1.btn", {x: 5, y: 5, w: 6, h: 10}, choice1BtnDrawing);
         this.choice1TitleTile = new Hp.page.Tile("choice1.text", {x: 5, y: 7, w: 6, h: 6}, choice1TitleDrawing);
         this.choice1SubtitleTile = new Hp.page.Tile("choice2.subtitle", {x: 5, y: 11, w: 6, h: 1}, choice1SubtitleDrawing);
 
-        const choice2BtnDrawing = new Hp.render.CircleDrawing({lineColor: clearColor, fillColor: faintBlue});
+        const choice2BtnDrawing = new Hp.render.CircleDrawing({lineColor: clearColor, fillColor: this.btnNoHoverColor});
         const choice2TitleDrawing = new Hp.render.TextDrawing("NFLX", {color: midBlue, fontSize: 2});
         const choice2SubtitleDrawing = new Hp.render.TextDrawing("Netflix", {color: darkBlue, fontSize: 1});
         this.choice2BtnTile = new Hp.page.Tile("choice2.btn", {x: 14, y: 5, w: 6, h: 10}, choice2BtnDrawing);
@@ -188,6 +190,39 @@ Whale.GamePage = class extends Hp.page.Page {
         this.scoreTile = new Hp.page.Tile("score", {x: 20, y: 1, w: 3, h: 2}, scoreboardDrawing);
 
         // Adding event handlers:
+        function fadeBtnTileColor(btnTile, startColor, endColor, dt, completion) {
+            const blendFactor = Math.sin(Math.PI * completion / 2);
+            btnTile.drawing.fillColor = Hp.render.blend2(startColor, endColor, blendFactor);
+        }
+
+        function btn1HoverOnAnim(dt, completion) {
+            fadeBtnTileColor(self.choice1BtnTile, self.choice1BtnTile.drawing.fillColor, self.btnHoverColor, dt, completion);
+        }
+
+        function btn1HoverOffAnim(dt, completion) {
+            fadeBtnTileColor(self.choice1BtnTile, self.choice1BtnTile.drawing.fillColor, self.btnNoHoverColor, dt, completion);
+        }
+
+        function btn2HoverOnAnim(dt, completion) {
+            fadeBtnTileColor(self.choice2BtnTile, self.choice1BtnTile.drawing.fillColor, self.btnHoverColor, dt, completion);
+        }
+
+        function btn2HoverOffAnim(dt, completion) {
+            fadeBtnTileColor(self.choice2BtnTile, self.choice1BtnTile.drawing.fillColor, self.btnNoHoverColor, dt, completion);
+        }
+
+        /*
+        self.choice1BtnTile.events.hover_on  = function () { Hp.render.animate(btn1HoverOnAnim, 0.5);  };
+        self.choice1BtnTile.events.hover_off = function () { Hp.render.animate(btn1HoverOffAnim, 0.5); };
+        self.choice2BtnTile.events.hover_on  = function () { Hp.render.animate(btn1HoverOnAnim, 0.5);  };
+        self.choice2BtnTile.events.hover_off = function () { Hp.render.animate(btn1HoverOffAnim, 0.5); };
+        */
+
+        self.choice1BtnTile.events.hover_on  = function () {};
+        self.choice1BtnTile.events.hover_off = function () {};
+        self.choice2BtnTile.events.hover_on  = function () {};
+        self.choice2BtnTile.events.hover_off = function () {};
+
         self.logoTile.events.click     = function () { document.getElementById("whale-link").click(); };
         self.logoTile.events.hover_on  = function () { self.logoTile.drawing.color = highBlue; };
         self.logoTile.events.hover_off = function () { self.logoTile.drawing.color = midBlue; };

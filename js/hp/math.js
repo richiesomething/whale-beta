@@ -26,7 +26,7 @@ Hp.math.scaleRectToFitRect = function (innerRect, outerRect) {
 
 Hp.math.collidePointInRect = function (rect, pt) {
     return (pt.x >= rect.x) && (pt.y >= rect.y) &&
-           (pt.x - rect.x <= rect.w) && (pt.y - rect.y <= rect.h);
+           (pt.x - rect.x < rect.w) && (pt.y - rect.y < rect.h);
 };
 
 Hp.math.collideRectInRect = function (a, b) {

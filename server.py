@@ -60,29 +60,34 @@ if __name__ == "__main__":
         # Game (can be moved to a different server for load-balancing!
         #
 
-        app.run(debug=False, host="0.0.0.0")
+        # app.run(debug=False, host="0.0.0.0")
+        app.run(debug=True, host="127.0.0.1")
 
     main()
 
 
 # TODO:
-#  - Write the server-side simulation code.
-#  - Interface with the front-end.
-#  - Fix font block rendering.
+#  - Fix hover-on and hover-off triggers. You can't track grid positions, you need to track active tiles.
 
 # TODO:
-#  - Build a local timer and interpolate with the server.
-#  - Get events (animations) working
-#  - Write tickets for what needs to be done.
-#  - FACTOR HARPOON INTO MULTIPLE MANAGERS. PLEASE. PLEASE PLEASE PLEASE.*
-#  - Round out server code based on what Chris has done.
+#  - Animation:
+#    - Hover colors for choices
+#    - Click animation (feedback)
+#    - Page transitions
+#  - Tracking a user:
+#    - Server/DB integration
+#    - Cookies
+#    - Score persistence (account system)
+#  - Gameplay:
+#    - Two more levels
 
-# TODO: Figure out an event system (animation, input)
-# TODO: Write a simple asset server.
+# Fixes:
+#  - Got 'hover_on' and 'hover_off' working.
 
-# TODO: (minor) set fixed font sizes for font objects
-# TODO: (minor) add mouse-over functionality, change buttons' colors.
-# TODO: (minor) add suffices to denote whether position values are in grid, dip (device independent pixel), or pix form.
+# Tickets:
+#  - Hosting 'getwhaled' for info or correcting the URL the button currently points at.
 
-# TODO: Get from Aviv:
-#  - The image for the speech bubble
+# TODO: (minor)
+#  - Set fixed font sizes for font objects
+#  - Add mouse-over functionality, change buttons' colors.
+#  - Add suffices to denote whether position values are in grid, dip (device independent pixel), or pix form.

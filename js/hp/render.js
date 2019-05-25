@@ -3,9 +3,10 @@ if (typeof Hp === "undefined") {
 }
 
 Hp.render = {
-    c2d: null,
-    dbgView: false,
-    dbgGridColor: "#555555"
+    _c2d: null,
+    _dbgView: true,
+    _dbgGridColor: "#555555",
+    _animList: [],
 };
 
 Hp.render.resize = function () {
@@ -14,13 +15,17 @@ Hp.render.resize = function () {
     Hp.canvas.width = rect.width * pixRatio;
     Hp.canvas.height = rect.height * pixRatio;
 
-    Hp.render.c2d.scale(pixRatio, pixRatio);
-    Hp.render.c2d.clearRect(0, 0, rect.width, rect.height);
+    Hp.render._c2d.scale(pixRatio, pixRatio);
+    Hp.render._c2d.clearRect(0, 0, rect.width, rect.height);
 };
 
 Hp.render.BaseDrawing = class {
+    constructor() {
+        this.style = {};
+    }
+
     _dbgDraw(tile, gridToPixScale, boxColor, lineWidth) {
-        const c2d = Hp.render.c2d;
+        const c2d = Hp.render._c2d;
         const pixRect = {
             x: tile.rect.x * gridToPixScale.x,
             y: tile.rect.y * gridToPixScale.y,
@@ -44,17 +49,17 @@ Hp.render.BaseDrawing = class {
         c2d.fillText(tile.name, pixRect.x + 6 + c2d.measureText(tile.name).width / 2, pixRect.y + 16);
     }
 
+    _getStyleProperty(propertyName, defaultValue) {
+        const styleMap = this.style;
+        if (styleMap.hasOwnProperty(propertyName)) {
+            return styleMap[propertyName];
+        } else {
+            return styleMap[propertyName] = defaultValue;
+        }
+    }
     _draw(pixRect) {}
 
     _update(dtSec) {}
-};
-
-Hp.render._getStyleProperty = function (styleMap, propertyName, defaultValue) {
-    if (styleMap.hasOwnProperty(propertyName)) {
-        return styleMap[propertyName];
-    } else {
-        return styleMap[propertyName] = defaultValue;
-    }
 };
 
 Hp.render.BoxDrawing = class extends Hp.render.BaseDrawing {
@@ -66,9 +71,9 @@ Hp.render.BoxDrawing = class extends Hp.render.BaseDrawing {
             this.style = optStyle;
     }
 
-    get lineColor() { return Hp.render._getStyleProperty(this.style, "lineColor", "#000"); }
-    get fillColor() { return Hp.render._getStyleProperty(this.style, "fillColor", "#fff"); }
-    get lineWidth() { return Hp.render._getStyleProperty(this.style, "lineWidth", 1); }     // In DiPx
+    get lineColor() { return this._getStyleProperty("lineColor", "#000"); }
+    get fillColor() { return this._getStyleProperty("fillColor", "#fff"); }
+    get lineWidth() { return this._getStyleProperty("lineWidth", 1); }     // In DiPx
 
     set lineColor(value) { return this.style.lineColor = value; }
     set fillColor(value) { return this.style.fillColor = value; }
@@ -76,7 +81,7 @@ Hp.render.BoxDrawing = class extends Hp.render.BaseDrawing {
 
     _draw(pixRect) {
         super._draw(pixRect);
-        const c2d = Hp.render.c2d;
+        const c2d = Hp.render._c2d;
 
         // Fill
         c2d.globalAlpha = 1;
@@ -100,14 +105,14 @@ Hp.render.CircleDrawing = class extends Hp.render.BaseDrawing {
             this.style = optStyle;
     }
 
-    get lineColor() { return Hp.render._getStyleProperty(this.style, "lineColor", "#000"); }
-    get fillColor() { return Hp.render._getStyleProperty(this.style, "fillColor", "#fff"); }
+    get lineColor() { return this._getStyleProperty("lineColor", "#000"); }
+    get fillColor() { return this._getStyleProperty("fillColor", "#fff"); }
     set lineColor(value) { return this.style.lineColor = value; }
     set fillColor(value) { return this.style.fillColor = value; }
 
     _draw(pixRect) {
         super._draw(pixRect);
-        const c2d = Hp.render.c2d;
+        const c2d = Hp.render._c2d;
 
         const r = Math.min(pixRect.w, pixRect.h) / 2;
         const c = {
@@ -141,12 +146,12 @@ Hp.render.FrameDrawing = class extends Hp.render.BaseDrawing {
             this.style = optStyle;
     }
 
-    get alpha()      { return Hp.render._getStyleProperty(this.style, "alpha", 1.0); }
+    get alpha()      { return this._getStyleProperty("alpha", 1.0); }
     set alpha(value) { return this.style.alpha = (value < 0 ? 0 : (value > 1 ? 1 : value)); }
 
     _draw(pixRect) {
         super._draw(pixRect);
-        const c2d = Hp.render.c2d;
+        const c2d = Hp.render._c2d;
 
         const drawRect = Hp.math.scaleRectToFitRect(
             {x: 0, y: 0, w: this.image.naturalWidth, h: this.image.naturalHeight},
@@ -167,9 +172,9 @@ Hp.render.MarqueeDrawing = class extends Hp.render.BaseDrawing {
             this.style = optStyle;
     }
 
-    get alpha()  { return Hp.render._getStyleProperty(this.style, "alpha", 1.0); }
-    get offset() { return Hp.render._getStyleProperty(this.style, "offset", 0.0); }
-    get speed()  { return Hp.render._getStyleProperty(this.style, "speed", 60); }   // In DiPx per second
+    get alpha()  { return this._getStyleProperty("alpha", 1.0); }
+    get offset() { return this._getStyleProperty("offset", 0.0); }
+    get speed()  { return this._getStyleProperty("speed", 60); }   // In DiPx per second
 
     set alpha(value)  { return this.style.alpha  = (value < 0 ? 0 : (value > 1 ? 1 : value)); }
     set offset(value) { return this.style.offset = value; }
@@ -183,7 +188,7 @@ Hp.render.MarqueeDrawing = class extends Hp.render.BaseDrawing {
 
     _draw(pixRect) {
         super._draw(pixRect);
-        const c2d = Hp.render.c2d;
+        const c2d = Hp.render._c2d;
 
         const imgW = this.image.naturalWidth;
         const imgH = this.image.naturalHeight;
@@ -217,10 +222,10 @@ Hp.render.TextDrawing = class extends Hp.render.BaseDrawing {
             this.style = optStyle;
     }
 
-    get alpha()    { return Hp.render._getStyleProperty(this.style, "alpha", 1.0); }
-    get color()    { return Hp.render._getStyleProperty(this.style, "color", "#fff"); }
-    get fontName() { return Hp.render._getStyleProperty(this.style, "fontName", "ObjectSans-Regular"); }
-    get fontSize() { return Hp.render._getStyleProperty(this.style, "fontSize", 1); }   // In em
+    get alpha()    { return this._getStyleProperty("alpha", 1.0); }
+    get color()    { return this._getStyleProperty("color", "#fff"); }
+    get fontName() { return this._getStyleProperty("fontName", "ObjectSans-Regular"); }
+    get fontSize() { return this._getStyleProperty("fontSize", 1); }   // In em
 
     set alpha(value)    { return this.style.alpha    = (value < 0 ? 0 : (value > 1 ? 1 : value)); }
     set color(value)    { return this.style.color    = value; }
@@ -229,7 +234,7 @@ Hp.render.TextDrawing = class extends Hp.render.BaseDrawing {
 
     _draw(pixRect) {
         super._draw(pixRect);
-        const c2d = Hp.render.c2d;
+        const c2d = Hp.render._c2d;
 
         c2d.globalAlpha = this.alpha;
         c2d.fillStyle = this.color;
@@ -251,13 +256,13 @@ Hp.render.TextBlockDrawing = class extends Hp.render.BaseDrawing {
         }
     }
 
-    get color()        { return Hp.render._getStyleProperty(this.style, "color", "#000"); }
-    get alpha()        { return Hp.render._getStyleProperty(this.style, "alpha", 1.0); }
-    get fontName()     { return Hp.render._getStyleProperty(this.style, "fontName", "ObjectSans-Regular"); }
-    get fontSize()     { return Hp.render._getStyleProperty(this.style, "fontSize", 1.0); }
-    get lineHeight()   { return Hp.render._getStyleProperty(this.style, "lineHeight", 15.36); }  // DiPx value for 1em
-    get hPadding()     { return Hp.render._getStyleProperty(this.style, "hPadding", 5.0); }      // DiPx
-    get vPadding()     { return Hp.render._getStyleProperty(this.style, "vPadding", 5.0); }      // DiPx
+    get color()        { return this._getStyleProperty("color", "#000"); }
+    get alpha()        { return this._getStyleProperty("alpha", 1.0); }
+    get fontName()     { return this._getStyleProperty("fontName", "ObjectSans-Regular"); }
+    get fontSize()     { return this._getStyleProperty("fontSize", 1.0); }
+    get lineHeight()   { return this._getStyleProperty("lineHeight", 15.36); }  // DiPx value for 1em
+    get hPadding()     { return this._getStyleProperty("hPadding", 5.0); }      // DiPx
+    get vPadding()     { return this._getStyleProperty("vPadding", 5.0); }      // DiPx
 
     set alpha(value)      { return this.style.alpha      = (value < 0 ? 0 : (value > 1 ? 1 : value)); }
     set color(value)      { return this.style.color      = value; }
@@ -270,7 +275,7 @@ Hp.render.TextBlockDrawing = class extends Hp.render.BaseDrawing {
     _draw(pixRect) {
         super._draw(pixRect);
 
-        const c2d = Hp.render.c2d;
+        const c2d = Hp.render._c2d;
 
         // Setting up the draw properties:
         c2d.globalAlpha = this.alpha;
@@ -316,8 +321,8 @@ Hp.render.TextBlockDrawing = class extends Hp.render.BaseDrawing {
 };
 
 Hp.render._init = function (canvas) {
-    Hp.render.c2d = canvas.getContext("2d");
-    if (Hp.render.c2d === null) {
+    Hp.render._c2d = canvas.getContext("2d");
+    if (Hp.render._c2d === null) {
         throw new Hp.Error("Failed to acquire a valid canvas context!");
     }
     Hp.render.resize();
@@ -333,17 +338,26 @@ Hp.render._draw = function (page, dtSec) {
         const tile = page.orderedTileList[iTile];
         tile.drawing._update(dtSec);
     }
+    for (let iAnim = 0; iAnim < Hp.render._animList.length;) {
+        const anim = Hp.render._animList[iAnim];
+        const done = anim.update(dtSec);
+        if (done) {
+            Hp.render._animList = Hp.render._animList.splice(iAnim, 1);
+        } else {
+            iAnim++;
+        }
+    }
 
     // Drawing:
     const canvasSize = Hp.render._canvasSizeDiPx();
 
-    Hp.render.c2d.clearRect(0, 0, canvasSize.x, canvasSize.y);
-    Hp.render.c2d.beginPath();
+    Hp.render._c2d.clearRect(0, 0, canvasSize.x, canvasSize.y);
+    Hp.render._c2d.beginPath();
 
-    Hp.render.c2d.fillStyle = page.bgColor;
-    Hp.render.c2d.fillRect(0, 0, canvasSize.x, canvasSize.y);
+    Hp.render._c2d.fillStyle = page.bgColor;
+    Hp.render._c2d.fillRect(0, 0, canvasSize.x, canvasSize.y);
 
-    if (Hp.render.dbgView) {
+    if (Hp.render._dbgView) {
         Hp.render._drawDbgImp(page);
     } else {
         Hp.render._drawImp(page);
@@ -355,17 +369,17 @@ Hp.render._drawDbgImp = function (page) {
     const tileSize = Hp._currentPageTileSizeDiPx(page);
 
     // Grid
-    this.c2d.strokeStyle = Hp.render.dbgGridColor;
-    this.c2d.beginPath();
+    this._c2d.strokeStyle = Hp.render._dbgGridColor;
+    this._c2d.beginPath();
     for (let ix = 0; ix < page.gridSize.x; ix++) {
-        this.c2d.moveTo(ix * tileSize.x, 0);
-        this.c2d.lineTo(ix * tileSize.x, canvasSize.y);
+        this._c2d.moveTo(ix * tileSize.x, 0);
+        this._c2d.lineTo(ix * tileSize.x, canvasSize.y);
     }
     for (let iy = 0; iy < page.gridSize.y; iy++) {
-        this.c2d.moveTo(0, iy * tileSize.y);
-        this.c2d.lineTo(canvasSize.x, iy * tileSize.y);
+        this._c2d.moveTo(0, iy * tileSize.y);
+        this._c2d.lineTo(canvasSize.x, iy * tileSize.y);
     }
-    this.c2d.stroke();
+    this._c2d.stroke();
 
     // Tiles:
     let boxColorArray = [
@@ -407,4 +421,102 @@ Hp.render._canvasSizeDiPx = function () {
         x: boundingClientRect.width,
         y: boundingClientRect.height
     };
+};
+
+Hp.render.animate = function (fn, durationSec) {
+    Hp.render._animList.push(new Hp.render._Animation(fn, durationSec));
+};
+
+Hp.render._Animation = class {
+    constructor(animFn, durationSec) {
+        this.animFn = animFn;
+        this.netDurationSec = durationSec;
+        this.remDurationSec = durationSec;
+    }
+
+    // Updates the animation, and returns whether the animation is done after this update.
+    update(dtSec) {
+        let deltaSec = 0;
+        let done     = false;
+
+        if (dtSec < this.remDurationSec) {
+            deltaSec = dtSec;
+            done     = false;
+        } else {
+            deltaSec = this.remDurationSec;
+            done     = true;
+        }
+
+        this.remDurationSec -= deltaSec;
+        const completion = (this.netDurationSec - this.remDurationSec) / this.netDurationSec;
+        this.animFn(deltaSec, completion);
+        return done;
+    }
+};
+
+Hp.render._hexToRgba = function (hexColor) {
+    let hexRe = null;
+    let alphaProvided = false;
+    if (hexColor.length - 1 === 6) {
+        // #rrggbb
+        hexRe = /#([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})/;
+        alphaProvided = false;
+    } else if (hexColor.length - 1 === 8) {
+        // #rrggbbaa
+        hexRe = /#([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})([a-fA-F\d]{2})/;
+        alphaProvided = true;
+    } else if (hexColor.length - 1 === 3) {
+        // #rgb
+        hexRe = /#([a-fA-F\d])([a-fA-F\d])([a-fA-F\d])/;
+        alphaProvided = false;
+    } else if (hexColor.length - 1 === 4) {
+        // #rgba
+        hexRe = /#([a-fA-F\d])([a-fA-F\d])([a-fA-F\d])([a-fA-F\d])/;
+        alphaProvided = true;
+    } else {
+        return null;    // Mis-formatted string!
+    }
+
+    const result = hexRe.exec(hexColor);
+    if (result[0] !== hexColor) {
+        return null;    // Mis-formatted string!
+    }
+    return {
+        r: parseInt(result[1], 16) / 255.0,
+        g: parseInt(result[2], 16) / 255.0,
+        b: parseInt(result[3], 16) / 255.0,
+        a: alphaProvided ? parseInt(result[4], 16) / 255.0 : 1.0
+    };
+};
+
+Hp.render._rgbaToHex = function (rgbaColor) {
+    function componentCh(component) {
+        let componentString = Math.floor(255.0 * component).toString(16);
+        while (componentString.length < 2) {
+            componentString = "0" + componentString;
+        }
+        if (componentString.length > 2) {
+            componentString = componentString.substring(componentString.length - 2);
+        }
+        return componentString;
+    }
+    const rCh = componentCh(rgbaColor.r);
+    const gCh = componentCh(rgbaColor.g);
+    const bCh = componentCh(rgbaColor.b);
+    const aCh = componentCh(rgbaColor.a);
+    return "#" + rCh + gCh + bCh + aCh;
+};
+
+// Blends col1 with col2 according to: (x * col1) + ([1 - x] * col2)
+// x is a blend factor between 0 and 1.
+Hp.render.blend2 = function (col1, col2, x) {
+    const c1Rgba = Hp.render._hexToRgba(col1);
+    const c2Rgba = Hp.render._hexToRgba(col2);
+    const product = {
+        r: (c1Rgba.r * x) + (c2Rgba.r * (1 - x)),
+        g: (c1Rgba.g * x) + (c2Rgba.g * (1 - x)),
+        b: (c1Rgba.b * x) + (c2Rgba.b * (1 - x)),
+        a: (c1Rgba.a * x) + (c2Rgba.a * (1 - x)),
+    };
+    return Hp.render._rgbaToHex(product);
 };
