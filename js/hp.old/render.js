@@ -11,9 +11,9 @@ Hp.render = {
 
 Hp.render.resize = function () {
     const pixRatio = window.devicePixelRatio || 1;
-    const rect = Hp.canvas.getBoundingClientRect();    // Getting size in CSS pixels
-    Hp.canvas.width = rect.width * pixRatio;
-    Hp.canvas.height = rect.height * pixRatio;
+    const rect = Hp._canvas.getBoundingClientRect();    // Getting size in CSS pixels
+    Hp._canvas.width = rect.width * pixRatio;
+    Hp._canvas.height = rect.height * pixRatio;
 
     Hp.render._c2d.scale(pixRatio, pixRatio);
     Hp.render._c2d.clearRect(0, 0, rect.width, rect.height);
@@ -33,7 +33,7 @@ Hp.render.BaseDrawing = class {
             h: tile.rect.h * gridToPixScale.y
         };
 
-        // Drawing the original image:
+        // Drawing the original img:
         this._draw(pixRect);
 
         c2d.globalAlpha = 1.0;
@@ -194,7 +194,7 @@ Hp.render.MarqueeDrawing = class extends Hp.render.BaseDrawing {
         const imgH = this.image.naturalHeight;
 
         if (imgW !== 0 && imgH !== 0) {
-            // Scaling the image so it forms a 'pixRect.h'-height ream:
+            // Scaling the img so it forms a 'pixRect.h'-height ream:
             const scaleFactor = pixRect.h / imgH;
             const outW = imgW * scaleFactor;
             const outH = imgH * scaleFactor;
@@ -323,7 +323,7 @@ Hp.render.TextBlockDrawing = class extends Hp.render.BaseDrawing {
 Hp.render._init = function (canvas) {
     Hp.render._c2d = canvas.getContext("2d");
     if (Hp.render._c2d === null) {
-        throw new Hp.Error("Failed to acquire a valid canvas context!");
+        throw new Hp.Error("Failed to acquire a valid _canvas context!");
     }
     Hp.render.resize();
 };
@@ -411,12 +411,12 @@ Hp.render._drawImp = function (page) {
             w: tile.rect.w * tileSize.x,
             h: tile.rect.h * tileSize.y
         };
-        drawing._draw(pixRect);
+        drawing._drawFrame(pixRect);
     }
 };
 
 Hp.render._canvasSizeDiPx = function () {
-    const boundingClientRect = Hp.canvas.getBoundingClientRect();
+    const boundingClientRect = Hp._canvas.getBoundingClientRect();
     return {
         x: boundingClientRect.width,
         y: boundingClientRect.height

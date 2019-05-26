@@ -52,4 +52,3 @@ Hp.page.Tile = class {
         }
     }
 };
-

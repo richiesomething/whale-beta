@@ -11,15 +11,15 @@ Hp.events = {
 
 Hp.events.enableListeners = function () {
     if (Hp.events._onClickListenerHandle === null) {
-        Hp.events._onClickListenerHandle = Hp.canvas.addEventListener(
+        Hp.events._onClickListenerHandle = Hp._canvas.addEventListener(
             "click",
             function (event) {
                 const currentPageTileSizeDiPx = Hp._currentPageTileSizeDiPx();
 
                 // Computing the position of the click:
                 const clickPosPx = {
-                    x: event.pageX - Hp.canvas.offsetLeft,
-                    y: event.pageY - Hp.canvas.offsetTop
+                    x: event.pageX - Hp._canvas.offsetLeft,
+                    y: event.pageY - Hp._canvas.offsetTop
                 };
                 const clickPosTile = {
                     x: Math.floor(clickPosPx.x / currentPageTileSizeDiPx.x),
@@ -40,15 +40,15 @@ Hp.events.enableListeners = function () {
     }
 
     if (Hp.events._onResizeListenerHandle === null) {
-        Hp.canvas._onResizeListenerHandle = window.addEventListener(
+        Hp._canvas._onResizeListenerHandle = window.addEventListener(
             "resize",
             function (e) { Hp.render.resize(); }
         );
     }
 
     if (Hp.events._onMouseMoveListenerHandle === null) {
-        Hp.canvas.onmousemove = function (event) {
-            const canvasRect = Hp.canvas.getBoundingClientRect();
+        Hp._canvas.onmousemove = function (event) {
+            const canvasRect = Hp._canvas.getBoundingClientRect();
             const currentPageTileSizeDiPx = Hp._currentPageTileSizeDiPx();
             const mousePosPx = {
                 x: event.clientX - canvasRect.left,
@@ -90,15 +90,15 @@ Hp.events.enableListeners = function () {
 
 Hp.events.disableListeners = function () {
     if (Hp.events._onClickListenerHandle !== null) {
-        Hp.canvas.removeEventListener(this._onClickListenerHandle);
+        Hp._canvas.removeEventListener(this._onClickListenerHandle);
         Hp.events._onClickListenerHandle = null;
     }
     if (this._onResizeListenerHandle !== null) {
-        Hp.canvas.removeEventListener(this._onResizeListenerHandle);
+        Hp._canvas.removeEventListener(this._onResizeListenerHandle);
         Hp.events._onResizeListenerHandle = null;
     }
     if (this._onMouseMoveListenerHandle !== null) {
-        Hp.canvas.onmousemove = function (e) {};
+        Hp._canvas.onmousemove = function (e) {};
         Hp.events._onMouseMoveListenerHandle = null;
     }
 };

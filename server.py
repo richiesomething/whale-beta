@@ -40,13 +40,13 @@ if __name__ == "__main__":
         def img(res, name):
             if res == "svg":
                 return flask.send_from_directory("img/svg", f"{name}.svg")
-            elif res == "x3":
-                return flask.send_from_directory("img/x3", f"{name}.png")
             elif res == "x1":
                 return flask.send_from_directory("img/x1", f"{name}.png")
-            else:
-                # Default to 2x resolution as a compromise for unknown 'res' strings:
+            elif res == "x2":
                 return flask.send_from_directory("img/x2", f"{name}.png")
+            else:
+                # Default to 3x resolution for unknown 'res' strings:
+                return flask.send_from_directory("img/x3", f"{name}.png")
 
         @app.route("/font/<path:sub_path>")
         def font(sub_path):
@@ -61,7 +61,7 @@ if __name__ == "__main__":
         #
 
         # app.run(debug=False, host="0.0.0.0")
-        app.run(debug=True, host="127.0.0.1")
+        app.run()
 
     main()
 

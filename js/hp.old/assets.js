@@ -3,7 +3,7 @@ if (typeof Hp === "undefined") {
 }
 
 Hp.assets = {
-    _imageCache: {},
+    _assetCache: {},
     _audioCache: {}
 };
 
@@ -18,10 +18,10 @@ Hp.assets.image = function (imageName) {
     }
 
     const imageKey = sizeHint + "/" + imageName;
-    if (Hp.assets._imageCache.hasOwnProperty(imageKey)) {
-        return Hp.assets._imageCache[imageKey];
+    if (Hp.assets._assetCache.hasOwnProperty(imageKey)) {
+        return Hp.assets._assetCache[imageKey];
     } else {
-        const image = Hp.assets._imageCache[imageKey] = new Image();
+        const image = Hp.assets._assetCache[imageKey] = new Image();
         image.src = "img/" + imageKey;
         console.log(image.src);
         return image;

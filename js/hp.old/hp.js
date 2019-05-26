@@ -6,7 +6,7 @@ Hp.gameId = null;   // Will be assigned by the server in HTML
 Hp.roomId = null;   // Will be assigned by the server in HTML
 Hp.playerId = null; // Will be assigned by the server in HTML
 
-Hp.canvas = null;
+Hp._canvas = null;
 Hp.stop = null;
 Hp._currentPage = null;
 
@@ -14,7 +14,7 @@ Hp.init = function (canvasObj) {
     if (Hp.gameId === null || Hp.roomId === null) {
         throw new Hp.Error("A game ID and room ID was not supplied. This is a server error.");
     }
-    Hp.canvas = canvasObj;
+    Hp._canvas = canvasObj;
     Hp.render._init(canvasObj);
     Hp.net._init();
 };
