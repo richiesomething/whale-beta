@@ -342,7 +342,7 @@ Hp.render._draw = function (page, dtSec) {
         const anim = Hp.render._animList[iAnim];
         const done = anim.update(dtSec);
         if (done) {
-            Hp.render._animList = Hp.render._animList.splice(iAnim, 1);
+            Hp.render._animList.splice(iAnim, 1);
         } else {
             iAnim++;
         }

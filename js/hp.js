@@ -4,7 +4,7 @@ const Hp = {};
 // Debug and error handling:
 //
 
-Hp._dbg = true;
+Hp._dbg = false;
 Hp._dbgGridColor = "#444";
 
 Hp.errorFlag = false;
@@ -256,6 +256,10 @@ Hp.Page = class extends Hp.BaseStyled {
     addBtnTile(name, rect, optStyle) {
         return this._addTile(new Hp._BtnTile(this, name, rect, optStyle));
     }
+
+    addMaskTile(name, rect, optStyle) {
+        return this._addTile(new Hp._MaskTile(this, name, rect, optStyle));
+    }
 };
 
 Hp._BaseTile = class extends Hp.BaseStyled {
@@ -264,9 +268,15 @@ Hp._BaseTile = class extends Hp.BaseStyled {
         this.page = page;
         this.name = name;
         this.tileRect = rect;
+        this._onDrawCbList = [];
     }
 
-    draw(deltaSec) {}
+    draw(deltaSec) {
+        for (let i = 0; i < this._onDrawCbList.length; i++) {
+            const drawCb = this._onDrawCbList[i];
+            drawCb(this, deltaSec);
+        }
+    }
 
     drawDbgOverlay(color) {
         const ctx = Hp._context;
@@ -284,6 +294,21 @@ Hp._BaseTile = class extends Hp.BaseStyled {
         ctx.font = "1em monospace";
         ctx.fillText(this.name, pixRect.x + 6 + ctx.measureText(this.name).width / 2, pixRect.y + 16);
     }
+
+    addDrawCb(drawCb) {
+        this._onDrawCbList.push(drawCb);
+        return drawCb;
+    }
+
+    remDrawCb(drawCb) {
+        for (let i = 0; i < this._onDrawCbList.length; i++) {
+            const checkDrawCb = this._onDrawCbList[i];
+            if (checkDrawCb === drawCb) {
+                this._onDrawCbList.splice(i, 1);
+                break;
+            }
+        }
+    }
 };
 
 Hp._BoxTile = class extends Hp._BaseTile {
@@ -293,6 +318,7 @@ Hp._BoxTile = class extends Hp._BaseTile {
         if (typeof optStyle === "undefined")
             optStyle = {};
 
+        this.loadStyleProperty("alpha", optStyle, 1.0);
         this.loadStyleProperty("lineColor", optStyle, "#000");
         this.loadStyleProperty("fillColor", optStyle, "#fff");
         this.loadStyleProperty("lineWidth", optStyle, 1.0);
@@ -301,7 +327,7 @@ Hp._BoxTile = class extends Hp._BaseTile {
     draw(deltaSec) {
         super.draw(deltaSec);
         const pixRect = this.page.tileRectToPixRect(this.tileRect);
-        Hp._drawBox(pixRect, this.style.fillColor, this.style.lineColor, this.style.lineWidth);
+        Hp._drawBox(pixRect, this.style.fillColor, this.style.lineColor, this.style.lineWidth, this.style.alpha);
     }
 };
 
@@ -442,7 +468,7 @@ Hp._BtnTile = class extends Hp._BaseTile {
 
         // These are get/set properties meant to be mutated, much like the 'style' properties:
         this.clickCb = null;
-        this.disableClicks = false;
+        this.disabled = false;
 
         // Setting up style properties:
         if (typeof optStyle === "undefined")
@@ -474,7 +500,7 @@ Hp._BtnTile = class extends Hp._BaseTile {
         this._hoverState = false;
 
         this._currentAnim = "none";
-        this._secSinceAnimStart = 0;
+        this._animElapsedSec = 0;
 
         this._active_fillColor = this.style.fillColor;
         this._active_lineColor = this.style.lineColor;
@@ -489,34 +515,34 @@ Hp._BtnTile = class extends Hp._BaseTile {
         const pixRect = this.page.tileRectToPixRect(this.tileRect);
 
         // Updating the animation:
-        this._secSinceAnimStart += deltaSec;
+        this._animElapsedSec += deltaSec;
 
         if (this._currentAnim === "hover.fade-in") {
-            const animProgressCoefficient = this._secSinceAnimStart / this.style.hover_fadeInDurationSec;
+            const animProgressCoefficient = this._animElapsedSec / this.style.hover_fadeInDurationSec;
             if (animProgressCoefficient < 1) {
-                this._active_fillColor = Hp._blendColor2(this.style.hover_fillColor, this.style.fillColor,
+                this._active_fillColor = Hp.blendColor2(this.style.hover_fillColor, this.style.fillColor,
                                                          animProgressCoefficient);
-                this._active_lineColor = Hp._blendColor2(this.style.hover_lineColor, this.style.lineColor,
+                this._active_lineColor = Hp.blendColor2(this.style.hover_lineColor, this.style.lineColor,
                                                          animProgressCoefficient);
             } else {
                 this._active_fillColor = this.style.hover_fillColor;
                 this._active_lineColor = this.style.hover_lineColor;
                 this._currentAnim = "none";
-                this._secSinceAnimStart = 0;
+                this._animElapsedSec = 0;
             }
         }
         if (this._currentAnim === "hover.fade-out") {
-            const animProgressCoefficient = this._secSinceAnimStart / this.style.hover_fadeOutDurationSec;
+            const animProgressCoefficient = this._animElapsedSec / this.style.hover_fadeOutDurationSec;
             if (animProgressCoefficient < 1) {
-                this._active_fillColor = Hp._blendColor2(this.style.fillColor, this.style.hover_fillColor,
+                this._active_fillColor = Hp.blendColor2(this.style.fillColor, this.style.hover_fillColor,
                                                          animProgressCoefficient);
-                this._active_lineColor = Hp._blendColor2(this.style.lineColor, this.style.hover_lineColor,
+                this._active_lineColor = Hp.blendColor2(this.style.lineColor, this.style.hover_lineColor,
                                                          animProgressCoefficient);
             } else {
                 this._active_fillColor = this.style.fillColor;
                 this._active_lineColor = this.style.lineColor;
                 this._currentAnim = "none";
-                this._secSinceAnimStart = 0;
+                this._animElapsedSec = 0;
             }
         }
 
@@ -531,16 +557,16 @@ Hp._BtnTile = class extends Hp._BaseTile {
                 preClickLineColor = this.style.lineColor;
             }
 
-            const animProgressCoefficient = this._secSinceAnimStart / this.style.click_fadeInDurationSec;
+            const animProgressCoefficient = this._animElapsedSec / this.style.click_fadeInDurationSec;
             if (animProgressCoefficient < 1) {
-                this._active_fillColor = Hp._blendColor2(this.style.click_fillColor, preClickFillColor,
+                this._active_fillColor = Hp.blendColor2(this.style.click_fillColor, preClickFillColor,
                                                          animProgressCoefficient);
-                this._active_lineColor = Hp._blendColor2(this.style.click_lineColor, preClickLineColor,
+                this._active_lineColor = Hp.blendColor2(this.style.click_lineColor, preClickLineColor,
                                                          animProgressCoefficient);
             } else {
                 // Transitioning to the 'hold' state:
                 this._currentAnim = "click.hold";
-                this._secSinceAnimStart -= this.style.click_fadeInDurationSec;
+                this._animElapsedSec -= this.style.click_fadeInDurationSec;
 
                 // This is against 'good coding practices', but the following is the drawing code for the 'hold'
                 // animation. We only do it once at the state transition, as opposed to every frame:
@@ -549,11 +575,11 @@ Hp._BtnTile = class extends Hp._BaseTile {
             }
         }
         if (this._currentAnim === "click.hold") {
-            const animProgressCoefficient = this._secSinceAnimStart / this.style.click_holdColorDurationSec;
+            const animProgressCoefficient = this._animElapsedSec / this.style.click_holdColorDurationSec;
             if (animProgressCoefficient >= 1) {
                 // Transitioning to the 'fade-out' state:
                 this._currentAnim = "click.fade-out";
-                this._secSinceAnimStart -= this.style.click_holdColorDurationSec;
+                this._animElapsedSec -= this.style.click_holdColorDurationSec;
             }
         }
         if (this._currentAnim === "click.fade-out") {
@@ -567,16 +593,16 @@ Hp._BtnTile = class extends Hp._BaseTile {
                 preClickLineColor = this.style.lineColor;
             }
 
-            const animProgressCoefficient = this._secSinceAnimStart / this.style.click_fadeOutDurationSec;
+            const animProgressCoefficient = this._animElapsedSec / this.style.click_fadeOutDurationSec;
             if (animProgressCoefficient < 1) {
-                this._active_fillColor = Hp._blendColor2(preClickFillColor, this.style.click_fillColor,
+                this._active_fillColor = Hp.blendColor2(preClickFillColor, this.style.click_fillColor,
                                                          animProgressCoefficient);
-                this._active_lineColor = Hp._blendColor2(preClickLineColor, this.style.click_lineColor,
+                this._active_lineColor = Hp.blendColor2(preClickLineColor, this.style.click_lineColor,
                                                          animProgressCoefficient);
             } else {
                 // Transitioning to the 'none' state:
                 this._currentAnim = "none";
-                this._secSinceAnimStart = 0;
+                this._animElapsedSec = 0;
                 this._active_fillColor = preClickFillColor;
                 this._active_lineColor = preClickLineColor;
             }
@@ -612,6 +638,11 @@ Hp._BtnTile = class extends Hp._BaseTile {
 };
 
 Hp._BtnTile._onMouseMove = function (self, mousePos) {
+    if (self.disabled) {
+        self._hoverState = false;
+        return;
+    }
+
     const hoverState = self._collidePtInBtn(mousePos);
 
     // If the new hover state differs from the old hover state, we want to play a smooth animation to transition
@@ -623,13 +654,13 @@ Hp._BtnTile._onMouseMove = function (self, mousePos) {
         // The hover animation cannot interrupt ongoing click animations:
         if (!self._currentAnim.startsWith("click")) {
             self._currentAnim = hoverState ? "hover.fade-in" : "hover.fade-out";
-            self._secSinceAnimStart = 0;
+            self._animElapsedSec = 0;
         }
     }
 };
 
 Hp._BtnTile._onClick = function (self, mousePos) {
-    if (self.disableClicks) {
+    if (self.disabled) {
         return;
     }
 
@@ -639,7 +670,7 @@ Hp._BtnTile._onClick = function (self, mousePos) {
     if (self._clickState) {
         // The click animation interrupts all other animations.
         self._currentAnim = "click.fade-in";
-        self._secSinceAnimStart = 0;
+        self._animElapsedSec = 0;
 
         // Calling the user 'clickCb' handle if supplied:
         if (self.clickCb !== null) {
@@ -648,16 +679,86 @@ Hp._BtnTile._onClick = function (self, mousePos) {
     }
 };
 
-Hp._drawBox = function (pixRect, fillColor, lineColor, lineWidth) {
+Hp._MaskTile = class extends Hp._BaseTile {
+    constructor(page, name, rect, optStyle) {
+        super(page, name, rect);
+
+        this.onFadeInCompleteCb = null;
+        this.onFadeOutCompleteCb = null;
+
+        if (typeof optStyle === "undefined") {
+            optStyle = {};
+        }
+
+        this.loadStyleProperty("color", optStyle, "#fff");
+        this.loadStyleProperty("fadeInDurationSec", optStyle, 1.0);
+        this.loadStyleProperty("fadeOutDurationSec", optStyle, 1.0);
+
+        this._animState = "none";
+        this._animElapsedSec = 0;
+        this._maskAlpha = 0;
+    }
+
+    fadeIn() {
+        this._animState = "fade-in";
+        this._animElapsedSec = 0;
+    }
+
+    fadeOut() {
+        this._animState = "fade-out";
+        this._animElapsedSec = 0;
+    }
+
+    draw(deltaSec) {
+        super.draw(deltaSec);
+
+        this._animElapsedSec += deltaSec;
+        if (this._animState === "fade-in") {
+            const animProgress = this._animElapsedSec / this.style.fadeInDurationSec;
+            if (animProgress < 1) {
+                this._maskAlpha = animProgress;
+            } else {
+                this._maskAlpha = 1;
+                this._animState = "none";
+                this._animElapsedSec = 0;
+
+                if (this.onFadeInCompleteCb !== null) {
+                    this.onFadeInCompleteCb();
+                }
+            }
+        }
+        else if (this._animState === "fade-out") {
+            const animProgress = this._animElapsedSec / this.style.fadeOutDurationSec;
+            if (animProgress < 1) {
+                this._maskAlpha = 1 - animProgress;
+            } else {
+                this._maskAlpha = 0;
+                this._animState = "none";
+                this._animElapsedSec = 0;
+
+                if (this.onFadeOutCompleteCb !== null) {
+                    this.onFadeOutCompleteCb();
+                }
+            }
+        }
+
+        const pixRect = this.page.tileRectToPixRect(this.tileRect);
+        Hp._drawBox(pixRect, this.style.color, this.style.color, 0, this._maskAlpha);
+    }
+};
+
+// Drawing helpers:
+
+Hp._drawBox = function (pixRect, fillColor, lineColor, lineWidth, alpha) {
     const ctx = Hp._context;
 
     // Fill
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = alpha;
     ctx.fillStyle = fillColor;
     ctx.fillRect(pixRect.x, pixRect.y, pixRect.w, pixRect.h);
 
     // Outline
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = alpha;
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = lineWidth;
     ctx.strokeRect(pixRect.x, pixRect.y, pixRect.w, pixRect.h);
@@ -722,6 +823,10 @@ Hp.sendMessage = function (event, optData, optCallback) {
     xhr.open("POST", Hp._serverUrl, true);    // Async!
     xhr.send(dataStr);
 
+    if (typeof optCallback === "undefined") {
+        optCallback = function (ok, data) {};
+    }
+
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status >= 200 && xhr.status < 300) {
@@ -753,6 +858,15 @@ Hp.loadImg = function (imageName) {
         image.src = imageKey;
         console.log(image.src);
         return image;
+    }
+};
+
+Hp.loadAudio = function (assetName) {
+    const audioKey = "/audio/" + assetName;
+    if (Hp._assetCache.hasOwnProperty(audioKey)) {
+        return Hp._assetCache[audioKey];
+    } else {
+        return Hp._assetCache[audioKey] = new Audio(audioKey);
     }
 };
 
@@ -869,7 +983,7 @@ Hp._rgbaToHexColor = function (rgbaColor) {
 
 // Blends col1 with col2 according to: (x * col1) + ([1 - x] * col2)
 // x is a blend factor between 0 and 1.
-Hp._blendColor2 = function (col1, col2, x) {
+Hp.blendColor2 = function (col1, col2, x) {
     const c1Rgba = Hp._hexToRgbaColor(col1);
     const c2Rgba = Hp._hexToRgbaColor(col2);
     const product = {
@@ -913,5 +1027,24 @@ Hp._subscribeEvent = function (eventName, handler) {
     }
 };
 
-// TODO: Subscribe to mouseover and click events through the page, which converts raw pixel coordinates into grid
-//  coordinates and forwards the message to any tiles.
+//
+// Audio:
+//
+
+Hp.playAudio = function (audioAsset) {
+    Hp.stopAudio(audioAsset);
+    audioAsset.currentTime = 0;
+    audioAsset.play();
+};
+
+Hp.playAudioLoop = function (audioAsset) {
+    Hp.playAudio(audioAsset);
+    audioAsset.addEventListener('ended', function() {
+        Hp.playAudio(audioAsset);
+    }, false);
+};
+
+Hp.stopAudio = function (audioAsset) {
+    audioAsset.pause();
+    audioAsset.currentTime = 0;
+};

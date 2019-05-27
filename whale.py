@@ -96,7 +96,7 @@ class Player(hp.Player):
         self.start_client_mono_time_sec = None
         self.start_server_mono_time_sec = None
         self.game_duration_sec = None
-        self.generated_choices = None
+        self.generated_questions = None
         self.score = 0
 
         self.latency_epsilon_sec = 1.0  # The amount of extra time to wait after a game ends for packets.
@@ -110,9 +110,9 @@ class Player(hp.Player):
         self.start_client_mono_time_sec = client_mono_time_sec
         self.start_server_mono_time_sec = time.monotonic()
         self.game_duration_sec = 30.0
-        self.generated_choices = gen_stock_data_for_player()
+        self.generated_questions = gen_stock_data_for_player()
 
-        return hp.result({"game_duration_sec": self.game_duration_sec, "choices": self.generated_choices})
+        return hp.result({"game_duration_sec": self.game_duration_sec, "question_list": self.generated_questions})
 
     def choice(self, client_mono_time_sec, event_data):
         if self.state != State.Started:
@@ -122,13 +122,13 @@ class Player(hp.Player):
             self.state = State.Finished
             return hp.result({"reason": "This game has expired"}, ok=False)
 
-        choice_index = int(event_data["choice_index"])
-        if choice_index + 1 == len(self.generated_choices):
+        question_index = int(event_data["question_index"])
+        if question_index + 1 == len(self.generated_questions):
             self.state = State.Finished
 
-        selected_choice_index = int(event_data["selected_choice"])
-        choices = self.generated_choices[choice_index]
-        if choices[selected_choice_index]["d_cents_pc"] > choices[(selected_choice_index + 1) % 2]["d_cents_pc"]:
+        answer_index = int(event_data["answer_index"])
+        choices = self.generated_questions[question_index]
+        if choices[answer_index]["d_cents_pc"] > choices[(answer_index + 1) % 2]["d_cents_pc"]:
             score_reward = 100
         else:
             score_reward = 0

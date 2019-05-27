@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
         @app.route("/audio/<path:sub_path>")
         def audio(sub_path):
-            return flask.send_from_directory("audio/", sub_path)
+            return flask.send_from_directory("audio", sub_path + ".ogg")
 
         #
         # Game (can be moved to a different server for load-balancing!
@@ -89,8 +89,8 @@ if __name__ == "__main__":
 #  - Add mouse-over functionality, change buttons' colors.
 #  - Add suffices to denote whether position values are in grid, dip (device independent pixel), or pix form.
 
-# Get choices from the server again
-# Dynamically lay out choices based on how many there are. Try making them of fixed height.
+# Get questionList from the server again
+# Dynamically lay out questionList based on how many there are. Try making them of fixed height.
 # Set the 'click' colors from the server based on which choice is correct.
-# Add an animation for instructions before choices appear.
+# Add an animation for instructions before questionList appear.
 

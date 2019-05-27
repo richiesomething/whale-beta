@@ -21,7 +21,7 @@ Whale.start = function () {
                 if (!success) {
                     throw new Hp.Error("Failed to contact the server. Is your internet connection faulty?");
                 }
-                Hp.currentPage(new Whale.GamePage(response["game_duration_sec"], response["choices"]));
+                Hp.currentPage(new Whale.GamePage(response["game_duration_sec"], response["questionList"]));
                 Hp.start();
             }
         );
@@ -37,47 +37,6 @@ Whale.start = function () {
 
 Whale.Message = {};
 
-Whale.StartPage = class extends Hp.page.Page {
-    constructor() {
-        super("Whale.StartPage", "#ffffff", {x: 4, y: 12});
-        const self = this;
-
-        const welcomeDrawing = new Hp.render.TextDrawing("Welcome to Whale!", {color: darkBlue, fontSize: 4});
-        self.welcomeTile = new Hp.page.Tile("welcome", {x: 1, y: 1, w: 2, h: 1}, welcomeDrawing);
-
-        const text = "Whale is a game about shares. When companies need to raise money, they may sell portions of " +
-                     "themselves, or 'shares', to the public. These 'shareholders' are entitled to a share of the " +
-                     "company's future earnings and a say in its important decisions. They are also entitled to " +
-                     "sell their shares to others.\n" +
-                     "Healthy companies' shares generate more money, so they are in higher demand, and thus " +
-                     "command a higher price in the market. Shareholders around the world place careful bets every " +
-                     "day, speculating about the prices of shares by tracking the news.\n" +
-                     "Whale keeps you on the pulse of these companies' shares in a fun and engaging way.\n" +
-                     "Ready?";
-        const textDrawing = new Hp.render.TextBlockDrawing(text, {color: black, fontSize: 1.25, fontName: "Times New Roman", lineHeight: 40});
-        self.textTile = new Hp.page.Tile("text", {x: 1, y: 3, w: 2, h: 6}, textDrawing);
-
-        const startTextDrawing = new Hp.render.TextDrawing("Loading...", {color: white, fontSize: 2});
-        const startBtnDrawing = new Hp.render.BoxDrawing({fillColor: darkGray});
-        self.startTextTile = new Hp.page.Tile("start.text", {x: 1, y: 9, w: 2, h: 2}, startTextDrawing);
-        self.startBtnTile = new Hp.page.Tile("start.btn", {x: 1, y: 9, w: 2, h: 2}, startBtnDrawing);
-    }
-
-    load() {
-        super.load();
-        this.addTopTile(this.welcomeTile);
-        this.addTopTile(this.textTile);
-
-        this.addTopTile(this.startBtnTile);
-        this.addTopTile(this.startTextTile);
-    }
-
-    unload() {
-        super.unload();
-        this.remAllTiles();
-    }
-};
-
 Whale.GamePage = class extends Hp.page.Page {
     constructor(gameDurationSec, choices) {
         super("Whale.GamePage", "#ffffff", {x: 24, y: 24});
@@ -85,7 +44,7 @@ Whale.GamePage = class extends Hp.page.Page {
 
         self.gameDurationSec = gameDurationSec;
         self.timeRemainingSec = self.gameDurationSec;
-        self.choices = choices;
+        self.questionList = choices;
         self.iChoice = 0;
 
         self.ended = false;
@@ -322,7 +281,7 @@ Whale.GamePage = class extends Hp.page.Page {
         self.secLeftTile.drawing.text = "";
 
         self.speechTextTile.drawing.text = "All done! You got " + Math.floor(self.score / self.awardPerCorrect) +
-                                           " questions right of " + self.choices.length.toString() + ".";
+                                           " questionList right of " + self.choices.length.toString() + ".";
 
         Hp.audio.stop(self.tickTickAudio);
 
