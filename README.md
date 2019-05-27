@@ -1,5 +1,5 @@
-# Whale-FE
-*Name still WIP*
+# Whale
+*Now with WHALE-PHYSICS*
 
 This subdirectory has the following for "Whale" to work:
 - Front-end
