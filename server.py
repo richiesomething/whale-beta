@@ -67,11 +67,7 @@ if __name__ == "__main__":
 
 
 # TODO:
-#  - Fix hover-on and hover-off triggers. You can't track grid positions, you need to track active tiles.
-
-# TODO:
 #  - Animation:
-#    - Hover colors for choices
 #    - Click animation (feedback)
 #    - Page transitions
 #  - Tracking a user:
@@ -82,7 +78,8 @@ if __name__ == "__main__":
 #    - Two more levels
 
 # Fixes:
-#  - Got 'hover_on' and 'hover_off' working.
+#  - Got 'hover_on' and 'hover_off' working with correct hit-boxes.
+#  - Refactored code and API.
 
 # Tickets:
 #  - Hosting 'getwhaled' for info or correcting the URL the button currently points at.
@@ -91,3 +88,9 @@ if __name__ == "__main__":
 #  - Set fixed font sizes for font objects
 #  - Add mouse-over functionality, change buttons' colors.
 #  - Add suffices to denote whether position values are in grid, dip (device independent pixel), or pix form.
+
+# Get choices from the server again
+# Dynamically lay out choices based on how many there are. Try making them of fixed height.
+# Set the 'click' colors from the server based on which choice is correct.
+# Add an animation for instructions before choices appear.
+

@@ -29,7 +29,7 @@ Hp.events.enableListeners = function () {
                 // Iterating through each tile on the page and checking if it was clicked:
                 for (let iTile = 0; iTile < Hp.currentPage().orderedTileList.length; iTile++) {
                     const tile = Hp.currentPage().orderedTileList[iTile];
-                    if (Hp.math.collidePointInRect(tile.rect, clickPosTile)) {
+                    if (Hp.math.collidePointInRect(tile.tileRect, clickPosTile)) {
                         if (tile.events.hasOwnProperty("click")) {
                             tile.events.click(tile);
                         }
@@ -64,7 +64,7 @@ Hp.events.enableListeners = function () {
                 // Updating all tiles that just lost their hover:
                 for (let iTile = 0; iTile < Hp.currentPage().orderedTileList.length; iTile++) {
                     const tile = Hp.currentPage().orderedTileList[iTile];
-                    if (Hp.math.collidePointInRect(tile.rect, Hp.events._prevMouseGridPos)) {
+                    if (Hp.math.collidePointInRect(tile.tileRect, Hp.events._prevMouseGridPos)) {
                         if (tile.events.hasOwnProperty("hover_off")) {
                             tile.events.hover_off(tile);
                         }
@@ -75,7 +75,7 @@ Hp.events.enableListeners = function () {
                 // Triggering a hover for all tiles under the new cursor grid position:
                 for (let iTile = 0; iTile < Hp.currentPage().orderedTileList.length; iTile++) {
                     const tile = Hp.currentPage().orderedTileList[iTile];
-                    if (Hp.math.collidePointInRect(tile.rect, mousePosTile)) {
+                    if (Hp.math.collidePointInRect(tile.tileRect, mousePosTile)) {
                         if (tile.events.hasOwnProperty("hover_on")) {
                             console.log("Hover on: " + tile.name);
                             tile.events.hover_on(tile);

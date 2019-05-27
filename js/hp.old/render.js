@@ -27,10 +27,10 @@ Hp.render.BaseDrawing = class {
     _dbgDraw(tile, gridToPixScale, boxColor, lineWidth) {
         const c2d = Hp.render._c2d;
         const pixRect = {
-            x: tile.rect.x * gridToPixScale.x,
-            y: tile.rect.y * gridToPixScale.y,
-            w: tile.rect.w * gridToPixScale.x,
-            h: tile.rect.h * gridToPixScale.y
+            x: tile.tileRect.x * gridToPixScale.x,
+            y: tile.tileRect.y * gridToPixScale.y,
+            w: tile.tileRect.w * gridToPixScale.x,
+            h: tile.tileRect.h * gridToPixScale.y
         };
 
         // Drawing the original img:
@@ -406,10 +406,10 @@ Hp.render._drawImp = function (page) {
         let drawing = tile.drawing;
 
         let pixRect = {
-            x: tile.rect.x * tileSize.x,
-            y: tile.rect.y * tileSize.y,
-            w: tile.rect.w * tileSize.x,
-            h: tile.rect.h * tileSize.y
+            x: tile.tileRect.x * tileSize.x,
+            y: tile.tileRect.y * tileSize.y,
+            w: tile.tileRect.w * tileSize.x,
+            h: tile.tileRect.h * tileSize.y
         };
         drawing._drawFrame(pixRect);
     }
