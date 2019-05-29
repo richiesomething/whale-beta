@@ -2,9 +2,11 @@ import os
 import sys
 import sqlite3
 import time
+import json
 from threading import Lock
 
-user = {}
+_PROCESSOR = { }
+
 _SCHEMA = {
   'users': [
     ('id', 'integer primary key autoincrement'),
@@ -55,27 +57,61 @@ _SCHEMA = {
   ]
 }
 
-g_db_count = 0
-g_lock = Lock()
-
+_dbcount = 0
+_lock = Lock()
+_log = False
 
 def _checkForTable(what):
   global _SCHEMA
   if what not in _SCHEMA:
     raise Exception("Table {} not found".format(what))
 
+def process(res, table, what):
+  if table in _PROCESSOR:
+    unwrap = False
+    if type(res) is not list:
+      unwrap = True
+      res = [ res ]
+     
+    for ix, row in enumerate(res):
+      if row:
+        # The SQLITE3.ROW type is immutable so
+        # we need to convert it to a dict in order
+        # to get it back to our user
+        row = dict(row)
+        for k, v in _PROCESSOR[table].items():
+          # If a pre/post is defined for this key
+          # on this table then we do it
+          if v[what]:
+            row[k] = v[what](row[k], row)
+
+        res[ix] = row
+
+    if unwrap:
+      res = res[0]
+  
+  return res
+
+def get(table, id = False):
+  _checkForTable(table)
+
+  res = run("select * from {} where id = ?".format(table), (id, ))
+
+  if res:
+    return process(res.fetchone(), table, 'post')
+
 
 def run(query, args=None, with_last=False, db=None):
-  global g_lock
+  global _lock
   start = time.time()
   """
   if args is None:
-  print "%d: %s" % (g_db_count, query)
+  print "%d: %s" % (_dbcount, query)
   else:
-  $print "%d: %s (%s)" % (g_db_count, query, ', '.join([str(m) for m in args]))
+  $print "%d: %s (%s)" % (_dbcount, query, ', '.join([str(m) for m in args]))
   """
 
-  g_lock.acquire()
+  _lock.acquire()
   if db is None:
     db = connect()
 
@@ -97,7 +133,7 @@ def run(query, args=None, with_last=False, db=None):
     raise exc
 
   finally:
-    g_lock.release()
+    _lock.release()
 
   if with_last:
     return (res, last)
@@ -170,7 +206,7 @@ def connect(db_file=None):
   # A "singleton pattern" or some other fancy $10-world style of maintaining
   # the database connection throughout the execution of the script.
   # Returns the database instance.
-  global g_db_count
+  global _dbcount
 
   if not db_file:
     db_file = 'db/trades.db'
@@ -194,7 +230,7 @@ def connect(db_file=None):
     'c': conn.cursor()
   })
 
-  if db_file == 'db/trades.db' and g_db_count == 0:
+  if db_file == 'db/trades.db' and _dbcount == 0:
 
     for table, schema in list(_SCHEMA.items()):
       dfn = ','.join(["%s %s" % (key, klass) for key, klass in schema])
@@ -203,7 +239,7 @@ def connect(db_file=None):
 
     instance['conn'].commit()
 
-  g_db_count += 1
+  _dbcount += 1
 
   return instance
 
@@ -225,11 +261,24 @@ def _insert(table, data):
 
   return [
     'insert into {}({}) values({})'.format(
-      table,
-      key_string,
-      value_string),
+    table,
+    key_string,
+    value_string),
     shared_keys,
     toInsert]
+
+def upsert(table, data):
+  qstr, key_list, values = _insert(table, data)
+  update_list = ["{}=?".format(key) for key in key_list]
+
+  qstr += "on conflict(id) do update set {}".format(','.join(update_list))
+
+  try:
+    res, last = run(qstr, values + values, with_last = True)
+    return last
+
+  except:
+    _log.warn("Unable to upsert a record {}".format(','.join([str(x) for x in values])))
 
 
 def insert(table, data):
@@ -239,6 +288,6 @@ def insert(table, data):
     res, last = run(qstr, values, with_last=True)
 
   except BaseException:
-    print(["Unable to insert a record", qstr, values])
+    _log.warn("Unable to insert a record {}: {}".format(qstr, json.stringify(values)))
 
   return last
