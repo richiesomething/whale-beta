@@ -2,16 +2,22 @@
 
 import flask
 from flask_cors import CORS
-from objects import robin, user
+from objects import robin, user, db
 
+import logging
 import hp
 import whale
-import flask_login
+from flask_login import current_user, login_user, logout_user
 
 
 app = flask.Flask(__name__)
 app.secret_key = 'hT0yRAvrQcGbKbJkVE3kAw'
 CORS(app)
+
+FORMAT = '%(asctime)-15s %(message)s'
+logging.basicConfig(format=FORMAT, level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+db.set_log(logger)
 
 hp_server = hp.Server()
 whale_game = hp.Game("whale", whale.Room)
@@ -91,7 +97,21 @@ def load_user(user_id):
 
 @app.route("/register", methods=['PUT', 'POST'])
 def register():
-  pass
+  """
+  Mostly jacked from https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins
+  """
+  if current_user.is_authenticated:
+    pass
+  else:
+    # Todo: get the form
+    # form = RegistrationForm()
+    # if form.validate_on_submit():
+
+    user = User(email)
+    user.set_password(password)
+      flash('Congratulations, you are now a registered user!')
+      return redirect(url_for('login'))
+  return render_template('register.html', title='Register', form=form)
 
 @app.route("/login", methods=['PUT', 'POST'])
 def login():
@@ -100,7 +120,7 @@ def login():
 @app.route("/logout", methods=['PUT', 'POST'])
 @login_required
 def logout():
-  flask_login.logout_user()
+  logout_user()
   return success('logged out')
 
 login_manager.init_app(app)
