@@ -84,15 +84,15 @@ def yesterday():
 
 # }} //Stock Stuff
 
-@app.route("/register", methods=['PUT', 'POST']))
+@app.route("/register", methods=['PUT', 'POST'])
 def register():
   pass
 
-@app.route("/login", methods=['PUT', 'POST']))
+@app.route("/login", methods=['PUT', 'POST'])
 def login():
   pass
 
-@app.route("/logout", methods=['PUT', 'POST']))
+@app.route("/logout", methods=['PUT', 'POST'])
 def logout():
   pass
 
