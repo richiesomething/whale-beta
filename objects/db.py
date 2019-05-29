@@ -8,6 +8,9 @@ user = {}
 _SCHEMA = {
   'users': [
     ('id', 'integer primary key autoincrement'),
+    # this bizarre second id is needed for flask-login, see
+    # https://flask-login.readthedocs.io/en/0.4.1/ for the proofs.
+    ('user_id', 'text unique'),
     ('email', 'text unique'),
     ('password', 'text'),
     ('score', 'integer default 0'),

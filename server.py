@@ -2,10 +2,11 @@
 
 import flask
 from flask_cors import CORS
-from stocks import robin
+from objects import robin, user
 
 import hp
 import whale
+import flask_login
 
 
 app = flask.Flask(__name__)
@@ -84,6 +85,10 @@ def yesterday():
 
 # }} //Stock Stuff
 
+@login_manager.user_loader
+def load_user(user_id):
+  return User.get(user_id)
+
 @app.route("/register", methods=['PUT', 'POST'])
 def register():
   pass
@@ -93,8 +98,10 @@ def login():
   pass
 
 @app.route("/logout", methods=['PUT', 'POST'])
+@login_required
 def logout():
-  pass
+  flask_login.logout_user()
+  return success('logged out')
 
 login_manager.init_app(app)
 # app.run(debug=False, host="0.0.0.0")
