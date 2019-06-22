@@ -103,20 +103,34 @@ html, body {
 
   <!-- Header -->
   <div class="w3-container" id="showcase">
-    <h1 class="w3-xxxlarge w3-text-white" style="margin-top:200px; margin-left:200px; line-height:60px;"><b>we're pushing <br> the boundaries <br> of fun</b></h1>
+    <h1 class="w3-xxxlarge w3-text-white w3-hide-small" style="margin-top:200px; margin-left:200px; line-height:60px;"><b>we're pushing <br> the boundaries <br> of fun</b></h1>
+  </div>
+
+  <!--Header on small screens-->
+  <div class="w3-container" id="showcase-small">
+    <h1 class="w3-xxxlarge w3-text-white w3-hide-large" style="margin-top:180px; margin-left:20px; line-height:60px;"><b>we're pushing <br> the boundaries <br> of fun</b></h1>
   </div>
 
   <!-- Games -->
-  <div class="w3-container w3-white" id="games" style="margin-left:80px;margin-top:200px;margin-bottom:200px;padding-top:100px;position:relative;color:white;">
+  <div class="w3-container w3-white w3-hide-small" id="games" style="margin-left:80px;margin-top:200px;margin-bottom:200px;padding-top:100px;position:relative;color:white;">
     <img src="assets\whale.svg" alt="whale logo" style="width:60%;">
     <div style="position: absolute; bottom: 15%;left:16%; color:white; line-height:1px;">
-      <p style="font-size:50px;">whale.</p>
-      <p style="font-weight:lighter; font-size:15px;">Description.</p>
+      <p style="font-size:300%;">whale.</p>
+      <p style="font-weight:lighter; font-size:100%;">Description.</p>
+    </div>
+  </div>
+
+  <!-- Games on small screens -->
+  <div class="w3-container w3-white w3-hide-large" id="games" style="margin-left:10px;margin-top:200px;margin-bottom:200px;padding-top:100px;position:relative;color:white;">
+    <img src="assets\whale.svg" alt="whale logo" style="width:100%;">
+    <div style="position: absolute; bottom: 15%;left:16%; color:white; line-height:1px;">
+      <p style="font-size:300%;">whale.</p>
+      <p style="font-weight:lighter; font-size:100%;">Description.</p>
     </div>
   </div>
 
   <!-- Thoughts -->
-  <div class="w3-container w3white" id="thoughts" style="margin-left:80px; margin-top:75px; margin-bottom:100px;">
+  <div class="w3-container w3white" id="thoughts" style="margin-left:3%; margin-top:75px; margin-bottom:100px;">
     <div class="w3-row-padding w3-white" style="padding-right:15%;">
       <div class="w3-col m6 w3-margin-bottom" style="padding-right:5%;">
         <div class="w3-white">
@@ -200,7 +214,7 @@ html, body {
   </div>
 
   <!-- People -->
-  <div class="w3-container" id="people" style="margin-left:80px;">
+  <div class="w3-container" id="people" style="margin-left:4%;">
     <div class="w3-row-padding w3-white">
 
       <div class="w3-col m4">
