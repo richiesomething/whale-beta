@@ -1,13 +1,32 @@
-<!DOCTYPE html>
 <html lang="en">
 <title>ilinx</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
-<link rel="icon" href="picture.png">
+<link rel="icon" href="whale.png">
 <style>
-body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif;}
+@font-face {
+  font-family: 'galano_grotesque_alt_demobold';
+  src: url('assets/galanogrotesquealtdemo-bold-webfont.woff2') format('woff2'),
+       url('assets/galanogrotesquealtdemo-bold-webfont.woff') format('woff'),
+       url('assets/galanogrotesquealtdemo-bold-webfont.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GalanoGrotesqueAlt-Regular';
+  src: url('assets/GalanoGrotesqueAlt-Regular.woff2') format('woff2'),
+       url('assets/GalanoGrotesqueAlt-Regular.woff') format('woff'),
+       url('assets/GalanoGrotesqueAlt-Regular.ttf')  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1,h2,h3,h4,h5 {font-family: "galano_grotesque_alt_demobold", sans-serif;}
+p {
+  font-family: "GalanoGrotesqueAlt-Regular", sans-serif;
+}
 html, body {
   font-size:16px;
   background: white !important;
@@ -15,12 +34,13 @@ html, body {
 }
 .w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
 .w3-half img:hover{opacity:1}
-.pink {background-color:#FE3C71;}
+.transparent {background-color:transparent;}
+.pink{background-color:#FE3C71;}
 .pinkfont {color:#FE3C71;}
 .wave {
-  background-image: url("pinkwavebg.png");
+  background-image: url("assets/wave.svg");
   background-color: #cccccc;
-  height: 600px;
+  height: 650px;
   margin-left: 0;
   background-position: center;
   background-repeat: no-repeat;
@@ -31,67 +51,72 @@ html, body {
   padding-left:10%;
 }
 .image-cropper {
-  width: 50%;
-  height: 50%;
+  width: 40%;
+  height: 30%;
   position: relative;
   overflow: hidden;
   border-radius: 50%;
   display: inline;
   right:-10%;
-  margin-top:-11%;
+  margin-top:-15%;
   float:right;
+
 }
 .imagebox {
   overflow:hidden;
   line-height: 15px;
   padding: 4% !important;
   box-shadow: 2px 2px 5px grey;
+  --aspect-ratio: 2/3.5 !important;
 }
+
 </style>
+
 <body>
 
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar pink w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:200px;font-weight:bold;" id="mySidebar"><br>
-  <a href="javascript:void(0)" onc
-  lick="w3_close()" class="w3-text-white w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
-  <div class="w3-container">
-    <h3 class="w3-padding-64"><a href="#" onclick="w3_close()"><img src="ilinx.png" style="height:60px; display:block; margin-left:auto; margin-right:auto;"></h3>
+<nav class="w3-sidebar transparent w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:200px;font-weight:bold;" id="mySidebar"><br>
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-text-white w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
+  <div class="w3-container" id="logo">
+    <h3><a href="#" onclick="w3_close()"><img src="assets/logowhite.svg" style="height:60px; display:block; margin-left:auto; margin-right:auto;"></h3>
+    </h3>
+
   </div>
   <div class="w3-bar-block">
-    <a href="#games" onclick="w3_close()" class="w3-text-white w3-bar-item w3-button w3-hover-opacity" style="font-weight:lighter !important; text-align:center;">games</a>
-    <a href="#thoughts" onclick="w3_close()" class="w3-text-white w3-bar-item w3-button w3-hover-opacity" style="font-weight:lighter !important; text-align:center;">thoughts</a>
-    <a href="#people" onclick="w3_close()" class="w3-text-white w3-bar-item w3-button w3-hover-opacity" style="font-weight:lighter !important; text-align:center;">people</a>
+    <a href="#games" onclick="w3_close()" class="w3-text-white w3-bar-item w3-button w3-hover-opacity w3-round-xxlarge" style="font-weight:lighter !important; text-align:center;">games</a>
+    <a href="#thoughts" onclick="w3_close()" class="w3-text-white w3-bar-item w3-button w3-hover-opacity w3-round-xxlarge" style="font-weight:lighter !important; text-align:center;">thoughts</a>
+    <a href="#people" onclick="w3_close()" class="w3-text-white w3-bar-item w3-button w3-hover-opacity w3-round-xxlarge" style="font-weight:lighter !important; text-align:center;">people</a>
   </div>
 </nav>
 
 <!-- Top menu on small screens -->
 <header class="w3-container w3-top w3-hide-large pink w3-xlarge w3-padding">
   <a href="javascript:void(0)" class="w3-button pink w3-margin-right" onclick="w3_open()" style="color:white;">☰</a>
-  <img src="ilinx.png" style="height:60px;">
+  <img src="assets/logored.svg" style="height:60px;">
 </header>
 
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main wave" style="margin-left:200px;margin-right:0px">
+<div class="w3-main wave" style="margin-left:0px;margin-right:0px">
 
   <!-- Header -->
   <div class="w3-container" id="showcase">
-    <h1 class="w3-xxxlarge w3-text-white" style="margin-top:300px; margin-left:40px; line-height:60px;"><b>we're pushing <br> the boundaries <br> of fun</b></h1>
+    <h1 class="w3-xxxlarge w3-text-white" style="margin-top:200px; margin-left:200px; line-height:60px;"><b>we're pushing <br> the boundaries <br> of fun</b></h1>
   </div>
 
   <!-- Games -->
-  <div class="w3-container w3-white" id="games" style="margin-top:200px;margin-bottom:200px;padding-top:100px;position:relative;color:white;">
-    <img src="whale.png" alt="whale logo" style="width:60%;">
-    <div style="position: absolute; bottom: 10%;left:15%; color:white; line-height:1px;">
-      <p style="font-size:30px;">whale.</p>
+  <div class="w3-container w3-white" id="games" style="margin-left:80px;margin-top:200px;margin-bottom:200px;padding-top:100px;position:relative;color:white;">
+    <img src="assets\whale.svg" alt="whale logo" style="width:60%;">
+    <div style="position: absolute; bottom: 15%;left:16%; color:white; line-height:1px;">
+      <p style="font-size:50px;">whale.</p>
       <p style="font-weight:lighter; font-size:15px;">Description.</p>
     </div>
   </div>
 
   <!-- Thoughts -->
-  <div class="w3-container w3white" id="thoughts" style="margin-top:75px; margin-bottom:100px;">
+  <div class="w3-container w3white" id="thoughts" style="margin-left:80px; margin-top:75px; margin-bottom:100px;">
     <div class="w3-row-padding w3-white" style="padding-right:15%;">
       <div class="w3-col m6 w3-margin-bottom" style="padding-right:5%;">
         <div class="w3-white">
@@ -175,7 +200,7 @@ html, body {
   </div>
 
   <!-- People -->
-  <div class="w3-container" id="people">
+  <div class="w3-container" id="people" style="margin-left:80px;">
     <div class="w3-row-padding w3-white">
 
       <div class="w3-col m4">
@@ -259,6 +284,15 @@ html, body {
           </div>
       </div>
 
+      <div class="w3-col m4">
+        <div class="w3-margin-bottom w3-round-xxlarge w3-text-white imagebox">
+            <img src="picture.png" alt="picture" class="w3-grayscale image-cropper">
+            <h3 class="w3-medium pinkfont" style="padding-top:50px;"><strong>You</strong></h3>
+            <p class="w3-opacity w3-small pinkfont">front-end developer
+            <br>openings@ilinxstudios.com</p>
+          </div>
+      </div>
+
 
     </div>
   </div>
@@ -269,6 +303,7 @@ html, body {
 <!-- W3.CSS Container -->
 <div class="w3-white w3-container w3-padding-32" style="margin-top:75px;padding-right:58px"><p class="w3-right">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></p></div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
 // Script to open and close sidebar
 function w3_open() {
@@ -288,6 +323,31 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
+</script>
+
+<script>
+$(document).ready(function(){
+	$(window).scroll(function(){
+  	var light_pos = $('#white_div').offset().top;
+    var light_height = $('#white_div').height();
+    var menu_pos = $('#games').offset().top;
+    var menu_height = $('#games').height();
+    var scroll = $(window).scrollTop();
+    console.log('light',light_pos);
+    console.log('menu',menu_pos);
+    console.log('scroll',scroll);
+
+    if(menu_pos > light_pos && menu_pos < (light_pos + light_height)) {
+    	$('#games').addClass('menu_black');
+      $('#games').removeClass('menu_white');
+    }
+    else {
+    	$('#games').removeClass('menu_black');
+      $('#games').addClass('menu_white');
+    }
+
+  })
+})
 </script>
 
 </body>

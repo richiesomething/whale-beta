@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="70" viewBox="0 0 128 70">
+  <defs>
+    <clipPath id="clip-Assets_-_Logo_-_Red">
+      <rect width="128" height="70"/>
+    </clipPath>
+  </defs>
+  <g id="Assets_-_Logo_-_Red" data-name="Assets - Logo - Red" clip-path="url(#clip-Assets_-_Logo_-_Red)">
+    <rect width="128" height="70" fill="transparent"/>
+    <g id="Group_2" data-name="Group 2" transform="translate(-3268.064 2216.235)">
+      <path id="Path_1" data-name="Path 1" d="M3292.22-2199.24a4.85,4.85,0,0,1-5.105,4.887,4.8,4.8,0,0,1-5.051-4.887,4.956,4.956,0,0,1,5.051-5A5,5,0,0,1,3292.22-2199.24Z" transform="translate(0 0)" fill="#ff3c71"/>
+      <rect id="Rectangle_1" data-name="Rectangle 1" width="8.784" height="27.559" transform="translate(3282.723 -2189.641)" fill="#ff3c71"/>
+      <path id="Path_2" data-name="Path 2" d="M3300.689-2161.144v-39.527h8.784v39.527Z" transform="translate(-4.902 -0.938)" fill="#ff3c71"/>
+      <g id="Group_1" data-name="Group 1" transform="translate(3307.005 -2200.135)">
+        <path id="Path_3" data-name="Path 3" d="M3315.93-2150.082a4.849,4.849,0,0,1,5.482-4.458,4.8,4.8,0,0,1,4.641,5.277,4.957,4.957,0,0,1-5.437,4.573A5,5,0,0,1,3315.93-2150.082Z" transform="translate(-3315.914 2187.061)" fill="#ff3c71"/>
+        <rect id="Rectangle_2" data-name="Rectangle 2" width="27.559" height="8.784" transform="matrix(0.081, -0.997, 0.997, 0.081, 1.501, 27.469)" fill="#ff3c71"/>
+      </g>
+      <path id="Path_4" data-name="Path 4" d="M3364.1-2174.071v16.909h-8.729V-2172.2c0-3.239-1.921-5.435-4.721-5.435-3.458,0-5.709,2.361-5.709,7.686v12.791h-8.784v-27.559h8.784v2.635a11.364,11.364,0,0,1,8.455-3.458C3359.814-2185.545,3364.1-2180.989,3364.1-2174.071Z" transform="translate(-14.235 -4.919)" fill="#ff3c71"/>
+      <path id="Path_5" data-name="Path 5" d="M3406.83-2156.888h-10.1l-5.271-7.96-5.325,7.96h-10.046l9.058-13.34-9.058-14.273h10.046l5.325,8.564,5.271-8.564h10.1l-9.114,14.273Z" transform="translate(-24.746 -5.194)" fill="#ff3c71"/>
+    </g>
+  </g>
+</svg>
