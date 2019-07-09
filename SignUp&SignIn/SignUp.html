@@ -1,0 +1,131 @@
+	<!DOCTYPE html>
+	<html>
+
+	<head>
+		<title>
+			Sign Up Page
+		</title>
+	<link rel="stylesheet" href="style.css" media="screen"/>
+</head>
+
+<body>
+	
+    <script>
+		function validate()
+		{
+			validateForm();
+			validateForm2();
+		}
+		
+		function validateForm() {
+
+		            var x = document.forms["myForm"]["fname"].value;
+		            if (x == "") {
+		          
+   		            document.getElementById("fname").classList.remove('nonerror');
+					 
+
+		         document.getElementById("nameT").style.color="#ff5e00";
+		         document.getElementById("email_error").style.display="inline-block";
+
+		         document.getElementById("fname").classList.add('error');
+		            return false;
+		            }
+		            else if (!(x.includes("@"))) 
+		           {
+		             
+   		            document.getElementById("fname").classList.remove('nonerror');
+					 
+
+		         document.getElementById("nameT").style.color="#ff5e00";
+		         document.getElementById("email_error").style.display="inline-block";
+
+		         document.getElementById("fname").classList.add('error');
+
+		             return false;
+		           }
+				   else
+				   {
+	  		            document.getElementById("nameT").style.color="#fff";
+				 		
+	   		            document.getElementById("fname").classList.remove('error');
+						
+						document.getElementById("fname").classList.add('nonerror');
+	   		         document.getElementById("email_error").style.display="none";
+						
+						
+						return true;
+				   }
+		          }
+				  
+				  
+		  		function validateForm2() {
+
+		  		            var x = document.forms["myForm"]["name"].value;
+		  		            if (x == "") {
+		          
+		     		            document.getElementById("name").classList.remove('nonerror');
+					 
+
+		  		         document.getElementById("passT").style.color="#ff5e00";
+		  		         document.getElementById("pass_error").style.display="inline-block";
+
+		  		         document.getElementById("name").classList.add('error');
+		  		            return false;
+		  		            }
+
+		  				   else
+		  				   {
+		  	  		            document.getElementById("passT").style.color="#fff";
+				 		
+		  	   		            document.getElementById("name").classList.remove('error');
+						
+		  						document.getElementById("name").classList.add('nonerror');
+		  	   		         document.getElementById("pass_error").style.display="none";
+						
+						
+		  						return true;
+		  				   }
+		  		          }
+    </script>
+
+	 <div class="ocean">
+	       <div class="wave"></div>
+	       <div class="wave"></div>
+	       </div>
+	       <h1>
+	          <center>
+	             Whale
+	          </center>
+	       </h1>
+	       <div class="loginbox">
+
+	         <h2>
+	           Login
+	         </h2>
+	         <form name="myForm" id="myForm" onsubmit="return  validate()" 
+	         method="post">
+				 <p id="nameT"> email </p>
+	       <input type="text" id="fname" name="fname" 
+	        placeholder=" i.e. blank@gmail.com" onblur="validateForm()"> 
+	        <span id="email_error" style="color:#ff5e00;font-size: 12px;display:none">Please enter a valid email</span>
+	       <p id="passT"> password </p>
+	              <input type="password" name="name" placeholder=" password" id="name" onblur="validateForm2()"> 
+	        <span id="pass_error" style="color:#ff5e00;font-size: 12px;display:none">Please enter a password</span>
+	              <br>
+				  <br>
+	              <input type="submit" value="Submit">
+	              <br>
+	              <a href="#"> 
+	                 Lost your password? 
+	              </a>
+	              <br>
+	              <a href="#"> 
+	                 Create an account 
+	              </a>
+	          </form>
+	        </div>
+	    </body>
+
+	  </html>
+     
