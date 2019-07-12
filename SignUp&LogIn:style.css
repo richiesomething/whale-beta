@@ -1,0 +1,358 @@
+/* Basicly creates a scroll bar for websites that are too bug */
+html, body {
+overflow-y: scroll;
+	 height: 100%; 
+ }
+ 
+ /* This creates the background imegry */
+body {
+  background:radial-gradient(ellipse at center, rgba(255,254,234,1) 0%, rgba(255,254,234,1) 35%, #ffffff 100%);
+  overflow: hidden;
+}
+
+@font-face {
+	
+}
+
+h1 {
+	
+}
+
+/* This basicly defines the font used in the text "Login"*but also defines the font to be used when header 2 or lower is used */
+h2,h3,h4,h5 {
+
+font-family: Verdana; 
+}
+
+
+/* The ocean reffers to the two combined waves that are defined bellow. This code basicly styles these two combined waves */
+.ocean { 
+  height: 5%;
+  width:100%;
+  position:absolute;
+  bottom:0;
+  left:0;
+  background: #dbb177;
+}
+
+/*  This code creates the wave seen at the bottem of the screen*/
+.wave {
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x; 
+  position: absolute;
+  top: -198px;
+  width: 6400px;
+  height: 198px;
+  animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+/* This code creates the second wave. This wave is defferent from the first */
+.wave:nth-of-type(2) {
+  top: -175px;
+  animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
+  opacity: 1;
+}
+
+/* This code animates the waves. It crates a ripple effect within the wave. */
+@keyframes wave {
+  0% {
+    margin-left: 0;
+  }
+  100% {
+    margin-left: -1600px;
+  }
+}
+
+/* This makes the waves grow/shrink a little bit as t/* Basicly creates a scroll bar for websites that are too bug */
+html, body {
+overflow-y: scroll;
+	 height: 100%; 
+ }
+ 
+ /* This creates the background imegry */
+body {
+  background:radial-gradient(ellipse at center, rgba(255,254,234,1) 0%, rgba(255,254,234,1) 35%, #ffffff 100%);
+  overflow: hidden;
+}
+
+@font-face {
+	
+}
+
+h1 {
+	
+}
+
+/* This basicly defines the font used in the text "Login"*but also defines the font to be used when header 2 or lower is used */
+h2,h3,h4,h5 {
+
+font-family: Verdana; 
+}
+
+
+/* The ocean reffers to the two combined waves that are defined bellow. This code basicly styles these two combined waves */
+.ocean { 
+  height: 5%;
+  width:100%;
+  position:absolute;
+  bottom:0;
+  left:0;
+  background: #dbb177;
+}
+
+/*  This code creates the wave seen at the bottem of the screen*/
+.wave {
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg) repeat-x; 
+  position: absolute;
+  top: -198px;
+  width: 6400px;
+  height: 198px;
+  animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+/* This code creates the second wave. This wave is defferent from the first */
+.wave:nth-of-type(2) {
+  top: -175px;
+  animation: wave 7s cubic-bezier( 0.36, 0.45, 0.63, 0.53) -.125s infinite, swell 7s ease -1.25s infinite;
+  opacity: 1;
+}
+
+/* This code animates the waves. It crates a ripple effect within the wave. */
+@keyframes wave {
+  0% {
+    margin-left: 0;
+  }
+  100% {
+    margin-left: -1600px;
+  }
+}
+
+/* This makes the waves grow/shrink a little bit as they translate across the screen*/
+@keyframes swell {
+  0%, 100% {
+    transform: translate3d(0,-25px,0);
+  }
+  50% {
+    transform: translate3d(0,5px,0);
+  }
+}
+
+/* This besicly styles the login form. It creates a box around the form which is colored and positioned within this code */
+     .loginbox
+    {
+		width:340px;
+     background: #000;
+     color: #fff;
+     top: 50%;
+     left:50%;
+     position: absolute;
+     transform: translate(-50%, -50%);
+     box-sizing: border-box;
+	 padding: 20px;
+	 border-radius: 10%;
+   }
+   
+   /* This styling code basicly helps make the title of the form either "Log In" or "sign up" */
+  h2
+   {
+     margin: 0;
+     padding: 0 0 10px;
+     text-align: center;
+     font-size: 40px; 
+   }
+
+   /* General styling for all inputs including email, password, and submit*/
+  .loginbox input
+  {
+   width: 100%;
+   margin-bottom: 20px;
+  }
+
+  /* More specidicstyling that targets just the email and passwrd inputs */
+  .loginbox input[type="text"], input[type="password"]
+  {
+    border: none;
+
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #ffefdb;
+    font-size: 16px;
+   }
+
+   /* This code styles the submit button specificly */
+   .loginbox input[type="submit"]
+  {
+    border: none;
+    outline: none;
+    height: 48px;
+    background: #fb2525;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+   } 
+
+   /* This code styles the submit button in a different fassion when the cursor is above the botton */
+   .loginbox input[type="submit"]:hover
+   {
+     cursor: pointer;
+     background: #ffc107;
+     color: #000;
+   }
+
+   /* This code styles the hyperlinks */
+   .loginbox a
+   {
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
+   }
+
+   /* This code styles the title to the textboxes */
+  .loginbox p
+   {
+     margin: 0;
+	 font-size: 30x;
+     padding: 10px;
+     font-weight: bold;
+    }
+	
+	/* This code styles the hyperlinks when the cursor is hovering over the links */
+    .loginbox a:hover
+    {
+      color: #ffc107;
+     }
+	 
+	 /* This code styles the titles when the js code determined that the input is not valid */
+	 .error{
+	     border-bottom:2px solid #ff5e00 !important;
+	 }
+	 
+	 /* This code styles the titles when the js code determines that the user inputs are valid */
+	 .nonerror{
+	    border: none;
+
+	    border-bottom: 1px solid #ffefdb;
+	    background: transparent;
+	    outline: none;
+	    height: 40px;
+	    color: #ffefdb;
+	    font-size: 16px;
+	 }
+hey translate across the screen*/
+@keyframes swell {
+  0%, 100% {
+    transform: translate3d(0,-25px,0);
+  }
+  50% {
+    transform: translate3d(0,5px,0);
+  }
+}
+
+/* This besicly styles the login form. It creates a box around the form which is colored and positioned within this code */
+     .loginbox
+    {
+		width:340px;
+     background: #000;
+     color: #fff;
+     top: 50%;
+     left:50%;
+     position: absolute;
+     transform: translate(-50%, -50%);
+     box-sizing: border-box;
+	 padding: 20px;
+	 border-radius: 10%;
+   }
+   
+   /* This styling code basicly helps make the title of the form either "Log In" or "sign up" */
+  h2
+   {
+     margin: 0;
+     padding: 0 0 10px;
+     text-align: center;
+     font-size: 40px; 
+   }
+
+   /* General styling for all inputs including email, password, and submit*/
+  .loginbox input
+  {
+   width: 100%;
+   margin-bottom: 20px;
+  }
+
+  /* More specidicstyling that targets just the email and passwrd inputs */
+  .loginbox input[type="text"], input[type="password"]
+  {
+    border: none;
+
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #ffefdb;
+    font-size: 16px;
+   }
+
+   /* This code styles the submit button specificly */
+   .loginbox input[type="submit"]
+  {
+    border: none;
+    outline: none;
+    height: 48px;
+    background: #fb2525;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+   } 
+
+   /* This code styles the submit button in a different fassion when the cursor is above the botton */
+   .loginbox input[type="submit"]:hover
+   {
+     cursor: pointer;
+     background: #ffc107;
+     color: #000;
+   }
+
+   /* This code styles the hyperlinks */
+   .loginbox a
+   {
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
+   }
+
+   /* This code styles the title to the textboxes */
+  .loginbox p
+   {
+     margin: 0;
+	 font-size: 30x;
+     padding: 10px;
+     font-weight: bold;
+    }
+	
+	/* This code styles the hyperlinks when the cursor is hovering over the links */
+    .loginbox a:hover
+    {
+      color: #ffc107;
+     }
+	 
+	 /* This code styles the titles when the js code determined that the input is not valid */
+	 .error{
+	     border-bottom:2px solid #ff5e00 !important;
+	 }
+	 
+	 /* This code styles the titles when the js code determines that the user inputs are valid */
+	 .nonerror{
+	    border: none;
+
+	    border-bottom: 1px solid #ffefdb;
+	    background: transparent;
+	    outline: none;
+	    height: 40px;
+	    color: #ffefdb;
+	    font-size: 16px;
+	 }
