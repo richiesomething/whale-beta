@@ -1,7 +1,7 @@
 git+https://github.com/jamonek/Robinhood
 redis
-sqlite3
 flask
 flask-cors
 flask-login
 python-dateutil
+werkzeug

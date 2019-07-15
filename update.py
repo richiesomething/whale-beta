@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from api import lib
-from api import alpha
+from objects import lib
+from objects import alpha
 
 lib.upgrade()
 alpha.historical(["AAPL", "MSFT", "SNAP", "FB", "PEP", "KO", "TSLA", "XOM",

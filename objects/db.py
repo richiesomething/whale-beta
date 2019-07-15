@@ -5,7 +5,11 @@ import time
 import json
 from threading import Lock
 
-_PROCESSOR = { }
+DefaultDbFile = 'db/trades.db'
+
+_PROCESSOR = {
+    "users"
+}
 
 _SCHEMA = {
   'users': [
@@ -57,14 +61,17 @@ _SCHEMA = {
   ]
 }
 
+
 _dbcount = 0
 _lock = Lock()
-_log = False
+_log = None
+
 
 def _checkForTable(what):
-  global _SCHEMA
-  if what not in _SCHEMA:
-    raise Exception("Table {} not found".format(what))
+    global _SCHEMA
+    if what not in _SCHEMA:
+        raise Exception(f"Table {what} not found")
+
 
 def process(res, table, what):
   if table in _PROCESSOR:
@@ -92,53 +99,54 @@ def process(res, table, what):
   
   return res
 
-def get(table, id = False):
-  _checkForTable(table)
 
-  res = run("select * from {} where id = ?".format(table), (id, ))
+def get(table, get_value=False, get_key="id"):
+    _checkForTable(table)
 
-  if res:
-    return process(res.fetchone(), table, 'post')
+    res = run(f"select * from {table} where {get_key}=?", args=(get_value,))
+
+    if res:
+        return process(res.fetchone(), table, 'post')
+    else:
+        return None
 
 
 def run(query, args=None, with_last=False, db=None):
-  global _lock
-  start = time.time()
-  """
-  if args is None:
-  print "%d: %s" % (_dbcount, query)
-  else:
-  $print "%d: %s (%s)" % (_dbcount, query, ', '.join([str(m) for m in args]))
-  """
+    global _lock
 
-  _lock.acquire()
-  if db is None:
-    db = connect()
-
-  res = None
-
-  try:
+    """
     if args is None:
-      res = db['c'].execute(query)
+    print "%d: %s" % (_dbcount, query)
     else:
-      res = db['c'].execute(query, args)
+    $print "%d: %s (%s)" % (_dbcount, query, ', '.join([str(m) for m in args]))
+    """
 
-    db['conn'].commit()
-    last = db['c'].lastrowid
+    _lock.acquire()
+    if db is None:
+        db = connect()
 
-    if db['c'].rowcount == 0:
-      raise Exception("0 rows")
+    try:
+        if args is None:
+            res = db['c'].execute(query)
+        else:
+            res = db['c'].execute(query, args)
 
-  except Exception as exc:
-    raise exc
+        db['conn'].commit()
+        last = db['c'].lastrowid
 
-  finally:
-    _lock.release()
+        if db['c'].rowcount == 0:
+            raise Exception("0 rows")
 
-  if with_last:
-    return (res, last)
+    except Exception as exc:
+        raise exc
 
-  return res
+    finally:
+        _lock.release()
+
+    if with_last:
+        return res, last
+
+    return res
 
 
 def upgrade():
@@ -209,7 +217,7 @@ def connect(db_file=None):
   global _dbcount
 
   if not db_file:
-    db_file = 'db/trades.db'
+    db_file = DefaultDbFile
 
   #
   # We need to have one instance per thread, as this is what
@@ -267,18 +275,19 @@ def _insert(table, data):
     shared_keys,
     toInsert]
 
+
 def upsert(table, data):
-  qstr, key_list, values = _insert(table, data)
-  update_list = ["{}=?".format(key) for key in key_list]
+    qstr, key_list, values = _insert(table, data)
+    update_list = ["{}=?".format(key) for key in key_list]
 
-  qstr += "on conflict(id) do update set {}".format(','.join(update_list))
+    qstr += "on conflict(id) do update set {}".format(','.join(update_list))
 
-  try:
-    res, last = run(qstr, values + values, with_last = True)
-    return last
+    try:
+        res, last = run(qstr, values + values, with_last = True)
+        return last
 
-  except:
-    _log.warn("Unable to upsert a record {}".format(','.join([str(x) for x in values])))
+    except:
+        _log.warn("Unable to upsert a record {}".format(','.join([str(x) for x in values])))
 
 
 def insert(table, data):
@@ -286,8 +295,17 @@ def insert(table, data):
   qstr, key_list, values = _insert(table, data)
   try:
     res, last = run(qstr, values, with_last=True)
-
   except BaseException:
     _log.warn("Unable to insert a record {}: {}".format(qstr, json.stringify(values)))
 
   return last
+
+
+def set_log(logger):
+    _log = logger.getChild("db")
+
+
+#
+# A higher-level API:
+#
+

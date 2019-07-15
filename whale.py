@@ -5,6 +5,14 @@ import time
 import random
 
 
+game = None
+
+
+def init():
+    global game
+    game = hp.Game("whale", Room)
+
+
 class Stock(object):
     def __init__(self, ticker, name, close_cents, open_cents):
         super().__init__()

@@ -6,8 +6,8 @@ import time
 
 import redis
 
-from api import robin
-from api import db
+from . import robin
+from . import db
 
 
 r = redis.Redis(

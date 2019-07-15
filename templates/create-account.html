@@ -1,0 +1,70 @@
+{% extends "app-base.html" %}
+
+{% block title %}
+    Create an account
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <p>
+            Creating a Whale account allows you to save your progress between play sessions.
+        </p>
+    </div>
+
+    <div class="row">
+        <!-- TODO: Fix wonky styling. -->
+
+        <form style="width: 100%" action="/create-account" method="post">
+            <div class="form-group row">
+                <label class="col-md-4" for="username">Username</label>
+                <input class="col-md-8" id="username" name="username" type="text"/>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4" for="password1">Password</label>
+                <input class="col-md-8" id="password1" name="password1" type="password"/>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-4" for="password2">Password (once more)</label>
+                <input class="col-lg-8" id="password2" name="password2" type="password"/>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-4" for="email">Your email ID</label>
+                <input class="col-lg-8" id="email" name="email" type="email"/>
+            </div>
+
+            <div class="form-group row">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    {% if errors %}
+        <hr/>
+
+        <div class="row">
+            <h3>Account creation failed!</h3>
+        </div>
+
+        <div class="row">
+            <p>
+                Please rectify the following errors:
+            </p>
+        </div>
+
+        <div class="row">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <hr/>
+
+    <!-- TODO: Add "login" and "forgot password?" links here. -->
+
+{% endblock %}

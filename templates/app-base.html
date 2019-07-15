@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <style>
+        #header {
+            background-image: linear-gradient(to right, darkcyan, cyan);
+            color: whitesmoke;
+        }
+
+        #home-link {
+            color: whitesmoke;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        #home-link:hover {
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid text-center" id="header">
+        <h1>
+            <a href="/" id="home-link">ilinx</a>
+        </h1>
+        <!-- TODO: Add a navbar here or something. -->
+    </div>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+{% endblock %}
