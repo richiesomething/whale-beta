@@ -2,15 +2,26 @@ import hp
 from enum import Enum, auto
 
 import time
+import datetime
 import random
 
+import model
+import contextlib
 
+
+server = None
 game = None
 
 
 def init():
-    global game
+    global game, server
+
+    server = hp.Server()
     game = hp.Game("whale", Room)
+
+
+def route(flask_app):
+    server.add_game(flask_app, game)
 
 
 class Stock(object):
@@ -103,6 +114,7 @@ class Player(hp.Player):
         self.state = State.NotYetStarted
         self.start_client_mono_time_sec = None
         self.start_server_mono_time_sec = None
+        self.start_server_date_time = None
         self.game_duration_sec = None
         self.generated_questions = None
         self.score = 0
@@ -117,6 +129,7 @@ class Player(hp.Player):
 
         self.start_client_mono_time_sec = client_mono_time_sec
         self.start_server_mono_time_sec = time.monotonic()
+        self.start_server_date_time = datetime.datetime.now()
         self.game_duration_sec = 30.0
         self.generated_questions = gen_stock_data_for_player()
 
@@ -143,3 +156,17 @@ class Player(hp.Player):
 
         self.score += score_reward
         return hp.result({"score_reward": score_reward})
+
+    def stop(self):
+        duration_sec = time.monotonic() - self.start_server_mono_time_sec
+
+        # TODO: Add information about which user this is:
+        session_data = {
+            "start_datetime": self.start_server_date_time,
+            "duration_sec": float(duration_sec),
+            "game_id": str(self.game.id)
+        }
+
+        with model.db_connect() as model_db_connection:
+            with contextlib.closing(model_db_connection.cursor()) as cursor:
+                pass
