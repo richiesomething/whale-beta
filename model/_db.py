@@ -1,5 +1,6 @@
 import sqlite3
 
+import os
 db_file_rel_path = "/tmp/db/whale.db"
 
 

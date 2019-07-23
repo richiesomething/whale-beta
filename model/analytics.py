@@ -13,11 +13,15 @@ def post_game_session_info(game_id, start_datetime, duration_sec, user_id):
     # TODO: Ensure datetime is stored in UTC.
     with db_connect() as model_db_connection:
         with contextlib.closing(model_db_connection.cursor()) as cursor:
-            cursor.execute(
+          print(
+                "insert into analytics_sessions (game_id, start_server_date_time, duration_sec, user_id) "
+                "values ({},{},{},{})".format
+                (game_id, str(start_datetime), duration_sec, user_id))
+          cursor.execute(
                 "insert into analytics_sessions (game_id, start_server_date_time, duration_sec, user_id) "
                 "values (?,?,?,?)",
                 (game_id, str(start_datetime), duration_sec, user_id)
-            )
+          )
 
 
 #
