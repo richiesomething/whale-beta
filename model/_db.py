@@ -1,6 +1,6 @@
 import sqlite3
 
-db_file_rel_path = "./db/whale.db"
+db_file_rel_path = "/tmp/db/whale.db"
 
 
 def db_connect():

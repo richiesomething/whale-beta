@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS "users" (
+	"user_id"	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"user_name"	TEXT NOT NULL UNIQUE,
+	"email_id"	TEXT NOT NULL UNIQUE,
+	"password_hash"	TEXT NOT NULL
+);
