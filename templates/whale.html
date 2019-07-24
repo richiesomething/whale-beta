@@ -26,9 +26,12 @@
 
         <script type="text/javascript">
             // Setting critical instance properties in the server when starting the game:
-            Hp.gameId = "{{game_id}}";
-            Hp.roomId = "{{room_id}}";
-            Hp.playerId = {{player_id}};
+            Hp.userId = {{ current_user.id or 0 }};
+            Hp.gameId = "{{ game_id }}";
+            Hp.roomId = "{{ room_id }}";
+            Hp.playerId = {{ player_id }};
+
+            console.log(Hp.userId);
 
             if (Hp._dbg) {
                 console.log("Game ID:   '" + Hp.gameId + "'");

@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS "users" (
+	"user_id"	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"user_name"	TEXT NOT NULL UNIQUE,
+	"email_id"	TEXT NOT NULL UNIQUE,
+	"password_hash"	TEXT NOT NULL
+);
+
+create table if not exists "analytics_sessions" (
+  "id"	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+  "game_id"	text,
+  "start_server_date_time" STRING,
+  "duration_sec" INTEGER,
+  "user_id" INTEGER
+);
