@@ -1,5 +1,10 @@
 {% extends "app-base.html" %}
 
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="../css/signup.css">
+{% endblock %}
+
 {% block title %}
     Create an account
 {% endblock %}
@@ -11,35 +16,37 @@
         </p>
     </div>
 
-    <div class="row">
-        <!-- TODO: Fix wonky styling. -->
+    <div class="container-fluid">
+      <div class="row">
+         <div class="col-md-4 mx-auto">
+            <div class="form ">
+               <form action="" method="post" name="login">
 
-        <form style="width: 100%" action="/create-account" method="post">
-            <div class="form-group row">
-                <label class="col-md-4" for="username">Username</label>
-                <input class="col-md-8" id="username" name="username" type="text"/>
-            </div>
+                  <div class="form-group row">
+                     <input type="text" name="username"  class="form-control" id="username" placeholder="Username">
+                  </div>
 
-            <div class="form-group">
-                <label class="col-md-4" for="password1">Password</label>
-                <input class="col-md-8" id="password1" name="password1" type="password"/>
-            </div>
+                  <div class="form-group row">
+                     <input type="password" name="password1"  class="form-control" id="password1" placeholder="Password">
+                  </div>
 
-            <div class="form-group row">
-                <label class="col-lg-4" for="password2">Password (once more)</label>
-                <input class="col-lg-8" id="password2" name="password2" type="password"/>
-            </div>
+                  <div class="form-group row">
+                     <input type="password" name="password2"  class="form-control" id="password2" placeholder="Retype password">
+                  </div>
 
-            <div class="form-group row">
-                <label class="col-lg-4" for="email">Your email ID</label>
-                <input class="col-lg-8" id="email" name="email" type="email"/>
-            </div>
+                  <div class="form-group row">
+                     <input type="email" name="email"  class="form-control" id="email" placeholder="Email">
+                  </div>
 
-            <div class="form-group row">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                  <div class="text-center ">
+                     <button type="submit" class="btn btn-primary">Create Account</button>
+                  </div>
+                  
+               </form>
             </div>
-        </form>
-    </div>
+         </div>
+      </div>
+   </div>
 
     {% if errors %}
         <hr/>
