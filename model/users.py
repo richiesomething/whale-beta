@@ -17,7 +17,8 @@ def create_user(connection, user_name, email_id, password):
 
     with contextlib.closing(connection.cursor()) as cursor:
         values = (user_name, email_id, password_hash)
-        cursor.execute("insert into users (user_name, email_id, password_hash) values (?,?,?)", values)
+        cursor.execute(
+            "insert into users (user_name, email_id, password_hash) values (?,?,?)", values)
 
 
 def try_login_user(connection, email_id, password):
@@ -27,7 +28,8 @@ def try_login_user(connection, email_id, password):
         if user_row:
             user_id, user_name, user_email_id, user_password_hash = user_row
             if check_password_hash(user_password_hash, password):
-                user = User(user_id, user_name, user_email_id, user_password_hash)
+                user = User(user_id, user_name,
+                            user_email_id, user_password_hash)
                 flask_login.login_user(user)
                 return True, None
             else:
@@ -52,7 +54,8 @@ class User(flask_login.UserMixin):
         user_id_int = int(user_id_str)
         with _db.db_connect() as connection:
             with contextlib.closing(connection.cursor()) as cursor:
-                cursor.execute("select * from users where user_id=?", (user_id_int,))
+                cursor.execute(
+                    "select * from users where user_id=?", (user_id_int,))
                 user_row = cursor.fetchone()
                 if user_row:
                     user_id, user_name, user_email_id, user_password_hash = user_row
