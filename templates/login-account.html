@@ -14,22 +14,29 @@
     <div class="row">
         <!-- TODO: Fix wonky styling. -->
 
-        <form style="width: 100%" action="/login-account" method="post">
-            <div class="form-group row">
-                <label class="col-lg-4" for="email">Your email ID</label>
-                <input class="col-lg-8" id="email" name="email" type="email"/>
-            </div>
+    <div class="container-fluid">
+        <div class="row">
+           <div class="col-md-4 mx-auto">
+              <div class="form ">
+                 <form action="/login-account" method="post">
 
-            <div class="form-group">
-                <label class="col-md-4" for="password">Password</label>
-                <input class="col-md-8" id="password" name="password" type="password"/>
-            </div>
+                    <div class="form-group row">
+                        <input type="email" name="email"  class="form-control" id="email" placeholder="Email">
+                    </div>
+  
+                    <div class="form-group row">
+                       <input type="password" name="password"  class="form-control" id="password" placeholder="Password">
+                    </div>
 
-            <div class="form-group row">
-                <button type="submit" class="btn btn-primary">Log in</button>
-            </div>
-        </form>
-    </div>
+                    <div class="text-center ">
+                       <button type="submit" class="btn btn-primary">Log in</button>
+                    </div>
+                    
+                 </form>
+              </div>
+           </div>
+        </div>
+     </div>
 
     {% if errors %}
         <hr/>
