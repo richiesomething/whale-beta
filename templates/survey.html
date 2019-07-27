@@ -1,67 +1,110 @@
-<!DOCTYPE html>
-<html>
-  <body>
-    <h2>Short Survey</h2>
+{% extends "app-base.html" %}
 
-    <div>
-      <form>
-        <!-- Gender question -->
-        <p>What gender do you identify as?</p>
-        <input type="radio" name="gender" value="male" checked />
-        <p style="display: inline">Male</p>
-        <br />
-        <input type="radio" name="gender" value="female" />
-        <p style="display: inline">Female</p>
-        <br />
-        <input type="radio" name="gender" value="other" />
-        <p style="display: inline">Other</p>
-        <br />
-        <input type="radio" name="gender" value="PNA1" />
-        <p style="display: inline">Prefer Not to Anwser</p>
-        <br />
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="../css/survey.css">
+{% endblock %}
 
-        <!-- How old are you-->
-        <p>How old are you?</p>
-        <input type="radio" name="Age" value="10-" checked />
-        <p style="display: inline">10 or under</p>
-        <br />
-        <input type="radio" name="Age" value="11-20" />
-        <p style="display: inline">11-20</p>
-        <br />
-        <input type="radio" name="Age" value="21-30" />
-        <p style="display: inline">21-30</p>
-        <br />
-        <input type="radio" name="Age" value="31-40" checked />
-        <p style="display: inline">31-49</p>
-        <br />
-        <input type="radio" name="Age" value="41-50" />
-        <p style="display: inline">41-50</p>
-        <br />
-        <input type="radio" name="Age" value="51-60" />
-        <p style="display: inline">51-69</p>
-        <br />
-        <input type="radio" name="Age" value="61-70" />
-        <p style="display: inline">61-70</p>
-        <br />
-        <input type="radio" name="Age" value="71+" />
-        <p style="display: inline">71 and over</p>
-        <br />
-        <input type="radio" name="Age" value="PNA2" />
-        <p style="display: inline">Prefer Not to Anwser</p>
-        <br />
+{% block title %}
+    Short Survey
+{% endblock %}
 
-        <!-- stock Question -->
-        <p>Have you ever participated in stock trade?</p>
-        <input type="radio" name="stockq" value="yes" checked />
-        <p style="display: inline">Yes</p>
-        <br />
-        <input type="radio" name="stockq" value="no" />
-        <p style="display: inline">No</p>
-        <br />
-        <input type="radio" name="stockq" value="PNA3" />
-        <p style="display: inline">Prefer Not to Anwser</p>
-        <br />
-      </form>
-    </div>
-  </body>
-</html>
+{% block content %}
+  <h2 class="text-center">Short Survey</h2>
+
+  <div class="d-flex justify-content-center">
+    <form class="w-75">
+      <!-- Gender question -->
+      <p class="question-title">What gender do you identify as?</p>
+      <input type="radio" name="gender" value="male" checked />
+      <p style="display: inline">Male</p>
+
+      <br />
+
+      <input type="radio" name="gender" value="female" />
+      <p style="display: inline">Female</p>
+
+      <br />
+
+      <input type="radio" name="gender" value="other" />
+      <p style="display: inline">Other</p>
+
+      <br />
+
+      <input type="radio" name="gender" value="PNA1" />
+      <p style="display: inline">Prefer Not to Anwser</p>
+
+      <br />
+
+
+      <!-- How old are you-->
+      <p class="question-title">How old are you?</p>
+      <input type="radio" name="Age" value="10-" checked />
+      <p style="display: inline">10 or under</p>
+
+      <br />
+
+      <input type="radio" name="Age" value="11-20" />
+      <p style="display: inline">11-20</p>
+
+      <br />
+
+      <input type="radio" name="Age" value="21-30" />
+      <p style="display: inline">21-30</p>
+
+      <br />
+
+      <input type="radio" name="Age" value="31-40" checked />
+      <p style="display: inline">31-49</p>
+
+      <br />
+
+      <input type="radio" name="Age" value="41-50" />
+      <p style="display: inline">41-50</p>
+
+      <br />
+
+      <input type="radio" name="Age" value="51-60" />
+      <p style="display: inline">51-69</p>
+
+      <br />
+
+      <input type="radio" name="Age" value="61-70" />
+      <p style="display: inline">61-70</p>
+
+      <br />
+
+      <input type="radio" name="Age" value="71+" />
+      <p style="display: inline">71 and over</p>
+
+      <br />
+
+      <input type="radio" name="Age" value="PNA2" />
+      <p style="display: inline">Prefer Not to Anwser</p>
+
+      <br />
+
+
+      <!-- stock Question -->
+      <p class="question-title">Have you ever participated in stock trade?</p>
+      
+      <input type="radio" name="stockq" value="yes" checked />
+      <p style="display: inline">Yes</p>
+
+      <br />
+
+      <input type="radio" name="stockq" value="no" />
+      <p style="display: inline">No</p>
+
+      <br />
+
+      <input type="radio" name="stockq" value="PNA3" />
+      <p style="display: inline">Prefer Not to Anwser</p>
+
+      <br />
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+  </div>
+{% endblock %}
