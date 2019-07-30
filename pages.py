@@ -82,6 +82,6 @@ def route(flask_app):
 
     @flask_app.route("/questionnaire")
     def questionnaire():
-        return flask.render_template("Survey.html")
+        return flask.render_template("survey.html")
 
 
