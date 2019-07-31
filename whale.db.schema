@@ -12,3 +12,10 @@ create table if not exists "analytics_sessions" (
   "duration_sec" INTEGER,
   "user_id" INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS "survey_responses" (
+  "id"	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+  "gender" STRING,
+  "age" STRING,
+  "stockq" STRING
+)

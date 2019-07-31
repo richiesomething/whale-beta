@@ -20,6 +20,12 @@ def create_user(connection, user_name, email_id, password):
         cursor.execute(
             "insert into users (user_name, email_id, password_hash) values (?,?,?)", values)
 
+def add_responses(connection, gender, age, stockq):
+    with contextlib.closing(connection.cursor()) as cursor:
+        values = (gender, age, stockq)
+        cursor.execute(
+            "insert into survey_responses (gender, age, stockq) values (?,?,?)", values)
+
 
 def try_login_user(connection, email_id, password):
     with contextlib.closing(connection.cursor()) as cursor:

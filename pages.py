@@ -4,7 +4,8 @@ import whale
 
 import model
 import model.users
-
+from model.users import add_responses
+# Why does add_responses need to be imported seperately?
 
 def route(flask_app):
 
@@ -87,7 +88,11 @@ def route(flask_app):
         else:
             assert flask.request.method == "POST"
             form = flask.request.form
-            print(form)
+
+            gender = form["gender"]
+            age = form["age"]
+            stockq = form["stockq"]
+
+            with model.db_connect() as connection:
+                add_responses(connection, gender, age, stockq)
             return "Answers submitted."
-
-
