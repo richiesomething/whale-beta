@@ -80,8 +80,14 @@ def route(flask_app):
         player_id = whale.game.add_player(room_id)
         return flask.render_template("whale.html", game_id=game_id, room_id=room_id, player_id=player_id)
 
-    @flask_app.route("/questionnaire")
+    @flask_app.route("/questionnaire", methods=["GET", "POST"])
     def questionnaire():
-        return flask.render_template("survey.html")
+        if flask.request.method == "GET":
+            return flask.render_template("survey.html")
+        else:
+            assert flask.request.method == "POST"
+            form = flask.request.form
+            print(form)
+            return "Answers submitted."
 
 
