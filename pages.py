@@ -52,7 +52,6 @@ def route(flask_app):
                             "(Database insertion failed)."
                         ]
                     )
-
                 return "Success."
 
     @flask_app.route("/login-account", methods=["GET", "POST"])

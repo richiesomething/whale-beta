@@ -38,10 +38,60 @@
                      <input type="email" name="email"  class="form-control" id="email" placeholder="Email">
                   </div>
 
-                  <div class="text-center ">
-                     <button type="submit" class="btn btn-primary"><a href="/questionnaire" style="color: white">Next: User Info</a> </button>
-                  </div>
-                  
+<!--                   button that when pressed shows short survey-->
+                   <br><br>
+                   <div class="text-center">
+                       <button type="button" class="btn btn-primary" id="next" onclick="showSurvey()" >Next: User Info</button>
+                   </div>
+
+<!--                    questions for survey, initially hidden-->
+                   <div class="form-group" id="gender" style="visibility: hidden" >
+                       <!-- Gender question -->
+                       <label for="Gender">Gender</label>
+                       <select class="form-control">
+                           <option value="male">male</option>
+                           <option value="female">female</option>
+                           <option value="other">other</option>
+                       </select>
+                   </div>
+
+                   <div class="hidden" id="age" style="visibility: hidden" onclick="ages()">
+                       <label for="age">How old are you?</label>
+                       <select class="form-control" onclick="ages()">
+                           <option >under 20</option>
+                           <option >20s</option>
+                           <option >30s</option>
+                           <option >40s</option>
+                           <option >50s</option>
+                           <option >60s</option>
+                           <option >70s</option>
+                           <option >80s</option>
+                           <option >90s</option>
+                       </select>
+                   </div>
+
+                   <div class="form-group" id="experience" style="visibility: hidden" >
+                       <label for="experience">How much experience do you have?</label>
+                       <select class="form-control">
+                           <option value="none"> 0 Years </option>
+                           <option value="little"> <2 Years </option>
+                           <option value="some"> <5 Years </option>
+                           <option value="alot"> 5 Years or more </option>
+                       </select>
+                   </div>
+
+<!--                   create account-->
+                   <div class="text-center ">
+                       <button type="submit" class="btn btn-primary" id="create" style="visibility: hidden">
+
+<!--                           TODO:-->
+<!--                           linked to questionaire page but I dont think it routes properly-->
+                           <a href="/questionnaire" style="color: white">Create Account</a>
+
+
+                       </button>
+                   </div>
+
                </form>
             </div>
          </div>
@@ -74,5 +124,16 @@
 
     <!-- TODO: Add "login" and "forgot password?" links here. -->
 
-{% endblock %}
+<!--script to show survey on button press-->
+<script>
+    function showSurvey(){
+        document.getElementById("gender").style.visibility = "visible";
+        document.getElementById("age").style.visibility = "visible";
+        document.getElementById("experience").style.visibility = "visible";
+        document.getElementById("next").style.visibility = "hidden";
+        document.getElementById("create").style.visibility = "visible";
+    }
 
+</script>
+
+{% endblock %}
