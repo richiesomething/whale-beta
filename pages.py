@@ -25,6 +25,11 @@ def route(flask_app):
             password_2 = form["password2"]
             email_id = form["email"]
 
+#             added
+            age = form['age']
+            gender = form['gender']
+            experience = form['experience']
+
             errors = []
 
             # Checking if the username is unique:
