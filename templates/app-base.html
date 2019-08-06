@@ -32,7 +32,7 @@
         <!-- TODO: Add a navbar here or something. -->
         <ul class="nav nav-pills justify-content-end">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="accountName">Account</a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">profile</a>
                     <a class="dropdown-item" href="#">settings</a>
@@ -54,4 +54,12 @@
         {% block content %}
         {% endblock %}
     </div>
+
+<!--sudo code for changing account name based on user-->
+<!--<script>-->
+<!--    if (loged in == true) {-->
+<!--        document.getElementById("accountName").innerHTML = {user.name};-->
+<!--    }-->
+<!--</script>-->
+
 {% endblock %}
