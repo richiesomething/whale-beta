@@ -10,17 +10,11 @@ Create an account
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <p>
-        Account created successfully, this is a canvas to act as a home page for {{ current_user.user_name}}
-<!--        once log out is implemented we can add user name-->
-<!--        {{ current_user.user_name}}-->
-    </p>
-</div>
-
 <!-- TODO: Add "login" and "forgot password?" links here. -->
 
-<!--script to show survey on button press-->
-
+<!--if signed in show name-->
+{% if text %}
+<p>Your are signed in as: {{text}} </p>
+{% endif %}
 
 {% endblock %}

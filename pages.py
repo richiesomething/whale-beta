@@ -1,4 +1,5 @@
 import flask
+from flask import redirect, request
 
 import whale
 
@@ -52,7 +53,7 @@ def route(flask_app):
                             "(Database insertion failed)."
                         ]
                     )
-                return flask.render_template("/survey.html")
+                return flask.redirect('questionnaire')
 
     @flask_app.route("/login-account", methods=["GET", "POST"])
     def login_account():
@@ -68,7 +69,7 @@ def route(flask_app):
             with model.db_connect() as connection:
                 success, msg = model.users.try_login_user(connection, email_id, password)
                 if success:
-                    return flask.render_template_string("Success! Logged in {{ current_user.user_name }}.")
+                    return flask.render_template('profile-page.html', text = request.form['email'])
                 else:
                     return flask.render_template("login-account.html", errors=[msg])
 
@@ -81,14 +82,13 @@ def route(flask_app):
 
     @flask_app.route("/questionnaire")
     def questionnaire():
-        return flask.render_template("survey.html")
+        return flask.render_template('survey.html')
 
     @flask_app.route("/homepage")
     def homePage():
         return flask.render_template("profile-page.html")
 
-
-# flask routing for logging out of user
-#     @flask_app.route("/loggingOut")
-#     def logout():
-#         return redirect(url_for('user.login'))
+#     TODO: log out route, not yet properly implemented
+    @flask_app.route("/loggingOut")
+    def logout():
+        return flask.redirect("/")
