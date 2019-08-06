@@ -25,11 +25,6 @@ def route(flask_app):
             password_2 = form["password2"]
             email_id = form["email"]
 
-#             added
-            age = form['age']
-            gender = form['gender']
-            experience = form['experience']
-
             errors = []
 
             # Checking if the username is unique:
@@ -57,7 +52,7 @@ def route(flask_app):
                             "(Database insertion failed)."
                         ]
                     )
-                return "Success."
+                return flask.render_template("/survey.html")
 
     @flask_app.route("/login-account", methods=["GET", "POST"])
     def login_account():
@@ -88,4 +83,12 @@ def route(flask_app):
     def questionnaire():
         return flask.render_template("survey.html")
 
+    @flask_app.route("/homepage")
+    def homePage():
+        return flask.render_template("profile-page.html")
 
+
+# flask routing for logging out of user
+#     @flask_app.route("/loggingOut")
+#     def logout():
+#         return redirect(url_for('user.login'))
