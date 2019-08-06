@@ -12,14 +12,37 @@
             background-image: linear-gradient(to right, darkcyan, cyan);
             color: whitesmoke;
         }
+        .nav-link{
+            color: white;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
     <!-- TODO: Integrate Natasha's website here. -->
+
+<!--nav bar-->
     <div class="jumbotron" id="header">
         <h1>ilinx</h1>
         <p>We're pushing what fun can be.</p>
+        <ul class="nav nav-pills justify-content-end">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Account</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">profile</a>
+                    <a class="dropdown-item" href="#">settings</a>
+                    <a class="dropdown-item" href="#">security</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Sign out</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Learn</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Play</a>
+            </li>
+        </ul>
     </div>
 
     <div class="container">
