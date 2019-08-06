@@ -22,13 +22,42 @@
             <div class="form ">
                <form action="/create-account" method="post" name="login">
 
-                     <input required type="text" name="username"  class="form-control" id="username" placeholder="Username"><br>
+                     <input required
+                            type="text"
+                            name="username"
+                            class="form-control"
+                            id="username"
+                            placeholder="Username"
+<!--                            pattern=".{8,}"-->
+                     <br>
 
-                     <input required type="password" name="password1"  class="form-control" id="password1" placeholder="Password"><br>
+                     <input required
+                            type="password"
+                            name="password1"
+                            class="form-control"
+                            id="password1"
+                            placeholder="Password"
+<!--                            pattern="(?=.\d)(?=.*[a-z](?=.*[A-Z].{8}"-->
+<!--                            title="must contain one uppercase and lowercase, one number, and at least 8 character"-->
+                     <br>
 
-                     <input required type="password" name="password2"  class="form-control" id="password2" placeholder="Retype password"><br>
+                     <input required
+                            type="password"
+                            name="password2"
+                            class="form-control"
+                            id="password2"
+                            placeholder="Retype password"
+<!--                            pattern="(?=.\d)(?=.*[a-z](?=.*[A-Z].{8}"-->
+<!--                            title="must contain one uppercase and lowercase, one number, and at least 8 character"-->
+                   <br>
 
-                     <input required type="email" name="email"  class="form-control" id="email" placeholder="Email"><br>
+                     <input required
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            id="email"
+                            placeholder="Email">
+                   <br>
 
 <!--                   create account-->
                    <div class="text-center ">
