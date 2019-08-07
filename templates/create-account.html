@@ -19,46 +19,91 @@
     <div class="container-fluid">
       <div class="row">
          <div class="col-md-4 mx-auto">
-            <div class="form ">
-               <form action="/create-account" method="post" name="login">
+            <div class="form">
+               <form action="/create-account" method="post" name="login" id="formdiv">
 
-                     <input required
+                   <input id="username"
+                            required
                             type="text"
                             name="username"
                             class="form-control"
-                            id="username"
                             placeholder="Username"
                             pattern="[a-z]{1-15}"
                             title="lower cases up to 15 length"
                      >
-                     <br>
+                   <p id="usernameError"></p>
+                   <br>
 
-                     <input required
+                   <input id="password1"
+                            required
                             type="password"
                             name="password1"
                             class="form-control"
-                            id="password1"
                             placeholder="Password">
-                     <br>
+                   <p id="pass1Error"></p>
+                   <br>
 
-                     <input required
+                   <input id="password2"
+                            required
                             type="password"
                             name="password2"
                             class="form-control"
-                            id="password2"
                             placeholder="Retype password">
+                   <p id="pass2Error"></p>
                    <br>
 
-                     <input required
+                   <input id="email"
+                            required
                             type="email"
                             name="email"
                             class="form-control"
-                            id="email"
                             placeholder="Email">
+                   <p id="emError"></p>
                    <br>
 
                    <div class="text-center" style="visibility: visible" id="next">
-                       <button type="submit" class="btn btn-primary">Next</button>
+                       <button type="button" class="btn btn-primary" onclick="survey()">Next</button>
+                   </div> <br><br>
+
+                   <div id="surveydiv" style="visibility: hidden">
+                       <div class="form-group" id="gender" name="gender">
+                           <!-- Gender question -->
+                           <label for="Gender">Gender</label>
+                           <select class="form-control">
+                               <option value="male">male</option>
+                               <option value="female">female</option>
+                               <option value="other">other</option>
+                           </select>
+                       </div>
+
+                       <div class="form-group" id="age" name="age">
+                           <label for="age">How old are you?</label>
+                           <select class="form-control" onclick="ages()">
+                               <option >under 20</option>
+                               <option >20s</option>
+                               <option >30s</option>
+                               <option >40s</option>
+                               <option >50s</option>
+                               <option >60s</option>
+                               <option >70s</option>
+                               <option >80s</option>
+                               <option >90s</option>
+                           </select>
+                       </div>
+
+                       <div class="form-group" id="experience" name="experience">
+                           <label for="experience">How much experience do you have?</label>
+                           <select class="form-control">
+                               <option value="none"> 0 Years </option>
+                               <option value="little"> <2 Years </option>
+                               <option value="some"> <5 Years </option>
+                               <option value="alot"> 5 Years or more </option>
+                           </select>
+                   </div><br><br>
+
+                       <div class="text-center ">
+                           <button type="submit" class="btn btn-primary" id="create" >Create Account</button>
+                       </div>
                    </div>
 
                </form>
@@ -93,7 +138,70 @@
 
     <!-- TODO: Add "login" and "forgot password?" links here. -->
 
-<!--script to make sure passwords match-->
+<!--error handling to create account and survey -->
+<script>
+    function survey() {
+        var flag = 0;
+        let usr = document.getElementById('username');
+        let pass1 = document.getElementById('password1');
+        let pass2 = document.getElementById('password2');
+        let em = document.getElementById('email');
+        let usrE = document.getElementById('usernameError');
+        let pass1E = document.getElementById('pass1Error');
+        let pass2E = document.getElementById('pass2Error');
+        let emE = document.getElementById('emError');
+
+        if (usr.value.length === 0){
+            usr.style.borderColor = "red";
+            usrE.innerHTML = "Cannot be blank";
+            flag = 1;
+        }else {
+            usr.style.borderColor = "";
+            usrE.innerHTML = "";
+        }
+        if (pass1.value.length === 0){
+            pass1.style.borderColor = "red";
+            pass1E.innerHTML = "Cannot be blank";
+            flag = 1;
+        }else{
+            pass1.style.borderColor = "";
+            pass1E.innerHTML = "";
+        }
+        if(pass2.value.length === 0){
+            pass2.style.borderColor = "red";
+            pass2E.innerText = "Cannot be blank";
+            flag = 1;
+        }else{
+            pass2.style.borderColor = "";
+            pass2E.innerHTML = "";
+        }
+        if(em.value.length === 0){
+            em.style.borderColor = "red";
+            emE.innerHTML = "Cannot be blank";
+            flag = 1;
+        }else{
+            em.style.borderColor = "";
+            emE.innerHTML = "";
+        }
+        if(pass1.value !== pass2.value){
+            pass1.style.borderColor = pass2.style.borderColor = "red";
+            pass1E.innerHTML = pass2E.innerHTML = "Passwords dont match!";
+            flag = 1
+        }
+        if(flag === 0){
+            document.getElementById('surveydiv').style.visibility = 'visible';
+            document.getElementById('next').style.visibility = 'hidden';
+            usr.style.borderColor = "";
+            usrE.innerHTML = "";
+            pass1.style.borderColor = "";
+            pass1E.innerHTML = "";
+            pass2.style.borderColor = "";
+            pass2E.innerText = "";
+            em.style.borderColor = "";
+            emE.innerHTML = "";
+        }
+    }
+</script>
 
 {% endblock %}
 

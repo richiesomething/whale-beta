@@ -53,7 +53,7 @@ def route(flask_app):
                             "(Database insertion failed)."
                         ]
                     )
-                return redirect("questionnaire")
+                return redirect(url_for(".homePage", text = request.form['email']))
 
     @flask_app.route("/login-account", methods=["GET", "POST"])
     def login_account():
@@ -80,12 +80,12 @@ def route(flask_app):
         player_id = whale.game.add_player(room_id)
         return flask.render_template("whale.html", game_id=game_id, room_id=room_id, player_id=player_id)
 
-    @flask_app.route("/questionnaire", methods = ['GET', 'POST'])
-    def questionnaire():
-        if flask.request.method == "GET":
-            return flask.render_template('survey.html')
-        if flask.request.method == "POST":
-            return redirect(url_for(".homePage", text = "user"))
+#     @flask_app.route("/questionnaire", methods = ['GET', 'POST'])
+#     def questionnaire():
+#         if flask.request.method == "GET":
+#             return flask.render_template('survey.html')
+#         if flask.request.method == "POST":
+#             return redirect(url_for(".homePage", text = "user"))
 
     @flask_app.route("/homepage/<text>", methods=['GET', 'POST'])
     def homePage(text):
@@ -96,3 +96,6 @@ def route(flask_app):
     @flask_app.route("/loggingOut")
     def logout():
         return flask.redirect("/")
+
+
+# notes: included questionnaire in create_account and routed it straight to user home page
