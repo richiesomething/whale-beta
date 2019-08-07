@@ -1,5 +1,5 @@
 import flask
-from flask import redirect, request
+from flask import redirect, request, url_for
 
 import whale
 
@@ -53,7 +53,7 @@ def route(flask_app):
                             "(Database insertion failed)."
                         ]
                     )
-                return flask.redirect('questionnaire')
+                return redirect("questionnaire")
 
     @flask_app.route("/login-account", methods=["GET", "POST"])
     def login_account():
@@ -69,7 +69,7 @@ def route(flask_app):
             with model.db_connect() as connection:
                 success, msg = model.users.try_login_user(connection, email_id, password)
                 if success:
-                    return flask.render_template('profile-page.html', text = request.form['email'])
+                    return redirect(url_for(".homePage", text = request.form['email']))
                 else:
                     return flask.render_template("login-account.html", errors=[msg])
 
@@ -80,13 +80,17 @@ def route(flask_app):
         player_id = whale.game.add_player(room_id)
         return flask.render_template("whale.html", game_id=game_id, room_id=room_id, player_id=player_id)
 
-    @flask_app.route("/questionnaire")
+    @flask_app.route("/questionnaire", methods = ['GET', 'POST'])
     def questionnaire():
-        return flask.render_template('survey.html')
+        if flask.request.method == "GET":
+            return flask.render_template('survey.html')
+        if flask.request.method == "POST":
+            return redirect(url_for(".homePage", text = "user"))
 
-    @flask_app.route("/homepage")
-    def homePage():
-        return flask.render_template("profile-page.html")
+    @flask_app.route("/homepage/<text>", methods=['GET', 'POST'])
+    def homePage(text):
+        if flask.request.method == "GET":
+            return flask.render_template("profile-page.html", text = text)
 
 #     TODO: log out route, not yet properly implemented
     @flask_app.route("/loggingOut")

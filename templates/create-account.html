@@ -28,7 +28,9 @@
                             class="form-control"
                             id="username"
                             placeholder="Username"
-<!--                            pattern=".{8,}"-->
+                            pattern="[a-z]{1-15}"
+                            title="lower cases up to 15 length"
+                     >
                      <br>
 
                      <input required
@@ -36,9 +38,7 @@
                             name="password1"
                             class="form-control"
                             id="password1"
-                            placeholder="Password"
-<!--                            pattern="(?=.\d)(?=.*[a-z](?=.*[A-Z].{8}"-->
-<!--                            title="must contain one uppercase and lowercase, one number, and at least 8 character"-->
+                            placeholder="Password">
                      <br>
 
                      <input required
@@ -46,9 +46,7 @@
                             name="password2"
                             class="form-control"
                             id="password2"
-                            placeholder="Retype password"
-<!--                            pattern="(?=.\d)(?=.*[a-z](?=.*[A-Z].{8}"-->
-<!--                            title="must contain one uppercase and lowercase, one number, and at least 8 character"-->
+                            placeholder="Retype password">
                    <br>
 
                      <input required
@@ -59,9 +57,8 @@
                             placeholder="Email">
                    <br>
 
-<!--                   create account-->
-                   <div class="text-center ">
-                       <button type="submit" class="btn btn-primary" id="create" >Next</button>
+                   <div class="text-center" style="visibility: visible" id="next">
+                       <button type="submit" class="btn btn-primary">Next</button>
                    </div>
 
                </form>
@@ -96,8 +93,7 @@
 
     <!-- TODO: Add "login" and "forgot password?" links here. -->
 
-<!--script to show survey on button press-->
-
+<!--script to make sure passwords match-->
 
 {% endblock %}
 
