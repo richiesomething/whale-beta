@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS "users" (
-	"user_id"	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"id"	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
 	"user_name"	TEXT NOT NULL UNIQUE,
 	"email_id"	TEXT NOT NULL UNIQUE,
 	"password_hash"	TEXT NOT NULL
@@ -15,6 +15,7 @@ create table if not exists "analytics_sessions" (
 
 CREATE TABLE IF NOT EXISTS "survey_responses" (
   "id"	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+  "user_id" integer,
   "gender" STRING,
   "age" STRING,
   "stockq" STRING

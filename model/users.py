@@ -61,7 +61,7 @@ class User(flask_login.UserMixin):
         with _db.db_connect() as connection:
             with contextlib.closing(connection.cursor()) as cursor:
                 cursor.execute(
-                    "select * from users where user_id=?", (user_id_int,))
+                    "select * from users where id=?", (user_id_int,))
                 user_row = cursor.fetchone()
                 if user_row:
                     user_id, user_name, user_email_id, user_password_hash = user_row
