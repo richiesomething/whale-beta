@@ -8,6 +8,7 @@ import whale
 import model
 import model.users
 
+
 def route(flask_app):
 
     @flask_app.route("/")
@@ -31,25 +32,21 @@ def route(flask_app):
 
         user = User.query.filter_by(email_id)
 
+        if user:
+            errors.append("Email already exists")
+
         if password_1 != password_2:
-            errors.append(f"The two passwords you entered do not match. Please try re-entering them.")
+            errors.append(
+                f"The two passwords you entered do not match. Please re-enter them.")
 
         if errors:
             return flask.render_template("create-account.html", errors=errors)
         else:
-            # Create the account.
-            assert password_1 == password_2
-            try:
-                with model.db_connect() as connection:
-                    model.users.create_user(connection, user_name, email_id, password_1)
-            except model.sqlite3.DatabaseError:
-                return flask.render_template(
-                    "create-account.html",
-                    errors=[
-                        "A server error occurred. Please try creating your account again. "
-                        "(Database insertion failed)."
-                    ]
-                )
+            new_user = User(email=email, name=name, password=generate_password_hash(
+                password, method='sha256'))
+
+            db.session.add(new_user)
+            db.session.commit()
 
             return flask.render_template("survey.html")
 
@@ -64,12 +61,13 @@ def route(flask_app):
             email_id = form["email"]
             password = form["password"]
 
-            with model.db_connect() as connection:
-                success, msg = model.users.try_login_user(connection, email_id, password)
-                if success:
-                    return flask.render_template_string("Success! Logged in {{ current_user.user_name }}.")
-                else:
-                    return flask.render_template("login-account.html", errors=[msg])
+            # with model.db_connect() as connection:
+            #     success, msg = model.users.try_login_user(
+            #         connection, email_id, password)
+            #     if success:
+            #         return flask.render_template_string("Success! Logged in {{ current_user.user_name }}.")
+            #     else:
+            #         return flask.render_template("login-account.html", errors=[msg])
 
     @flask_app.route("/whale")
     def whale_page():
