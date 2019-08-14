@@ -1,101 +1,70 @@
-import flask
-from flask import redirect, request, url_for
+from flask import Blueprint, render_template, redirect, url_for, request, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, login_required, current_user, logout_user
+from models import User
+from server import db
+from whale import game
 
-import whale
+flask_app = Blueprint('flask_app', __name__)
 
-import model
-import model.users
+@flask_app.route('/')
+def index():
+    return render_template('index.html')
 
+@flask_app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html', name=current_user.name)
 
-def route(flask_app):
+@flask_app.route('/login')
+def login():
+    return render_template('login.html')
 
-    @flask_app.route("/")
-    def index():
-        return flask.render_template("index.html")
+@flask_app.route('/login', methods=['POST'])
+def login_post():
+    email=request.form.get('email')
+    password=request.form.get('password')
+    remember = True if request.form.get('remember') else False
 
-    @flask_app.route("/create-account", methods=["GET", "POST"])
-    def create_account():
-        if flask.request.method == "GET":
-            return flask.render_template("create-account.html", errors=[])
-        else:
-            assert flask.request.method == "POST"
-            form = flask.request.form
+    user = User.query.filter_by(email=email).first()
 
-            user_name = form["username"]
-            password_1 = form["password1"]
-            password_2 = form["password2"]
-            email_id = form["email"]
+    if not user or not check_password_hash(user.password, password):
+        flash('Email or Password is incorrect')
+        return redirect(url_for('flask_app.login'))
 
-            errors = []
+    login_user(user, remember=remember)
+    return redirect(url_for('flask_app.profile'))
 
-            # Checking if the username is unique:
-            with model.db_connect() as connection:
-                if model.users.check_if_username_exists(connection, user_name):
-                    errors.append(f"A user with the username '{user_name}' already exists. "
-                                  f"Please try a different username.")
+@flask_app.route('/signup')
+def signup():
+    return render_template('signup.html')
 
-            if password_1 != password_2:
-                errors.append(f"The two passwords you entered do not match. Please try re-entering them.")
+@flask_app.route('/signup', methods=['POST'])
+def signup_post():
+    email = request.form.get('email')
+    name = request.form.get('name')
+    password = request.form.get('password')
 
-            if errors:
-                return flask.render_template("create-account.html", errors=errors)
-            else:
-                # Create the account.
-                assert password_1 == password_2
-                try:
-                    with model.db_connect() as connection:
-                        model.users.create_user(connection, user_name, email_id, password_1)
-                except model.sqlite3.DatabaseError:
-                    return flask.render_template(
-                        "create-account.html",
-                        errors=[
-                            "A server error occurred. Please try creating your account again. "
-                            "(Database insertion failed)."
-                        ]
-                    )
-                return redirect(url_for(".homePage", text = request.form['email']))
+    user = User.query.filter_by(email=email).first()
+    if user:
+        flash('Email address already exists.')
+        return redirect(url_for('flask_app.signup'))
 
-    @flask_app.route("/login-account", methods=["GET", "POST"])
-    def login_account():
-        if flask.request.method == "GET":
-            return flask.render_template("login-account.html")
-        else:
-            assert flask.request.method == "POST"
-            form = flask.request.form
+    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+    db.session.add(new_user)
+    db.session.commit()
 
-            email_id = form["email"]
-            password = form["password"]
+    return redirect(url_for('flask_app.login'))
 
-            with model.db_connect() as connection:
-                success, msg = model.users.try_login_user(connection, email_id, password)
-                if success:
-                    return redirect(url_for(".homePage", text = request.form['email']))
-                else:
-                    return flask.render_template("login-account.html", errors=[msg])
+@flask_app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('flask_app.index'))
 
-    @flask_app.route("/whale")
-    def whale_page():
-        game_id = whale.game.id
-        room_id = whale.game.add_room()
-        player_id = whale.game.add_player(room_id)
-        return flask.render_template("whale.html", game_id=game_id, room_id=room_id, player_id=player_id)
-
-#     @flask_app.route("/questionnaire", methods = ['GET', 'POST'])
-#     def questionnaire():
-#         if flask.request.method == "GET":
-#             return flask.render_template('survey.html')
-#         if flask.request.method == "POST":
-#             return redirect(url_for(".homePage", text = "user"))
-
-    @flask_app.route("/homepage/<text>", methods=['GET', 'POST'])
-    def homePage(text):
-        if flask.request.method == "GET":
-            return flask.render_template("profile-page.html", text = text)
-
-#     TODO: log out route, not yet properly implemented
-    @flask_app.route("/loggingOut")
-    def logout():
-        return flask.redirect("/")
-
-
-# notes: included questionnaire in create_account and routed it straight to user home page
+@flask_app.route('/playwhale')
+def play_whale():
+    game_id = game.id
+    room_id = game.add_room()
+    player_id = game.add_player(room_id)
+    return render_template("whale.html", game_id=game_id, room_id=room_id, player_id=player_id)

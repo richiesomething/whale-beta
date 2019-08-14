@@ -1,0 +1,48 @@
+#whale-title {
+    background-image: linear-gradient(to right, darkcyan, skyblue);
+    color: whitesmoke;
+    font-size: 2em
+}
+
+.section {
+    margin: 1%;
+    padding: 1%;
+}
+
+.caption-section {
+    margin: 1%;
+    padding: 1%;
+    width: 100vw;
+}
+
+.rounded-section {
+    background: lightskyblue;
+    border-radius: 0.5em;
+
+    margin: 1%;
+    padding: 1%;
+    width: 98vw;
+}
+
+.h-scroll-menu {
+    color: white;
+    padding: 14px;
+    white-space: nowrap;
+    overflow: auto;
+}
+
+.rounded-card {
+    background: rgb(249, 247, 249);
+
+    border-radius: 0.5em;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    
+    margin: 1%;
+    padding: 1%;
+}
+
+.lg-scroll-menu-item {
+    display: inline-block;
+    width: 600px;
+    height: 400px;
+}
