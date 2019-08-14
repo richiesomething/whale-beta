@@ -6,10 +6,8 @@ import flask_login
 import whale
 import static
 import pages
-import analytics
 
 import model.users
-import model.analytics
 
 
 def init_flask_app():
@@ -35,7 +33,6 @@ if __name__ == "__main__":
         whale.init()
 
         import datetime
-        model.analytics.post_game_session_info("test_game", str(datetime.datetime.now()), 30, 0)
 
         # Each of the below modules represent categories of endpoints. Each module binds the required endpoints to the
         # flask app so we can serve those requests.
