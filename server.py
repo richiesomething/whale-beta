@@ -2,26 +2,33 @@
 import flask
 import flask_cors
 import flask_login
+from flask_sqlalchemy import SQLAlchemy
 
 import whale
 import static
 import pages
 
-import model.users
+db = SQLAlchemy()
 
 
 def init_flask_app():
     app = flask.Flask(__name__)
-    app.secret_key = "hT0yRAvrQcGbKbJkVE3kAw"
-
+    
+    app.config['SECRET_KEY'] = 'hT0yRAvrQcGbKbJkVE3kAw'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+    
     flask_cors.CORS(app)
 
+    db.init_app(app)
+    
     login_manager = flask_login.LoginManager()
     login_manager.init_app(app)
+    
+    import model.users
 
     @login_manager.user_loader
     def load_user(user_id):
-        return model.users.User.get_from_id(user_id)
+        return model.users.User.query(int(user_id))
 
     return app
 
@@ -38,7 +45,6 @@ if __name__ == "__main__":
         # flask app so we can serve those requests.
         static.route(flask_app=app)
         pages.route(flask_app=app)
-        analytics.route(flask_app=app)
         whale.route(flask_app=app)
 
         app.run(debug=True)

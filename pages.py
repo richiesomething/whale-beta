@@ -1,11 +1,12 @@
 import flask
+from flask import render_template, Blueprint, redirect, url_for, flash, request
+from flask_login import login_user, logout_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import whale
 
 import model
 import model.users
-from model.users import add_responses
-# Why does add_responses need to be imported seperately?
 
 def route(flask_app):
 
@@ -13,48 +14,44 @@ def route(flask_app):
     def index():
         return flask.render_template("index.html")
 
-    @flask_app.route("/create-account", methods=["GET", "POST"])
+    @flask_app.route('/create-account', methods=['GET'])
     def create_account():
-        if flask.request.method == "GET":
-            return flask.render_template("create-account.html", errors=[])
+        return flask.render_template("create-account.html", errors=[])
+
+    @flask_app.route("/create-account", methods=["POST"])
+    def create_account_post():
+        form = flask.request.form
+
+        user_name = form["username"]
+        password_1 = form["password1"]
+        password_2 = form["password2"]
+        email_id = form["email"]
+
+        errors = []
+
+        user = User.query.filter_by(email_id)
+
+        if password_1 != password_2:
+            errors.append(f"The two passwords you entered do not match. Please try re-entering them.")
+
+        if errors:
+            return flask.render_template("create-account.html", errors=errors)
         else:
-            assert flask.request.method == "POST"
-            form = flask.request.form
+            # Create the account.
+            assert password_1 == password_2
+            try:
+                with model.db_connect() as connection:
+                    model.users.create_user(connection, user_name, email_id, password_1)
+            except model.sqlite3.DatabaseError:
+                return flask.render_template(
+                    "create-account.html",
+                    errors=[
+                        "A server error occurred. Please try creating your account again. "
+                        "(Database insertion failed)."
+                    ]
+                )
 
-            user_name = form["username"]
-            password_1 = form["password1"]
-            password_2 = form["password2"]
-            email_id = form["email"]
-
-            errors = []
-
-            # Checking if the username is unique:
-            with model.db_connect() as connection:
-                if model.users.check_if_username_exists(connection, user_name):
-                    errors.append(f"A user with the username '{user_name}' already exists. "
-                                  f"Please try a different username.")
-
-            if password_1 != password_2:
-                errors.append(f"The two passwords you entered do not match. Please try re-entering them.")
-
-            if errors:
-                return flask.render_template("create-account.html", errors=errors)
-            else:
-                # Create the account.
-                assert password_1 == password_2
-                try:
-                    with model.db_connect() as connection:
-                        model.users.create_user(connection, user_name, email_id, password_1)
-                except model.sqlite3.DatabaseError:
-                    return flask.render_template(
-                        "create-account.html",
-                        errors=[
-                            "A server error occurred. Please try creating your account again. "
-                            "(Database insertion failed)."
-                        ]
-                    )
-
-                return flask.render_template("survey.html")
+            return flask.render_template("survey.html")
 
     @flask_app.route("/login-account", methods=["GET", "POST"])
     def login_account():
