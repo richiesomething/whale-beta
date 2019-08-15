@@ -5,16 +5,24 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
+    <div class="text-center">
         <p>
             Log into your existing Whale account.
         </p>
     </div>
 
-    <div class="row">
-        <!-- TODO: Fix wonky styling. -->
-
     <div class="container-fluid">
+        {% with messages = get_flashed_messages() %}
+        {% if messages[0]=='Please check login details and try again.' %}
+            <div class="alert alert-warning text-center">
+                {{ messages[0] }} 
+            </div>
+        {% elif messages[0]%}
+            <div class="alert alert-success text-center">
+                {{ messages[0] }} 
+            </div>
+        {% endif %}
+        {% endwith %}
         <div class="row">
            <div class="col-md-4 mx-auto">
               <div class="form ">
@@ -27,6 +35,10 @@
                     <div class="form-group row">
                        <input type="password" name="password"  class="form-control" id="password" placeholder="Password">
                     </div>
+                    
+                    <div>
+                       <input type="checkbox" id="remember" name="password"> Remember me
+                    </div>
 
                     <div class="text-center ">
                        <button type="submit" class="btn btn-primary">Log in</button>
@@ -37,31 +49,5 @@
            </div>
         </div>
      </div>
-
-    {% if errors %}
-        <hr/>
-
-        <div class="row">
-            <h3>Account creation failed!</h3>
-        </div>
-
-        <div class="row">
-            <p>
-                Please rectify the following errors:
-            </p>
-        </div>
-
-        <div class="row">
-            <ul>
-                {% for error in errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    <hr/>
-
-    <!-- TODO: Add "forgot password?" links here. -->
 
 {% endblock %}

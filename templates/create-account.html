@@ -10,32 +10,65 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
+    <div class="text-center">
         <p>
             Creating a Whale account allows you to save your progress between play sessions.
         </p>
     </div>
 
     <div class="container-fluid">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-danger text-center">
+                {{ messages[0] }} Go to <a href="{{ url_for('auth.login') }}">login page</a> 
+            </div>
+        {% endif %}
+        {% endwith %}
       <div class="row">
          <div class="col-md-4 mx-auto">
             <div class="form ">
                <form action="/create-account" method="post" name="login">
 
                   <div class="form-group row">
-                     <input type="text" name="username"  class="form-control" id="username" placeholder="Username">
+                     <input type="text" 
+                        name="username"  
+                        class="form-control" 
+                        id="username" 
+                        placeholder="Username"
+                        required
+                      >
                   </div>
 
                   <div class="form-group row">
-                     <input type="password" name="password1"  class="form-control" id="password1" placeholder="Password">
+                    <input type="password" 
+                        name="password1" 
+                        class="form-control" 
+                        id="password1" 
+                        placeholder="Password" 
+                        onchange="form.password2.pattern = this.value;" 
+                        required
+                    >
                   </div>
 
                   <div class="form-group row">
-                     <input type="password" name="password2"  class="form-control" id="password2" placeholder="Retype password">
+                    <input type="password" 
+                        name="password2" 
+                        class="form-control" 
+                        id="password2" 
+                        placeholder="Veryify Password" 
+                        onchange="setCustomValidity(validity.patternMismatch ? 'Passwords do not match. Please enter the same password as above' : '')"
+                        required
+                    >
                   </div>
 
                   <div class="form-group row">
-                     <input type="email" name="email"  class="form-control" id="email" placeholder="Email">
+                    <input type="email" 
+                        name="email"  
+                        class="form-control" 
+                        id="email" 
+                        placeholder="Email" 
+                        required
+                    >
                   </div>
 
                   <div class="text-center ">
@@ -47,31 +80,5 @@
          </div>
       </div>
    </div>
-
-    {% if errors %}
-        <hr/>
-
-        <div class="row">
-            <h3>Account creation failed!</h3>
-        </div>
-
-        <div class="row">
-            <p>
-                Please rectify the following errors:
-            </p>
-        </div>
-
-        <div class="row">
-            <ul>
-                {% for error in errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    <hr/>
-
-    <!-- TODO: Add "login" and "forgot password?" links here. -->
 
 {% endblock %}
