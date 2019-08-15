@@ -1,4 +1,5 @@
 # Mailgun configuration to send confirmation email
+# Need to upgrade mailgun acct and change API and Domain before you can send to other emails.
 import requests
 def mailgun_func(email_id,link):
     return requests.post(
