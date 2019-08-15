@@ -10,6 +10,7 @@ import pages
 import model.users
 
 
+
 def init_flask_app():
     app = flask.Flask(__name__)
     app.secret_key = "hT0yRAvrQcGbKbJkVE3kAw"
@@ -38,7 +39,6 @@ if __name__ == "__main__":
         # flask app so we can serve those requests.
         static.route(flask_app=app)
         pages.route(flask_app=app)
-        analytics.route(flask_app=app)
         whale.route(flask_app=app)
 
         app.run(debug=True)

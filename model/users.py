@@ -20,6 +20,13 @@ def create_user(connection, user_name, email_id, password):
         cursor.execute(
             "insert into users (user_name, email_id, password_hash) values (?,?,?)", values)
 
+#Start Update user as 'confirmed'
+def confirm_user(connection, email_id):
+    with contextlib.closing(connection.cursor()) as cursor:
+        
+        cursor.execute("update users set confirmed = 'TRUE' where email_id = ?", (email_id,))
+#End Update
+    
 
 def try_login_user(connection, email_id, password):
     with contextlib.closing(connection.cursor()) as cursor:
@@ -39,12 +46,14 @@ def try_login_user(connection, email_id, password):
 
 
 class User(flask_login.UserMixin):
-    def __init__(self, user_id, user_name, user_email_id, user_password_hash):
+    def __init__(self, user_id, user_name, user_email_id, user_password_hash, user_confirmed):
         super().__init__()
         self.id = user_id
         self.user_name = user_name
         self.user_email_id = user_email_id
         self.user_password_hash = user_password_hash
+        self.user_confirmed = user_confirmed
+        
 
     def get_id(self):
         return str(self.id)
@@ -58,7 +67,7 @@ class User(flask_login.UserMixin):
                     "select * from users where user_id=?", (user_id_int,))
                 user_row = cursor.fetchone()
                 if user_row:
-                    user_id, user_name, user_email_id, user_password_hash = user_row
-                    return User(user_id, user_name, user_email_id, user_password_hash)
+                    user_id, user_name, user_email_id, user_password_hash, user_confirmed = user_row
+                    return User(user_id, user_name, user_email_id, user_password_hash, user_confirmed)
                 else:
                     return None

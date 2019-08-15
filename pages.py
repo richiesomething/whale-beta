@@ -1,9 +1,18 @@
 import flask
+import requests
 
 import whale
 
 import model
 import model.users
+from flask import flash, get_flashed_messages
+
+#email imports and configs
+#Serializer uses apps secret key
+from mailgun import mailgun_func
+from itsdangerous import URLSafeTimedSerializer
+s = URLSafeTimedSerializer("hT0yRAvrQcGbKbJkVE3kAw")
+
 
 
 def route(flask_app):
@@ -52,8 +61,24 @@ def route(flask_app):
                             "(Database insertion failed)."
                         ]
                     )
-
-                return "Success."
+                # CREATE EMAIL TOKEN and Email it with 
+                token = s.dumps(email_id)
+                link = flask.url_for('confirm_email', token = token, _external=True)
+                mailgun_func(email_id, link)
+                flash("We\'ve sent a confirmation email to {}".format(email_id))
+                return flask.redirect(flask.url_for('index'))
+                
+    
+    # email confirmation route
+    @flask_app.route("/email_confirm/<token>")
+    def confirm_email(token):
+        email_id = s.loads(token, max_age=300)
+        with model.db_connect() as connection:
+            model.users.confirm_user(connection, email_id)
+        flash('User {} is confirmed'.format(email_id))
+        
+        return flask.redirect(flask.url_for('index'))
+            
 
     @flask_app.route("/login-account", methods=["GET", "POST"])
     def login_account():
@@ -83,5 +108,4 @@ def route(flask_app):
     @flask_app.route("/questionnaire")
     def questionnaire():
         return flask.render_template("Survey.html")
-
 
