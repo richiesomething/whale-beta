@@ -1,16 +1,42 @@
 {% extends "base.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
 {% block style %}
+<style>
+    a {
+        font-size: 22px;
+        color: white;
+    }
+
+</style>
 {% endblock %}
 
 {% block title %}PROFILE{% endblock %}
 {% block header %}
-<p style="padding-left: 150px">{{ name }}</p>
 {% endblock %}
 
 {% block body %}
-<br><br><br><br>
-<h1 class="title">
-    Welcome, {{ name }}!
-</h1>
+
+
+<div class="col-sm-3" style="background-image: linear-gradient(to right bottom, darkcyan, cyan); color: white">
+    <img src="../img/avatars/default.jpg" alt="Default img" style="width:100%">
+    <h1>{{ name }}</h1>
+    <p>School/Job</p>
+    <p>Time played</p>
+    <p>Best Score</p>
+    <p>Overall score</p>
+    <p>rank</p>
+    <div style="display: inline">
+    <a href="#" style="color: white"><i class="fa fa-instagram"></i></a>
+    <a href="#" style="color: white"><i class="fa fa-twitter"></i></a>
+    <a href="#" style="color: white"><i class="fa fa-linkedin"></i></a>
+    <a href="#" style="color: white"><i class="fa fa-facebook"></i></a>
+    </div>
+</div>
+<div class="col-sm-8">
+
+</div>
 {% endblock %}
