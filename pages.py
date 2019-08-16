@@ -66,7 +66,7 @@ def route(flask_app):
                 link = flask.url_for('confirm_email', token = token, _external=True)
                 mailgun_func(email_id, link)
                 flash("We\'ve sent a confirmation email to {} check your spam folder".format(email_id))
-                return flask.redirect(flask.url_for('index'))
+                return flask.redirect(flask.url_for('index'))   
                 
     
     # email confirmation route
