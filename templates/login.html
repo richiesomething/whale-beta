@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block style %}
+{% endblock %}
+
+{% block title %}LOGIN{% endblock %}
+{% block header %}
+<p style="padding-left: 150px">Welcome back! Login and lets catch a whale!</p>
+{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+<div class="column" align="center">
+    <h3>Login</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div>
+            {{ messages[0] }}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="/login">
+            <div class="control">
+                <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="">
+            </div>
+
+            <div class="control">
+                <input class="input is-large" type="password" name="password" placeholder="Your Password">
+            </div>
+            <div class="field">
+                    <input type="checkbox">
+                    Remember me
+            </div>
+            <button class="button is-block is-info is-large is-fullwidth">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

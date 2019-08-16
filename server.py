@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
-import flask
-import flask_cors
-import flask_login
-
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_cors import CORS
 import whale
 import static
 import pages
@@ -11,58 +10,37 @@ import analytics
 import model.users
 import model.analytics
 
+db = SQLAlchemy()
 
-def init_flask_app():
-    app = flask.Flask(__name__)
-    app.secret_key = "hT0yRAvrQcGbKbJkVE3kAw"
+def create_app():
+    app = Flask(__name__)
+    CORS(app)
 
-    flask_cors.CORS(app)
+    app.config['SECRET_KEY']='thisismysecretkey'
+    app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///db.sqlite3'
 
-    login_manager = flask_login.LoginManager()
+    db.init_app(app)
+
+    login_manager =  LoginManager()
+    login_manager.login_view = 'pages.login'
     login_manager.init_app(app)
 
+    from models import User
     @login_manager.user_loader
     def load_user(user_id):
-        return model.users.User.get_from_id(user_id)
+        return User.query.get(int(user_id))
+
+    from pages import flask_app as flask_app_pages
+    app.register_blueprint(flask_app_pages)
 
     return app
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     def main():
-        app = init_flask_app()
-
+        app = create_app()
         whale.init()
-
-        import datetime
-        model.analytics.post_game_session_info("test_game", str(datetime.datetime.now()), 30, 0)
-
-        # Each of the below modules represent categories of endpoints. Each module binds the required endpoints to the
-        # flask app so we can serve those requests.
-        static.route(flask_app=app)
-        pages.route(flask_app=app)
-        analytics.route(flask_app=app)
         whale.route(flask_app=app)
-
-        app.run(debug=True)
+        app.run(debug=True, port=5001)
 
     main()
-
-
-# Commit messages:
-# - Removed sqlite3 from requirements.txt (included in Python 2.5+)
-# - Fixed a few typos that were preventing successful execution.
-# - Integrated the 'objects' directory, eliminated redundant code in between.
-# - Added basic sign-up and log-in features.
-
-# TODO:
-#  - Update README.md with more documentation, especially about different endpoints and what information can be expected
-#    from each.
-#  - Add log-out, remember me, and user-specific features.
-#  - Make all the SQL queries injection-safe.
-
-# Deployment check-list:
-# - Switch Flask out of Debug Mode.
-# - Ensure the secret key isn't visible.
-# - TODO: Ensure nginx routing is set up correctly for static files. (ssh whalie@getwhaled.com)
-

@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block style %}
+{% endblock %}
+
+{% block title %}SIGN UP{% endblock %}
+{% block header %}
+<p style="padding-left: 150px">Welcome, sign up and lets catch a whale!</p>
+{% endblock %}
+
+{% block body %}
+<div class="column" align="center">
+    <h3 class="title">Sign Up</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div>
+                    {{messages[0] }} Go to <a href="{{ url_for('flask_app.login') }}">login page</a>
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form method="POST" action="/signup">
+
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email" id="email">
+                <p id="emailError"></p>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="name" placeholder="Name" id="name">
+                <p id="nameError"></p>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password1" placeholder="Password" id="pass1">
+                <p id="pass1Error"></p>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password2" placeholder="Re-enter Password" id="pass2">
+                <p id="pass2Error"></p>
+            </div>
+
+            <button type="button" onclick="survey()" style="visibility: visible" id="next">Next!</button>
+
+            <div class="survey" style="visibility: hidden" id="survey">
+                <div class="form-group">
+                    <label >Gender:</label>
+                    <select class="form-control">
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Decliine to State</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label >Age:</label>
+                    <select class="form-control">
+                        <option> < 30 </option>
+                        <option> 30's </option>
+                        <option> 40's </option>
+                        <option> 50's </option>
+                        <option> 60's </option>
+                        <option> 70's </option>
+                        <option> 80's </option>
+                        <option> 90's </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label >Experience:</label>
+                    <select class="form-control">
+                        <option> none</option>
+                        <option> 1-2 years </option>
+                        <option> 3-5 years </option>
+                        <option> over 5 years </option>
+                    </select>
+                </div>
+                <br><br>
+
+                <button class="button">Sign Up</button>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    function survey(){
+        let em = document.getElementById('email');
+        let nm = document.getElementById('name');
+        let p1 = document.getElementById('pass1');
+        let p2 = document.getElementById('pass2');
+        let emE = document.getElementById('emailError');
+        let nmE = document.getElementById('nameError');
+        let p1E = document.getElementById('pass1Error');
+        let p2E = document.getElementById('pass2Error');
+
+        em.style.borderColor='';
+        emE.innerText=""
+        nm.style.borderColor='';
+        nmE.innerText="";
+        p1.style.borderColor = '';
+        p1E.innerText="";
+        p2.style.borderColor='';
+        p2E.innerText="";
+
+        let flag = 0;
+
+
+        if (em.value === ""){
+            em.style.borderColor = 'red';
+            emE.innerText = "cannot be blank";
+            flag=1;
+        }
+        if (nm.value === ""){
+            nm.style.borderColor = 'red';
+            nmE.innerText = "cannot be blank";
+            flag=1;
+        }
+        if (p1.value === ""){
+            p1.style.borderColor = 'red';
+            p1E.innerText = "cannot be blank";
+            flag=1
+        }
+        if (p2.value === ""){
+            p2.style.borderColor = 'red';
+            p2E.innerText = "cannot be blank";
+            flag=1
+        }
+        if (p1.value !== p2.value){
+            p1.style.borderColor = 'red';
+            p2.style.borderColor = 'red';
+            p1E.innerText = "Passwords Dont Match";
+            p2E.innerText = "Passwords Dont Match";
+            flag=1;
+
+        }
+        if (flag === 0){
+            document.getElementById('survey').style.visibility = 'visible';
+            document.getElementById('next').style.visibility = 'hidden';
+        }
+
+    }
+</script>
+
+{% endblock %}
