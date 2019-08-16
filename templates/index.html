@@ -12,14 +12,15 @@
 {% block body %}
 {% if not current_user.is_authenticated %}
 <div class="box" style="float: right">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <div>
-        {{ messages[0] }}
-    </div>
-    {% endif %}
-    {% endwith %}
+
     <form method="POST" action="/login_post2">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div>
+            {{ messages[0] }}
+        </div>
+        {% endif %}
+        {% endwith %}
         <div class="control">
             <input class="input is-large" type="email" name="email" placeholder="Your Email" autofocus="" style="padding: 0; margin: 0;">
         </div>

@@ -22,7 +22,7 @@ def signup_post2():
     user = User.query.filter_by(email=email).first()
     if user:
         flash('Email address already exists.')
-        return redirect(url_for('flask_app.signup'))
+        return redirect(url_for('flask_app.index'))
 
     new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
     db.session.add(new_user)
@@ -40,7 +40,12 @@ def login_post2():
 
     if not user or not check_password_hash(user.password, password):
         flash('Email or Password is incorrect')
-        return redirect(url_for('flask_app.login'))
+        return redirect(url_for('flask_app.index'))
+
+    if email == '' or password == '':
+        flash('Fill out email and password')
+        return redirect(url_for('flask_app.index'))
+
 
     login_user(user, remember=remember)
     return redirect(url_for('flask_app.profile'))
