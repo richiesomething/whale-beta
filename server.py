@@ -8,6 +8,7 @@ import static
 
 db = SQLAlchemy()
 
+
 def init_flask_app():
   app = Flask(__name__)
 
@@ -33,9 +34,9 @@ def init_flask_app():
     return User.query.get(int(user_id))
 
   # Blueprint for authenticated areas
-
   from auth import auth as auth_blueprint
   app.register_blueprint(auth_blueprint)
+
 
   # Blueprint for non-authenticated areas
 
