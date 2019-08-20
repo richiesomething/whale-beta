@@ -1,2 +1,2 @@
 #!/bin/bash
-sqlite3 tmp/db/whale.db < whale.db.schema
+sqlite3 db.sqlite3 < whale.db.schema

@@ -34,17 +34,9 @@ def init_flask_app():
     return User.query.get(int(user_id))
 
   # Blueprint for authenticated areas
-
-<<<<<<< HEAD
-        # Each of the below modules represent categories of endpoints. Each module binds the required endpoints to the
-        # flask app so we can serve those requests.
-        static.route(flask_app=app)
-        pages.route(flask_app=app)
-        whale.route(flask_app=app)
-=======
   from auth import auth as auth_blueprint
   app.register_blueprint(auth_blueprint)
->>>>>>> official/master
+
 
   # Blueprint for non-authenticated areas
 

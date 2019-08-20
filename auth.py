@@ -1,8 +1,13 @@
 from flask import render_template, Blueprint, redirect, url_for, flash, request
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
 from server import db
+#email imports and configs
+#Serializer uses apps secret key
+from mailgun import mailgun_func
+from itsdangerous import URLSafeTimedSerializer
+s = URLSafeTimedSerializer("thisisasecretdonotcopy")
 
 
 auth = Blueprint('auth', __name__)
@@ -54,12 +59,33 @@ def signup_post():
     return redirect(url_for('auth.signup'))
 
   new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+  #create confirmation token
+  token = s.dumps(email)
+  link = url_for('auth.confirm_email', token = token, _external=True)
+  #send email
+  mailgun_func(email, link)
+  flash("We\'ve sent a confirmation email to {} check your spam folder".format(email))
+  
 
   db.session.add(new_user)
   db.session.commit()
-
-  flash('Account created! Please log in.')
   return redirect(url_for('auth.login'))
+
+@auth.route('/confirm_email/<token>')
+def confirm_email(token):
+  email = s.loads(token, max_age= 86400)
+  user = User.query.filter_by(email=email).first() 
+  user.confirmed = "TRUE"
+  db.session.commit()
+  flash("You're confirmed {}".format(user.name))
+  login_user(user)
+  return redirect(url_for('public.profile'))
+
+  
+
+        
+
+
 
 @auth.route('/logout')
 @login_required
