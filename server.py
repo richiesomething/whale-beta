@@ -1,65 +1,63 @@
-#!/usr/bin/env python3
-import flask
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 import flask_cors
-import flask_login
 
 import whale
 import static
-import pages
 
-import model.users
-
+db = SQLAlchemy()
 
 def init_flask_app():
-    app = flask.Flask(__name__)
-    app.secret_key = "hT0yRAvrQcGbKbJkVE3kAw"
+  app = Flask(__name__)
 
-    flask_cors.CORS(app)
+  app.config['SECRET_KEY'] = 'thisisasecretdonotcopy'
+  app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 
-    login_manager = flask_login.LoginManager()
-    login_manager.init_app(app)
+  flask_cors.CORS(app)
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        return model.users.User.get_from_id(user_id)
+  db.init_app(app)
 
-    return app
+  login_manager = LoginManager()
+  login_manager.login_view = 'auth.login'
+  login_manager.init_app(app)
 
+  # Can't be imported at top b/c db is not yet initialized at that point
+  from models import User
+
+  # Necessary to find user with current active session
+
+  @login_manager.user_loader
+  def load_user(user_id):
+    # Loads user associated with current cookie
+    return User.query.get(int(user_id))
+
+  # Blueprint for authenticated areas
+
+  from auth import auth as auth_blueprint
+  app.register_blueprint(auth_blueprint)
+
+  # Blueprint for non-authenticated areas
+
+  from public import public as public_blueprint
+  app.register_blueprint(public_blueprint)
+
+  return app
 
 if __name__ == "__main__":
     def main():
-        app = init_flask_app()
+      app = init_flask_app()
 
-        whale.init()
+      whale.init()
 
-        import datetime
+      whale.route(flask_app = app)
+      static.route(flask_app=app)
 
-        # Each of the below modules represent categories of endpoints. Each module binds the required endpoints to the
-        # flask app so we can serve those requests.
-        static.route(flask_app=app)
-        pages.route(flask_app=app)
-        analytics.route(flask_app=app)
-        whale.route(flask_app=app)
-
-        app.run(debug=True)
-
+      app.run(debug=True)
+    
     main()
-
-
-# Commit messages:
-# - Removed sqlite3 from requirements.txt (included in Python 2.5+)
-# - Fixed a few typos that were preventing successful execution.
-# - Integrated the 'objects' directory, eliminated redundant code in between.
-# - Added basic sign-up and log-in features.
-
-# TODO:
-#  - Update README.md with more documentation, especially about different endpoints and what information can be expected
-#    from each.
-#  - Add log-out, remember me, and user-specific features.
-#  - Make all the SQL queries injection-safe.
 
 # Deployment check-list:
 # - Switch Flask out of Debug Mode.
 # - Ensure the secret key isn't visible.
 # - TODO: Ensure nginx routing is set up correctly for static files. (ssh whalie@getwhaled.com)
-
