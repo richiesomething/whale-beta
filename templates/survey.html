@@ -1,0 +1,69 @@
+{% extends "app-base.html" %}
+
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="../css/survey.css">
+{% endblock %}
+
+{% block title %}
+    Short Survey
+{% endblock %}
+
+{% block content %}
+  <h2 class="text-center">Short Survey</h2>
+
+  <div class="d-flex justify-content-center">
+    <form class="w-75" action="/questionnaire" method="POST" name="survey">
+
+      <!-- Gender question -->
+      <div id="gender-question">
+
+        <p class="question-title">What gender do you identify as?</p>
+        <ul>
+          <li><label><input type="radio" name="gender" value="male" /> Male</label></li>
+          <li><label><input type="radio" name="gender" value="female" /> Female</label></li>
+          <li><label><input type="radio" name="gender" value="other" /> Other</label></li>
+          <li><label><input type="radio" name="gender" value="PNA1" /> Prefer Not to Answer</label></li>
+        </ul>
+
+      </div>
+
+
+      <!-- How old are you-->
+      <div id="age-question">
+
+          <p class="question-title">How old are you?</p>
+          <ul>
+            <li><label><input type="radio" name="age" value="10-" /> 10 and under</label></li>
+            <li><label><input type="radio" name="age" value="11-20" /> 11-20</label></li>
+            <li><label><input type="radio" name="age" value="21-30" /> 21-30</label></li>
+            <li><label><input type="radio" name="age" value="31-40" /> 31-40</label></li>
+            <li><label><input type="radio" name="age" value="41-50" /> 41-50</label></li>
+            <li><label><input type="radio" name="age" value="41-50" /> 41-50</label></li>
+            <li><label><input type="radio" name="age" value="51-60" /> 51-60</label></li>
+            <li><label><input type="radio" name="age" value="51-60" /> 51-60</label></li>
+            <li><label><input type="radio" name="age" value="61-70" /> 61-70</label></li>
+            <li><label><input type="radio" name="age" value="61-70" /> 61-70</label></li>
+            <li><label><input type="radio" name="age" value="71+" /> 70 and over</label></li>
+            <li><label><input type="radio" name="age" value="PNA2" /> Prefer Not to Answer</label></li>
+          </ul>
+  
+        </div>
+
+      <!-- Stock Question -->
+      <div id="stock-question">
+
+          <p class="question-title">Have you ever participated in stock trade?</p>
+          <ul>
+            <li><label><input type="radio" name="stockq" value="yes" /> Yes</label></li>
+            <li><label><input type="radio" name="stockq" value="no" /> No</label></li>
+            <li><label><input type="radio" name="stockq" value="PNA3" /> Prefer Not to Answer</label></li>
+          </ul>
+  
+        </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+  </div>
+{% endblock %}

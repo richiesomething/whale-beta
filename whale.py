@@ -5,7 +5,6 @@ import time
 import datetime
 import random
 
-import model
 import contextlib
 
 
