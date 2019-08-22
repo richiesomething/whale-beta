@@ -7,7 +7,10 @@ public = Blueprint('public', __name__)
 
 @public.route('/')
 def index():
-  return render_template('index.html')
+    game_id = whale.game.id
+    room_id = whale.game.add_room()
+    player_id = whale.game.add_player(room_id)
+    return render_template("index.html", game_id=game_id, room_id=room_id, player_id=player_id)
 
 @public.route('/profile')
 @login_required
