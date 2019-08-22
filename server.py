@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_cors import CORS
 import whale
-import pages
+import static
+import analytics
 import model.users
 
 db = SQLAlchemy()
