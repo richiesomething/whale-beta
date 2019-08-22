@@ -4,7 +4,6 @@
     top: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -5;
 }
 
 div#whale-canvas-container {
@@ -19,7 +18,7 @@ div#whale-canvas-container {
 
 @font-face {
     font-family: "ObjectSans-Regular";
-    src: url("/tempTrash/font/ObjectSans-Regular.otf");
+    src: url("/font/ObjectSans-Regular.otf");
     font-weight: normal;
     font-style: normal;
 }
