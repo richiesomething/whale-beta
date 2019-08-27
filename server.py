@@ -62,3 +62,7 @@ if __name__ == "__main__":
 # - Switch Flask out of Debug Mode.
 # - Ensure the secret key isn't visible.
 # - TODO: Ensure nginx routing is set up correctly for static files. (ssh whalie@getwhaled.com)
+
+
+
+#changes
